@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name = "GreenText" parent = "TextAppearance.AppCompat">
+        <item name = "android:textColor">#22970d</item>
+        <item name = "android:textSize">30dp</item>
+        <item name = "android:textStyle">bold|italic</item>
+    </style>
+
+</resources>
