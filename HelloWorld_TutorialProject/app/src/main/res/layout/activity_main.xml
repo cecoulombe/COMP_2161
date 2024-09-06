@@ -8,14 +8,77 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:rotationX="0"
-        android:text="Hello World!"
-        style ="@style/GreenText"
+        android:text="@string/welcome"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/but_topLef"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/holo_orange_dark"
+        android:text="@string/topLeft"
+        android:textColor="@color/black"
+        app:cornerRadius="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018" />
+
+    <Button
+        android:id="@+id/but_topRi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/topRight"
+        android:backgroundTint="@android:color/holo_orange_dark"
+        android:textColor="@color/black"
+        app:cornerRadius="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018" />
+
+    <Button
+        android:id="@+id/but_botLef"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/botLeft"
+        android:backgroundTint="@android:color/holo_orange_dark"
+        android:textColor="@color/black"
+        app:cornerRadius="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.981" />
+
+    <Button
+        android:id="@+id/but_botRi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/botRight"
+        android:backgroundTint="@android:color/holo_orange_dark"
+        android:textColor="@color/black"
+        app:cornerRadius="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.981" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
