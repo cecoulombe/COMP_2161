@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">Unit Converter App</string>
+    <string name="app_name">Unit Converter</string>
+    <string name="from_label">From</string>
+    <string name="to_label">To</string>
+    <string-array name = "spinnerOptions">
+        <item>Farenheit</item>
+        <item>Celsius</item>
+    </string-array>
 </resources>
