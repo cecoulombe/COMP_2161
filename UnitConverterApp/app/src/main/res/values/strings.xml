@@ -10,4 +10,7 @@
     <string name="value_hint">Enter a value</string>
     <string name="convert_label">CONVERT</string>
     <string name="results_label">Results</string>
+    <string name="toast_noCon">No conversion needed!</string>
+    <string name="toast_noVal">Please enter a value!</string>
+    <string name="noInput">Null</string>
 </resources>

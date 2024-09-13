@@ -114,12 +114,13 @@
         android:layout_gravity="start"
         android:layout_marginTop="40dp"
         android:layout_marginStart="25dp"
-        android:background="@drawable/button_shape"
+        android:backgroundTint="#909090"
         android:textColor="@color/black"
         android:text="@string/convert_label"
         android:textSize="20sp"
         android:textStyle="bold" />
 
+    <!-- Results -->
     <TextView
         android:id="@+id/results"
         android:layout_width="match_parent"
