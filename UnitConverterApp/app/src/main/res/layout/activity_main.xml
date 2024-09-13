@@ -101,7 +101,7 @@
             android:padding="8dp"
             android:autofillHints="@string/value_hint"
             android:hint="@string/value_hint"
-            android:inputType="number"
+            android:inputType="numberSigned|numberDecimal"
             android:textColor="#525252"
             android:textColorHint="#707070" />
     </LinearLayout>
