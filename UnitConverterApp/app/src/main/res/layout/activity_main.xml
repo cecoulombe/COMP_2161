@@ -4,75 +4,74 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
-    
+
+    <!-- From Row -->
     <LinearLayout
-        android:id="@+id/fromRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/From"
+            android:id="@+id/fromLabel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:text="@string/from_label"
             android:textAlignment="center"
             android:textColor="#787878"
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spinner1"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:entries="@array/spinnerOptions" />
+            android:entries="@array/spinnerOptions"/>
     </LinearLayout>
 
+    <!-- To Row -->
     <LinearLayout
-        android:id="@+id/toRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/To"
+            android:id="@+id/toLabel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:text="@string/to_label"
             android:textAlignment="center"
             android:textColor="#787878"
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spinner2"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:entries="@array/spinnerOptions" />
+            android:entries="@array/spinnerOptions"/>
     </LinearLayout>
 
+    <!-- Value Row -->
     <LinearLayout
-        android:id="@+id/valueRow"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/Value"
+            android:id="@+id/valueLabel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:text="@string/value_label"
             android:textAlignment="center"
             android:textColor="#227BBC"
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <EditText
@@ -81,21 +80,19 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:autofillHints="@string/value_hint"
-            android:backgroundTint="#EE0000"
             android:hint="@string/value_hint"
             android:inputType="number"
-            android:singleLine="true"
             android:textColor="#525252"
             android:textColorHint="#707070" />
     </LinearLayout>
 
+    <!-- Convert Button -->
     <Button
         android:id="@+id/convertButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="45dp"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/button_shape"
+        android:layout_gravity="start"
+        android:layout_marginTop="20dp"
         android:text="@string/convert_label"
         android:textSize="20sp"
         android:textStyle="bold" />
