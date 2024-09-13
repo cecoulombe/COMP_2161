@@ -3,7 +3,10 @@
     <string name="from_label">From</string>
     <string name="to_label">To</string>
     <string-array name = "spinnerOptions">
-        <item>Farenheit</item>
+        <item>Fahrenheit</item>
         <item>Celsius</item>
     </string-array>
+    <string name="value_label">Value</string>
+    <string name="value_hint">Enter a value</string>
+    <string name="convert_label">CONVERT</string>
 </resources>
