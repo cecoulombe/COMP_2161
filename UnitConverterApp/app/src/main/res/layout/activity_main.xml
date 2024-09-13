@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:paddingVertical="50dp">
 
     <!-- From Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:layout_marginTop="40dp">
 
         <TextView
             android:id="@+id/fromLabel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1.5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.5"
+            android:layout_marginEnd="16dp"
             android:text="@string/from_label"
             android:textAlignment="center"
             android:textColor="#787878"
-            android:textSize="20sp"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spinner1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:minHeight="48dp"
             android:entries="@array/spinnerOptions"/>
     </LinearLayout>
 
@@ -34,25 +42,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:layout_marginTop="40dp">
 
         <TextView
             android:id="@+id/toLabel"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
+            android:layout_gravity="center"
+            android:layout_weight="0.5"
+            android:layout_marginEnd="16dp"
             android:text="@string/to_label"
             android:textAlignment="center"
             android:textColor="#787878"
-            android:textSize="20sp"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spinner2"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:minHeight="48dp"
             android:entries="@array/spinnerOptions"/>
     </LinearLayout>
 
@@ -60,25 +73,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:layout_marginTop="40dp">
 
         <TextView
             android:id="@+id/valueLabel"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_marginEnd="16dp"
             android:text="@string/value_label"
             android:textAlignment="center"
             android:textColor="#227BBC"
-            android:textSize="20sp"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/enterValue"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:minHeight="48dp"
+            android:maxWidth="480dp"
+            android:padding="8dp"
             android:autofillHints="@string/value_hint"
             android:hint="@string/value_hint"
             android:inputType="number"
@@ -92,9 +112,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="25dp"
+        android:background="@drawable/button_shape"
+        android:textColor="@color/black"
         android:text="@string/convert_label"
         android:textSize="20sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/results"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/results_label"
+        android:textAlignment="center"
+        android:textColor="#4EA400"
+        android:textSize="30sp"
+        android:textStyle="bold"/>
 
 </LinearLayout>
