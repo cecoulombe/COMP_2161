@@ -9,4 +9,5 @@
     <string name="value_label">Value</string>
     <string name="value_hint">Enter a value</string>
     <string name="convert_label">CONVERT</string>
+    <string name="results_label">Results</string>
 </resources>
