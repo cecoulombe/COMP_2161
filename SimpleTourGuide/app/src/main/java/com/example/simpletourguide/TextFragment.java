@@ -1,12 +1,17 @@
 package com.example.simpletourguide;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,10 +20,17 @@ import android.view.ViewGroup;
  */
 public class TextFragment extends Fragment {
 
+    private ListFragment.OnFragmentInteractionListener mListener;
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(int position);
+    }
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private TextView textview;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -26,6 +38,24 @@ public class TextFragment extends Fragment {
 
     public TextFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            // Ensure the activity implements the listener interface
+            mListener = (ListFragment.OnFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null; // Avoid memory leaks by setting listener to null when detached
     }
 
     /**
@@ -60,5 +90,30 @@ public class TextFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_text, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        textview = (TextView)getActivity().findViewById(R.id.textview);
+    }
+
+    public void updateText(int position)
+    {
+        Resources res = getResources();
+        String[] displayArray = res.getStringArray(R.array.string_array_descriptions);
+        String welcomeStr = res.getString(R.string.welcomeMsg);
+
+        Log.d("Tag", "Text Fragment. position passed = " + position);
+
+        if(position >= 0 && position < displayArray.length)
+        {
+            textview.setText(displayArray[position]);
+        }
+        else
+        {
+            textview.setText(welcomeStr);
+        }
+
     }
 }
