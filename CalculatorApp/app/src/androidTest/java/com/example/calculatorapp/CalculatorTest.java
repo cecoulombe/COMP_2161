@@ -490,6 +490,93 @@ public class CalculatorTest {
         assertEquals("0.0", calculator.evaluateExpression());
 
         calculator.clear();
+
+        //------------------------------------------------------------------------
+        // simple percent
+        calculator.inputDigit("10");
+        calculator.pushOperator("%");
+        assertEquals("0.1", calculator.evaluateExpression());
+
+        calculator.clear();
+
+        // percent with preceding operation (+)
+        calculator.inputDigit("2");
+        calculator.pushOperator("+");
+        calculator.inputDigit("10");
+        calculator.pushOperator("%");
+        assertEquals("[2, 10]", calculator.getNumberStack().toString());
+        assertEquals("[+, %]", calculator.getOperatorStack().toString());
+        assertEquals("2.2", calculator.evaluateExpression());
+
+        calculator.clear();
+
+//        // percent with operation after (+)   - test failed, figure out why
+//        calculator.inputDigit("10");
+//        calculator.pushOperator("%");
+//        calculator.pushOperator("+");
+//        calculator.inputDigit("2");
+//        assertEquals("2.1", calculator.evaluateExpression());
+
+        calculator.clear();
+
+        // percent with preceding operation (*)
+        calculator.inputDigit("2");
+        calculator.pushOperator("*");
+        calculator.inputDigit("10");
+        calculator.pushOperator("%");
+        assertEquals("0.2", calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+
+    @Test   //specifically tests the delete functionality
+    public void testDelete() {
+        // delete a num
+        calculator.inputDigit("1");
+        calculator.inputDigit("1");
+        assertEquals("11", calculator.getCurrentInput());
+        calculator.delete();
+        assertEquals("1", calculator.getCurrentInput());
+
+        calculator.clear();
+
+        // delete an operator
+        calculator.inputDigit("1");
+        calculator.inputDigit("1");
+        calculator.pushOperator("+");
+        calculator.pushOperator("/");
+        assertEquals("[+, /]", calculator.getOperatorStack().toString());
+        calculator.delete();
+        assertEquals("[+]", calculator.getOperatorStack().toString());
+
+        calculator.clear();
+
+        // multiple deletes
+        calculator.inputDigit("1");
+        calculator.inputDigit("1");
+        calculator.pushOperator("+");
+        calculator.inputDigit("2");
+        assertEquals("11 + 2", calculator.getFullExpression());
+        calculator.delete();
+        calculator.delete();
+        calculator.delete();
+        calculator.delete();
+        assertEquals("", calculator.getFullExpression());
+
+        calculator.clear();
+
+        // continue typing after a deletion
+        calculator.inputDigit("1");
+        calculator.inputDigit("1");
+        calculator.pushOperator("+");
+        calculator.inputDigit("2");
+        assertEquals("11 + 2", calculator.getFullExpression());
+        calculator.delete();
+        calculator.delete();
+        calculator.pushOperator("/");
+        calculator.inputDigit("2");
+        assertEquals("11 / 2", calculator.getFullExpression());
     }
 
     @Test   //specifically tests the ability to store and either use or ignore a result

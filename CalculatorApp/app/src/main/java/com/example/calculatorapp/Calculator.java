@@ -1,5 +1,7 @@
 package com.example.calculatorapp;
 
+import android.util.Log;
+
 import java.util.Stack;
 
 public class Calculator {
@@ -10,6 +12,7 @@ public class Calculator {
     private boolean isNegative;
     private double lastResult = 0.0;
     private boolean hasResult = false;
+    private boolean lastInputWasNum = false;
 
     //---------------------------------------------------------------------------
     // Calculator() constructor to initialize each of the stacks and the currentInput
@@ -38,6 +41,7 @@ public class Calculator {
         } else {
             currentInput.append(digit);
         }
+        lastInputWasNum = true;
     }
 
     //---------------------------------------------------------------------------
@@ -73,6 +77,7 @@ public class Calculator {
         }
         submitNumber(); // This submits the current input if exists
         operatorStack.push(operator);
+        lastInputWasNum = false;
     }
 
     //---------------------------------------------------------------------------
@@ -106,6 +111,26 @@ public class Calculator {
             return "-"+currentInput.toString();
         }
         return currentInput.toString();
+    }
+
+    //---------------------------------------------------------------------------
+    // deletes the most recent input
+    //---------------------------------------------------------------------------
+    public void delete() {
+        // if not empty, delete the last char of currentInput and return
+        // currentInput is empty so delete an operator. Now pop and save the top of the number stack as it can be edited (deleted or added to) until a new operator is submitted. Continue in a loop like that until the numberStack is empty
+        if(currentInput.length() > 0)
+        {
+            currentInput.deleteCharAt(currentInput.length() - 1);
+            return;
+        }
+
+        if(!operatorStack.isEmpty())
+        {
+            operatorStack.pop();
+            String lastNumber = numberStack.pop();
+            currentInput.append(lastNumber);
+        }
     }
 
     //---------------------------------------------------------------------------
@@ -201,17 +226,23 @@ public class Calculator {
         Stack<Double> numbers = new Stack<>();
         Stack<String> operators = new Stack<>();
 
-        for(String token : tokens) {
-            if(isNumber(token)) {
+        for (String token : tokens) {
+            if (isNumber(token)) {
                 numbers.push(Double.parseDouble(token));
             } else if (isOperator(token)) {
+                // handle % before + or -
+                if (!operators.isEmpty() && operators.peek().equals("%")) {
+                    operators.pop();  // Remove '%'
+                    double percentageValue = numbers.pop() / 100;
+                    numbers.push(percentageValue);
+                }
+
                 // Handle operator precedence
-                while(!operators.isEmpty() && precedence(operators.peek()) >= precedence(token)) {
+                while (!operators.isEmpty() && precedence(operators.peek()) >= precedence(token)) {
                     double right = numbers.pop();
                     double left = numbers.pop();
                     String op = operators.pop();
                     double result = applyOperator(op, left, right);
-                    System.out.println("Applying operator: " + op + " on " + left + " and " + right + " = " + result);
                     if(result == -0.0)
                     {
                         result = 0.0;
@@ -221,23 +252,32 @@ public class Calculator {
                 operators.push(token);
             } else if (isFunction(token)) {
                 double value = numbers.pop();
-                double result = applyFunction(token, value);
-                System.out.println("Applying function: " + token + " on " + value + " = " + result);
-                if(result == -0.0)
-                {
-                    result = 0.0;
+                // Check if it's % and follows +/-, treat it as a percentage of the previous number
+                if ("%".equals(token) && !operators.isEmpty() && (operators.peek().equals("+") || operators.peek().equals("-"))) {
+                    double baseValue = numbers.pop();
+                    value = baseValue * (value / 100);
+                    if(value == -0.0)
+                    {
+                        value = 0.0;
+                    }
+                    numbers.push(baseValue);  // Push baseValue back for addition/subtraction
+                } else {
+                    value = applyFunction(token, value);
                 }
-                numbers.push(result);
+                if(value == -0.0)
+                {
+                    value = 0.0;
+                }
+                numbers.push(value);
             }
         }
 
         // Final evaluation for any remaining operators
-        while(!operators.isEmpty()) {
+        while (!operators.isEmpty()) {
             double right = numbers.pop();
             double left = numbers.pop();
             String op = operators.pop();
             double result = applyOperator(op, left, right);
-            System.out.println("Finalizing with operator: " + op + " on " + left + " and " + right + " = " + result);
             if(result == -0.0)
             {
                 result = 0.0;
@@ -296,9 +336,27 @@ public class Calculator {
     //---------------------------------------------------------------------------
     // computes binary operations (+, -, *, /, &c.)
     //---------------------------------------------------------------------------
+//    private Double applyOperator(String op, double left, double right) {
+//        switch(op)
+//        {
+//            case "+":
+//                return left + right;
+//            case "-":
+//                return left - right;
+//            case "*":
+//                return left * right;
+//            case "/":
+//                if (right == 0) {
+//                    throw new ArithmeticException();
+//                }
+//                return left / right;
+//            default:
+//                throw new UnsupportedOperationException("Operator not supported: " + op);
+//        }
+//    }
+
     private Double applyOperator(String op, double left, double right) {
-        switch(op)
-        {
+        switch(op) {
             case "+":
                 return left + right;
             case "-":
@@ -314,47 +372,85 @@ public class Calculator {
                 throw new UnsupportedOperationException("Operator not supported: " + op);
         }
     }
-
     //---------------------------------------------------------------------------
     // computes unary operations (%, square, sqrt, &c.)
     //---------------------------------------------------------------------------
+//    private Double applyFunction(String function, double value) {
+//        switch(function)
+//        {
+//            case "%":
+//                return percent(value);  // Calls the percent method with the current value
+//            case "sqrt":
+//                return Math.sqrt(value);
+//            case "x²":
+//                return Math.pow(value, 2);
+//            case "x³":
+//                return Math.pow(value, 3);
+//            default:
+//                throw new UnsupportedOperationException("Operator not supported: " + function);
+//        }
+//    }
+
     private Double applyFunction(String function, double value) {
-        switch(function)
-        {
+        switch(function) {
             case "%":
-                return percent(value);  // Calls the percent method with the current value
+                return value / 100;
             case "sqrt":
                 return Math.sqrt(value);
+            case "sin":
+                return Math.sin(Math.toRadians(value));  // Converts degrees to radians if needed
+            case "cos":
+                return Math.cos(Math.toRadians(value));  // Converts degrees to radians if needed
+            case "tan":
+                return Math.tan(Math.toRadians(value));  // Converts degrees to radians if needed
             case "x²":
                 return Math.pow(value, 2);
             case "x³":
                 return Math.pow(value, 3);
             default:
-                throw new UnsupportedOperationException("Operator not supported: " + function);
+                throw new UnsupportedOperationException("Function not supported: " + function);
         }
     }
-
     //---------------------------------------------------------------------------
     // handles percent and accounts for single or double operators
-    //---------------------------------------------------------------------------
     //---------------------------------------------------------------------------
     private Double percent(double currentNumber) {
         // Only perform operations if there are values in the stacks
         if (!operatorStack.isEmpty() && !numberStack.isEmpty()) {
             String lastOp = operatorStack.peek(); // Get the last operator
-            double baseNum = Double.parseDouble(numberStack.peek());   // Peek the last number (if needed)
+            double baseNum = Double.parseDouble(numberStack.peek()); // Peek the last number (if needed)
 
-            // Handle percent operation relative to the last number based on the last operator
-            if (lastOp.equals("+") || lastOp.equals("-")) {
-                currentNumber = baseNum * (currentNumber / 100);
-            } else {
-                currentNumber = currentNumber / 100; // Just divide by 100 if not addition or subtraction
+            switch (lastOp) {
+                case "+":
+                case "-":
+                    Log.d("Tag", "Last op was + or -");
+                    // Calculate the percentage relative to baseNum and return the modified number
+                    currentNumber = baseNum * (currentNumber / 100);
+                    break;
+                case "*":
+                case "/":
+                    Log.d("Tag", "Last op was * or /");
+                    // For * and /, directly apply % on currentNumber
+                    currentNumber = currentNumber / 100;
+                    break;
+                case "%":
+                    Log.d("Tag", "Last op was %");
+                    // Apply % directly if it is a standalone operator
+                    currentNumber = currentNumber / 100;
+                    break;
+                default:
+                    Log.d("Tag", "Unsupported operator for % calculation");
+                    break;
             }
         } else {
-            currentNumber = currentNumber / 100; // Fallback if stacks are empty
+            Log.d("Tag", "Op stack is empty");
+            // If the operator stack is empty, it is likely a standalone %
+            currentNumber = currentNumber / 100;
         }
 
-        return currentNumber; // Return the modified current number
+        return currentNumber;
     }
+
+
 
 }
