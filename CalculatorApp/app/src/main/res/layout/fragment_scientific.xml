@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="0dp">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:columnCount="6"
+        android:rowCount="4"
+        android:layout_margin="0dp">
+
+        <!--row 0-->
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/leftParen"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:text="@string/leftParen"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/rightParen"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:text="@string/rightParen"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/square"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:text="@string/squared"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/cubed"
+            android:layout_row="0"
+            android:layout_column="3"
+            android:text="@string/cubed"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/raisedToY"
+            android:layout_row="0"
+            android:layout_column="4"
+            android:text="@string/raisedToY"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/eRaisedX"
+            android:layout_row="0"
+            android:layout_column="5"
+            android:text="@string/eRaisedX"/>
+
+        <!--row 1-->
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/tenRaisedX"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:text="@string/tenRaisedX"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/squareRoot"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:text="@string/squareRoot"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/cubeRoot"
+            android:layout_row="1"
+            android:layout_column="2"
+            android:text="@string/cubeRoot"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/yRoot"
+            android:layout_row="1"
+            android:layout_column="3"
+            android:text="@string/yRoot"/>
+        <Button
+            style="@style/TextButton"
+            android:id="@+id/logBase10"
+            android:layout_row="1"
+            android:layout_column="4"
+            android:text="@string/logBase10"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/ln"
+            android:layout_row="1"
+            android:layout_column="5"
+            android:text="@string/ln"/>
+
+        <!--row 2-->
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/inverse"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:text="@string/inverse"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/factorial"
+            android:layout_row="2"
+            android:layout_column="1"
+            android:text="@string/factorial"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/sin"
+            android:layout_row="2"
+            android:layout_column="2"
+            android:text="@string/sin"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/cos"
+            android:layout_row="2"
+            android:layout_column="3"
+            android:text="@string/cos"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/tan"
+            android:layout_row="2"
+            android:layout_column="4"
+            android:text="@string/tan"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/e"
+            android:layout_row="2"
+            android:layout_column="5"
+            android:text="@string/e"/>
+
+        <!--row 3-->
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/sinh"
+            android:layout_row="3"
+            android:layout_column="0"
+            android:text="@string/sinh"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/cosh"
+            android:layout_row="3"
+            android:layout_column="1"
+            android:text="@string/cosh"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/tanh"
+            android:layout_row="3"
+            android:layout_column="2"
+            android:text="@string/tanh"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/pi"
+            android:layout_row="3"
+            android:layout_column="3"
+            android:text="@string/pi"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/enterExponent"
+            android:layout_row="3"
+            android:layout_column="4"
+            android:text="@string/enterExponent"/>
+        <Button
+            style="@style/SymbolButton"
+            android:id="@+id/rand"
+            android:layout_row="3"
+            android:layout_column="5"
+            android:text="@string/rand"/>
+
+    </GridLayout>
+
+</LinearLayout>
+
+
+
+

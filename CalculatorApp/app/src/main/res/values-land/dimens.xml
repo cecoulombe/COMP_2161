@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/values-land/dimens.xml -->
+<resources>
+    <dimen name="layout_margin">6dp</dimen>
+    <dimen name="mem_button_text_size">13sp</dimen>
+    <dimen name="num_button_text_size">20sp</dimen>
+    <dimen name="operator_button_text_size">20sp</dimen>
+    <dimen name="text_button_text_size">16sp</dimen>
+    <dimen name="symbol_button_text_size">20sp</dimen>
+</resources>

@@ -1,3 +1,84 @@
 <resources>
     <string name="app_name">CalculatorApp</string>
+    <string name="defaultOutput">Welcome!</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+<!--    Primary functionality buttons      -->
+    <!--    Memory buttons      -->
+    <string name="memSave">m</string>
+    <string name="memClear">mc</string>
+    <string name="memRecall">mr</string>
+    <string name="memSub">m-</string>
+    <string name="memAdd">m+</string>
+    <!--    divide row buttons      -->
+    <string name="delete">del</string>
+    <string name="changeSign">+/-</string>
+    <string name="percent">%</string>
+    <string name="divide">÷</string>
+    <!--    multiply row buttons      -->
+    <string name="seven">7</string>
+    <string name="eight">8</string>
+    <string name="nine">9</string>
+    <string name="multiply">x</string>
+    <!--    sub row buttons      -->
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="minus">-</string>
+    <!--    add row buttons      -->
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="plus">+</string>
+    <!--    equal row buttons      -->
+    <string name="clear">AC</string>
+    <string name="zero">0</string>
+    <string name="decimalPoint">.</string>
+    <string name="equal">=</string>
+
+
+<!--    Extended functionality buttons      -->
+    <!--    Parentheses      -->
+    <string name="leftParen">(</string>
+    <string name="rightParen">)</string>
+
+    <!--    Exponent related      -->
+    <string name="squared">x²</string>
+    <string name="cubed">x³</string>
+    <string name="raisedToY">xʸ</string>
+    <string name="eRaisedX">eˣ</string>
+    <string name="tenRaisedX">10ˣ</string>
+    <string name="enterExponent">EE</string>
+
+    <!--    Root related-->
+    <string name="squareRoot">√x</string>
+    <string name="cubeRoot">∛x</string>
+    <string name="yRoot">ʸ√x</string>
+
+
+    <!--    log and ln      -->
+    <string name="logBase10">log₁₀</string>
+    <string name="ln">ln</string>
+    <string name="e">e</string>
+
+    <!--    inverse and factorial buttons      -->
+    <string name="inverse">1/x</string>
+    <string name="factorial">x!</string>
+
+    <!--    trig buttons      -->
+    <string name="sin">sin</string>
+    <string name="cos">cos</string>
+    <string name="tan">tan</string>
+    <string name="sinh">sinh</string>
+    <string name="cosh">cosh</string>
+    <string name="tanh">tanh</string>
+    <string name="pi">π</string>
+    <string name="deg">deg</string>
+    <string name="rad">rad</string>
+
+
+    <!--    random number generator      -->
+    <string name="rand">rand</string>
+
 </resources>

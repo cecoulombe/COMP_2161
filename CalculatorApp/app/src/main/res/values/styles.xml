@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MemoryButtons">
+        <!-- Button sizing and alignment -->
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_margin">@dimen/layout_margin</item>
+        <item name="android:minHeight">70dp</item>
+        <item name="android:minWidth">70dp</item>
+
+        <!-- Text size and alignment -->
+        <item name="android:textSize">@dimen/mem_button_text_size</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+    <style name="NumberButton">
+        <!-- Button sizing and alignment -->
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_rowWeight">1</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_gravity">fill</item>
+        <item name="android:layout_margin">@dimen/layout_margin</item>
+        <item name="android:minHeight">80dp</item>
+        <item name="android:minWidth">80dp</item>
+
+        <!-- Button colour  -->
+<!--        <item name="android:backgroundTint">#3A3A3A</item>-->
+<!--        <item name="android:elevation">8dp</item>-->
+<!--        <item name="android:elevation">4dp</item>-->
+
+        <!-- Text size and alignment -->
+        <item name="android:textSize">@dimen/num_button_text_size</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+
+    </style>
+    <style name="OperationButton">
+        <!-- Button sizing and alignment -->
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_rowWeight">1</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_gravity">fill</item>
+        <item name="android:layout_margin">@dimen/layout_margin</item>
+        <item name="android:minHeight">80dp</item>
+        <item name="android:minWidth">80dp</item>
+
+        <!-- Button colour  -->
+        <item name="android:backgroundTint">#D18F2B</item>
+<!--        <item name="android:background">@drawable/button_others</item>-->
+        <item name="android:elevation">10dp</item>
+
+        <!-- Text size and alignment -->
+        <item name="android:textSize">@dimen/operator_button_text_size</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+
+    </style>
+    <style name="SymbolButton">
+        <!-- Button sizing and alignment -->
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_rowWeight">1</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_gravity">fill</item>
+        <item name="android:layout_margin">@dimen/layout_margin</item>
+        <item name="android:minHeight">80dp</item>
+        <item name="android:minWidth">80dp</item>
+
+        <!-- Button colour  -->
+<!--        <item name="android:backgroundTint">#686868</item>-->
+        <!--        <item name="android:background">@drawable/button_others</item>-->
+
+        <!-- Text size and alignment -->
+        <item name="android:textSize">@dimen/symbol_button_text_size</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+    <style name="TextButton">
+        <!-- Button sizing and alignment -->
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_rowWeight">1</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_gravity">fill</item>
+        <item name="android:layout_margin">@dimen/layout_margin</item>
+        <item name="android:minHeight">80dp</item>
+        <item name="android:minWidth">80dp</item>
+
+        <!-- Button colour  -->
+<!--        <item name="android:backgroundTint">#686868</item>-->
+
+        <!-- Text size and alignment -->
+        <item name="android:textSize">@dimen/text_button_text_size</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+</resources>
