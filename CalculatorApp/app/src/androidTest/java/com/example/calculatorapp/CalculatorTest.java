@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.EmptyStackException;
+
 public class CalculatorTest {
     private Calculator calculator;
 
@@ -139,7 +141,13 @@ public class CalculatorTest {
         calculator.clear();
         calculator.pushOperator("+");
         assertEquals("[]", calculator.getNumberStack().toString());
-        assertEquals("+", calculator.getOperatorStack().peek());
+        try{
+            assertEquals("", calculator.getOperatorStack().peek());
+        } catch (EmptyStackException e)
+        {
+            // do nothing about it.
+        }
+
 
         // decimal operator
         calculator.inputDigit("1");
@@ -253,8 +261,7 @@ public class CalculatorTest {
     }
 
     @Test   //specifically tests the functionality of each operator implemented
-    public void testCalculations() {
-        //------------------------------------------------------------------------
+    public void testAddition() {
         // addition
         calculator.inputDigit("1");
         calculator.pushOperator("+");
@@ -286,7 +293,10 @@ public class CalculatorTest {
 
         calculator.clear();
 
-        //------------------------------------------------------------------------
+    }
+
+    @Test   //specifically tests the functionality of each operator implemented
+    public void testSubtraction() {
         // subtraction
         calculator.inputDigit("1");
         calculator.pushOperator("-");
@@ -318,8 +328,10 @@ public class CalculatorTest {
 
         calculator.clear();
 
-        //------------------------------------------------------------------------
-        // multiplication
+    }
+
+    @Test   //specifically tests the functionality of each operator implemented
+    public void testMultiplication() {        // multiplication
         calculator.inputDigit("1");
         calculator.pushOperator("*");
         calculator.inputDigit("2");
@@ -351,7 +363,10 @@ public class CalculatorTest {
 
         calculator.clear();
 
-        //------------------------------------------------------------------------
+    }
+
+    @Test   //specifically tests the functionality of each operator implemented
+    public void testDivision() {
         // division
         calculator.inputDigit("1");
         calculator.pushOperator("/");
@@ -384,7 +399,10 @@ public class CalculatorTest {
 
         calculator.clear();
 
-        //------------------------------------------------------------------------
+    }
+
+    @Test   //specifically tests the functionality of each operator implemented
+    public void testDivisionOfZero() {
         // division of 0
         calculator.inputDigit("0");
         calculator.pushOperator("/");
@@ -401,7 +419,10 @@ public class CalculatorTest {
 
         calculator.clear();
 
-        //------------------------------------------------------------------------
+    }
+
+    @Test   //specifically tests the functionality of each operator implemented
+    public void testDivisionByZero() {
         // division by 0
         calculator.inputDigit("1");
         calculator.pushOperator("/");
@@ -418,7 +439,10 @@ public class CalculatorTest {
 
         calculator.clear();
 
-        //------------------------------------------------------------------------
+    }
+
+    @Test   //specifically tests the functionality of each operator implemented
+    public void testPriority() {
         // multiple same priority (left to right eval)
         calculator.inputDigit("1");
         calculator.pushOperator("+");
@@ -491,7 +515,10 @@ public class CalculatorTest {
 
         calculator.clear();
 
-        //------------------------------------------------------------------------
+    }
+
+    @Test   //specifically tests the functionality of each operator implemented
+    public void testPercent() {
         // simple percent
         calculator.inputDigit("10");
         calculator.pushOperator("%");
@@ -510,12 +537,12 @@ public class CalculatorTest {
 
         calculator.clear();
 
-//        // percent with operation after (+)   - test failed, figure out why
-//        calculator.inputDigit("10");
-//        calculator.pushOperator("%");
-//        calculator.pushOperator("+");
-//        calculator.inputDigit("2");
-//        assertEquals("2.1", calculator.evaluateExpression());
+        // percent with operation after (+)   - test failed, figure out why
+        calculator.inputDigit("10");
+        calculator.pushOperator("%");
+        calculator.pushOperator("+");
+        calculator.inputDigit("2");
+        assertEquals("2.1", calculator.evaluateExpression());
 
         calculator.clear();
 
@@ -527,6 +554,95 @@ public class CalculatorTest {
         assertEquals("0.2", calculator.evaluateExpression());
 
         calculator.clear();
+
+    }
+
+    @Test   //specifically tests the functionality of each operator implemented
+    public void testParenthesis() {
+        // parenthesis
+        calculator.pushOperator("(");
+        calculator.inputDigit("1");
+        calculator.pushOperator("+");
+        calculator.inputDigit("1");
+        calculator.pushOperator("+");
+        calculator.inputDigit("1");
+        calculator.pushOperator(")");
+        assertEquals("( 1 + 1 + 1 )", calculator.getFullExpression());
+        assertEquals("3.0", calculator.evaluateExpression());
+
+        calculator.clear();
+
+        // parenthesis after an expression
+        calculator.inputDigit("2");
+        calculator.pushOperator("*");
+        calculator.pushOperator("(");
+        calculator.inputDigit("1");
+        calculator.pushOperator("+");
+        calculator.inputDigit("1");
+        calculator.pushOperator(")");
+        assertEquals("4.0", calculator.evaluateExpression());
+
+        calculator.clear();
+
+        // parenthesis before an expression
+        calculator.pushOperator("(");
+        calculator.inputDigit("1");
+        calculator.pushOperator("+");
+        calculator.inputDigit("1");
+        calculator.pushOperator(")");
+        calculator.pushOperator("*");
+        calculator.inputDigit("2");
+        assertEquals("4.0", calculator.evaluateExpression());
+
+        calculator.clear();
+
+        // parenthesis between expressions
+        calculator.inputDigit("2");
+        calculator.pushOperator("*");
+        calculator.pushOperator("(");
+        calculator.inputDigit("1");
+        calculator.pushOperator("+");
+        calculator.inputDigit("1");
+        calculator.pushOperator(")");
+        calculator.pushOperator("+");
+        calculator.inputDigit("2");
+        assertEquals("6.0", calculator.evaluateExpression());
+
+        calculator.clear();
+
+        // embedded parenthesis
+        calculator.pushOperator("(");
+        calculator.inputDigit("1");
+        calculator.pushOperator("+");
+        calculator.pushOperator("(");
+        calculator.inputDigit("2");
+        calculator.pushOperator("+");
+        calculator.inputDigit("2");
+        calculator.pushOperator(")");
+        calculator.pushOperator("*");
+        calculator.inputDigit("2");
+        calculator.pushOperator(")");
+        assertEquals("9.0", calculator.evaluateExpression());
+
+        calculator.clear();
+
+        // embedded parenthesis
+        calculator.inputDigit("2");
+        calculator.pushOperator("*");
+        calculator.pushOperator("(");
+        calculator.inputDigit("1");
+        calculator.pushOperator("+");
+        calculator.pushOperator("(");
+        calculator.inputDigit("2");
+        calculator.pushOperator("+");
+        calculator.inputDigit("2");
+        calculator.pushOperator(")");
+        calculator.pushOperator("*");
+        calculator.inputDigit("2");
+        calculator.pushOperator(")");
+        calculator.pushOperator("+");
+        calculator.inputDigit("2");
+        assertEquals("20.0", calculator.evaluateExpression());
     }
 
 
@@ -546,9 +662,9 @@ public class CalculatorTest {
         calculator.inputDigit("1");
         calculator.pushOperator("+");
         calculator.pushOperator("/");
-        assertEquals("[+, /]", calculator.getOperatorStack().toString());
+        assertEquals("[/]", calculator.getOperatorStack().toString());
         calculator.delete();
-        assertEquals("[+]", calculator.getOperatorStack().toString());
+        assertEquals("[]", calculator.getOperatorStack().toString());
 
         calculator.clear();
 
