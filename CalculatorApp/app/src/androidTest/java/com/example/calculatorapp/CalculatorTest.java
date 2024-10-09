@@ -668,6 +668,15 @@ public class CalculatorTest {
 
         calculator.clear();
 
+        // delete a num
+        calculator.inputDigit("1");
+        calculator.pushOperator("%");
+        assertEquals("1 %", calculator.getFullExpression());
+        calculator.delete();
+        assertEquals("1", calculator.getFullExpression());
+
+        calculator.clear();
+
         // multiple deletes
         calculator.inputDigit("1");
         calculator.inputDigit("1");
@@ -693,6 +702,30 @@ public class CalculatorTest {
         calculator.pushOperator("/");
         calculator.inputDigit("2");
         assertEquals("11 / 2", calculator.getFullExpression());
+
+        calculator.clear();
+
+        // embedded parenthesis
+        calculator.inputDigit("2");
+        calculator.pushOperator("*");
+        calculator.pushOperator("(");
+        calculator.pushOperator("(");
+        calculator.delete();
+        calculator.inputDigit("1");
+        calculator.pushOperator("+");
+        calculator.pushOperator("(");
+        calculator.inputDigit("2");
+        calculator.pushOperator("+");
+        calculator.inputDigit("2");
+        calculator.pushOperator(")");
+        calculator.pushOperator("*");
+        calculator.inputDigit("2");
+        calculator.pushOperator(")");
+        calculator.pushOperator(")");
+        calculator.delete();
+        calculator.pushOperator("+");
+        calculator.inputDigit("2");
+        assertEquals("20.0", calculator.evaluateExpression());
     }
 
     @Test   //specifically tests the ability to store and either use or ignore a result

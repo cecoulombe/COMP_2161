@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity implements NumPad_Fragment.OnFragmentInteractionListener, ScientificFragment.OnFragmentInteractionListener {
+    private Calculator calculator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
                     .replace(R.id.numPadFragCont, new NumPad_Fragment())
                     .commit();
         }
+        calculator = new Calculator();
     }
 
     // global variables for calculator
@@ -53,58 +55,64 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
         // determine the action of the button
         switch (buttonId){
             case "one":
-                if(operator == "")
-                {
-                    operand1 = operand1 + "1";
-                }
-                else {
-                    operand2 = operand2 + "1";
-                }
+                calculator.inputDigit("1");
                 break;
             case "two":
-                if(operator == "")
-                {
-                    operand1 = operand1 + "2";
-                }
-                else {
-                    operand2 = operand2 + "2";
-                }
+                calculator.inputDigit("2");
                 break;
             case "three":
+                calculator.inputDigit("3");
                 break;
             case "four":
+                calculator.inputDigit("4");
                 break;
             case "five":
+                calculator.inputDigit("5");
                 break;
             case "six":
+                calculator.inputDigit("6");
                 break;
             case "seven":
+                calculator.inputDigit("7");
                 break;
             case "eight":
+                calculator.inputDigit("8");
                 break;
             case "nine":
+                calculator.inputDigit("9");
                 break;
             case "zero":
+                calculator.inputDigit("0");
                 break;
             case "delete":
+                calculator.delete();
                 break;
             case "changeSign":
+                calculator.toggleSign();
                 break;
             case "percent":
+                calculator.pushOperator("%");
                 break;
             case "divide":
+                calculator.pushOperator("/");
                 break;
             case "multiply":
+                calculator.pushOperator("*");
                 break;
             case "minus":
+                calculator.pushOperator("-");
                 break;
             case "plus":
+                calculator.pushOperator("+");
                 break;
             case "equal":
+                calculator.evaluateExpression();
                 break;
             case "decimalPoint":
+                calculator.inputDigit(".");
                 break;
             case "clear":
+                calculator.clear();
                 break;
             default:
                 break;
@@ -116,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
     private void updateOutput() {
         TextView output  = findViewById(R.id.outputTextview);
 
-        String outMsg = operand1 + operator + operand2;
+        String outMsg = calculator.getFullExpression();
 
         output.setText(outMsg);
     }

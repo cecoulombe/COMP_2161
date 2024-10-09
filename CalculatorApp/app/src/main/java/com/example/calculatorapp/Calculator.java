@@ -35,6 +35,10 @@ public class Calculator {
             numberStack.clear(); // Clear the number stack if starting fresh
             hasResult = false; // Reset the flag
         }
+        if(currentInput.length() == 0)
+        {
+            isNegative = false;
+        }
         if(digit.equals("."))
         {
             if(!currentInput.toString().contains("."))
@@ -53,6 +57,10 @@ public class Calculator {
         if (currentInput.length() > 0) {
             isNegative = !isNegative; // Toggle sign
         }
+        if(hasResult)
+        {
+            lastResult = lastResult * -1;
+        }
     }
 
     //---------------------------------------------------------------------------
@@ -65,7 +73,7 @@ public class Calculator {
             numberStack.push(numberToSubmit); // Store the number
             currentInput.setLength(0);  // Clear current input
             orderOfInputs.append("1");
-            Log.d("orderOfInputs", "Appended 1, num was" + numberToSubmit);
+            Log.d("orderOfInputs", "Appended 1, num was " + numberToSubmit);
             isNegative = false; // Reset sign
         }
     }
@@ -113,12 +121,12 @@ public class Calculator {
                 Log.d("orderOfInputs", "Appended 0, op was: " + operator);
                 return;
             } else {
-                operatorStack.pop();
+                String prevOp = operatorStack.pop();
                 operatorStack.push(operator);
+                Log.d("orderOfInputs", "Appended 0, op was: " + prevOp + ", replaced with: " + operator);
                 return;
             }
         }
-
     }
 
     //---------------------------------------------------------------------------
@@ -160,52 +168,49 @@ public class Calculator {
     public void delete() {
         // if not empty, delete the last char of currentInput and return
         // currentInput is empty so delete an operator. Now pop and save the top of the number stack as it can be edited (deleted or added to) until a new operator is submitted. Continue in a loop like that until the numberStack is empty
+
+        Log.d("delete", "Asked to delete from: " + orderOfInputs);
+
         if(currentInput.length() > 0)
         {
             currentInput.deleteCharAt(currentInput.length() - 1);
+            Log.d("delete", "Deleted the last digit of current input");
             return;
         }
 
-        if(!operatorStack.isEmpty())
-        {
-            operatorStack.pop();
-            String lastNumber = numberStack.pop();
-            currentInput.append(lastNumber);
+        Log.d("delete", "The last char in orderOfInputs was " + orderOfInputs.charAt(orderOfInputs.length() - 1));
+        boolean lastOpIs0 = orderOfInputs.charAt(orderOfInputs.length() - 1) == '0';
+        Log.d("delete", "The last op is 0? " + lastOpIs0);
+
+        if(orderOfInputs.charAt(orderOfInputs.length() - 1) == '0') {
+            Log.d("delete", "The last input is an op");
+            if (!operatorStack.isEmpty()) {
+                operatorStack.pop();
+                orderOfInputs.deleteCharAt(orderOfInputs.length() - 1);
+                Log.d("delete", "Deleted the last operator and shortened the list");
+                if (orderOfInputs.charAt(orderOfInputs.length() - 1) == '1') {
+                    String lastNumber = numberStack.pop();
+                    currentInput.append(lastNumber);
+                    orderOfInputs.deleteCharAt(orderOfInputs.length() - 1);
+                    Log.d("delete", "Next input was a num, so moved it over to currentInput");
+                }
+            }
         }
     }
 
     //---------------------------------------------------------------------------
     // gets the entire expression for evaluation (i.e. 12 + 34)
     //---------------------------------------------------------------------------
-//    public String getFullExpression() {
-//        StringBuilder expression = new StringBuilder();
-//
-//        int numberCount = numberStack.size();
-//        int operatorCount = operatorStack.size();
-//
-//        // Iterate based on the larger of the two counts
-//        int maxCount = Math.max(numberCount, operatorCount);
-//
-//        for (int i = 0; i < maxCount; i++) {
-//            if (i < numberCount) {
-//                expression.append(numberStack.get(i)).append(" ");
-//            }
-//            if (i < operatorCount) {
-//                String operator = operatorStack.get(i);
-//                expression.append(operator).append(" ");
-//            }
-//        }
-//
-//        if (currentInput.length() > 0) {
-//            expression.append(getCurrentInput());
-//        }
-//
-//        return expression.toString().trim(); // Trim any trailing spaces
-//    }
-
     public String getFullExpression()
     {
         Log.d("getFullExpression", "Order of inputs is: " + orderOfInputs);
+        // display results if there are any
+        if(hasResult)
+        {
+            return String.valueOf(lastResult);
+        }
+
+        // build the expression of inputs
         StringBuilder expression = new StringBuilder();
         int numberCount = numberStack.size();
         int operatorCount = operatorStack.size();
@@ -310,11 +315,14 @@ public class Calculator {
         Stack<Double> numbers = new Stack<>();
         Stack<String> operators = new Stack<>();
 
-        Log.d("evaluate", "The tokens passed to evaluate are: " + Arrays.toString(tokens));
+        // to evaluate parentheses, make a copy of the tokens, go through it and look for parentheses, pushing elements onto the new list , keep doing that until you've evaluated all of them, then evaluate the outdated expression
+        String[] newTokens = evaluateParens(tokens);
+
+        Log.d("evaluate", "The tokens passed to evaluate are: " + Arrays.toString(newTokens));
 
 
-        for (int i = 0; i < tokens.length; i++) {
-            Log.d("EvaluateLoop", "Token at position " + i + ": " + tokens[i]);
+        for (int i = 0; i < newTokens.length; i++) {
+            Log.d("EvaluateLoop", "Token at position " + i + ": " + newTokens[i]);
 //            if (isLeftParen(tokens[i])) {
 //                // Find the corresponding right parenthesis
 //                int rightParenPos = findRightParen(tokens, i);
@@ -326,57 +334,31 @@ public class Calculator {
 //                String[] subTokens = Arrays.copyOfRange(tokens, i + 1, rightParenPos);
 //                double subResult = evaluate(subTokens); // Recursively evaluate the sub-expression
 //
-//                // If there's an operator before the parentheses, apply it with the last number in the stack
+//                // Only apply the operator if it has higher precedence than the next operator
 //                if (!operators.isEmpty()) {
 //                    String lastOperator = operators.pop(); // Get the operator before the '('
-//                    double lastValue = numbers.isEmpty() ? 0 : numbers.pop(); // Get the last number or 0 if empty
-//                    subResult = applyOperator(lastOperator, lastValue, subResult); // Apply the operator to the last number and subResult
+//
+//                    // Check if lastOperator has higher precedence than the next operator
+//                    if (operators.isEmpty() || precedence(lastOperator) >= precedence(operators.peek())) {
+//                        double lastValue = numbers.isEmpty() ? 0 : numbers.pop(); // Get the last number or 0 if empty
+//                        subResult = applyOperator(lastOperator, lastValue, subResult); // Apply the operator to the last number and subResult
+//                    } else {
+//                        // If the precedence is lower, just push the subResult onto the stack
+//                        numbers.push(subResult); // Push the result of the sub-expression onto the numbers stack
+//                    }
+//                } else {
+//                    numbers.push(subResult); // If no operator, just push the subResult
 //                }
 //
-//                if(subResult == -0.0)
-//                {
-//                    subResult = 0.0;
-//                }
-//
-//                Log.d("evaluateExpression", "pushing the result of the subexpression " + subResult);
-//                numbers.push(subResult); // Push the result of the sub-expression onto the numbers stack
 //                i = rightParenPos; // Update the index to the position of the right parenthesis
 //            }
-            if (isLeftParen(tokens[i])) {
-                // Find the corresponding right parenthesis
-                int rightParenPos = findRightParen(tokens, i);
-                if (rightParenPos == -1) {
-                    throw new IllegalArgumentException("Mismatched parentheses");
-                }
 
-                // Extract the sub-expression between the parentheses
-                String[] subTokens = Arrays.copyOfRange(tokens, i + 1, rightParenPos);
-                double subResult = evaluate(subTokens); // Recursively evaluate the sub-expression
-
-                // Only apply the operator if it has higher precedence than the next operator
-                if (!operators.isEmpty()) {
-                    String lastOperator = operators.pop(); // Get the operator before the '('
-
-                    // Check if lastOperator has higher precedence than the next operator
-                    if (operators.isEmpty() || precedence(lastOperator) >= precedence(operators.peek())) {
-                        double lastValue = numbers.isEmpty() ? 0 : numbers.pop(); // Get the last number or 0 if empty
-                        subResult = applyOperator(lastOperator, lastValue, subResult); // Apply the operator to the last number and subResult
-                    } else {
-                        // If the precedence is lower, just push the subResult onto the stack
-                        numbers.push(subResult); // Push the result of the sub-expression onto the numbers stack
-                    }
-                } else {
-                    numbers.push(subResult); // If no operator, just push the subResult
-                }
-
-                i = rightParenPos; // Update the index to the position of the right parenthesis
-            }
-
-            else if (isNumber(tokens[i])) {
-                numbers.push(Double.parseDouble(tokens[i]));
-            } else if (isOperator(tokens[i])) {
+//            else
+                if (isNumber(newTokens[i])) {
+                numbers.push(Double.parseDouble(newTokens[i]));
+            } else if (isOperator(newTokens[i])) {
                 // Handle operator precedence
-                while (!operators.isEmpty() && precedence(operators.peek()) >= precedence(tokens[i])) {
+                while (!operators.isEmpty() && precedence(operators.peek()) >= precedence(newTokens[i])) {
                     double right = numbers.pop();
                     double left = numbers.pop();
                     String op = operators.pop();
@@ -387,11 +369,11 @@ public class Calculator {
                     }
                     numbers.push(result);
                 }
-                operators.push(tokens[i]);
-            } else if (isFunction(tokens[i])) {
+                operators.push(newTokens[i]);
+            } else if (isFunction(newTokens[i])) {
                 double value = numbers.pop();
                 // Check if it's % and follows +/-, treat it as a percentage of the previous number
-                if ("%".equals(tokens[i]) && !operators.isEmpty() && (operators.peek().equals("+") || operators.peek().equals("-"))) {
+                if ("%".equals(newTokens[i]) && !operators.isEmpty() && (operators.peek().equals("+") || operators.peek().equals("-"))) {
                     double baseValue = numbers.pop();
                     value = baseValue * (value / 100);
                     if(baseValue == -0.0)
@@ -400,7 +382,7 @@ public class Calculator {
                     }
                     numbers.push(baseValue);  // Push baseValue back for addition/subtraction
                 } else {
-                    value = applyFunction(tokens[i], value);
+                    value = applyFunction(newTokens[i], value);
                 }
                 if(value == -0.0)
                 {
@@ -426,6 +408,47 @@ public class Calculator {
         return numbers.pop();
     }
 
+    //---------------------------------------------------------------------------
+    // Go through the entire method, evaluate any parentheses, then return the updated list of tokens
+    //---------------------------------------------------------------------------
+    private String[] evaluateParens(String[] tokens) {
+        StringBuilder newExpression = new StringBuilder();
+
+        // iterate through the list
+
+        // if its not a left paren, submit it to the newTokens
+        // if its a left paren, then find the right paren
+        // submit the range from left to right paren into evaluate, which will call this recursively
+        // push the result of evaluate onto the tokens
+        // return the newTokens
+        for (int i = 0; i < tokens.length; i++) {
+            Log.d("evaluateParens", "Looking at the position: " + i + "which is token " + tokens[i]);
+            if (isLeftParen(tokens[i])) {
+                Log.d("evaluateParens", "Found left parens at pos " + i);
+                // Find the corresponding right parenthesis
+                int rightParenPos = findRightParen(tokens, i);
+                Log.d("evaluateParens", "Found right parens at pos " + rightParenPos);
+                if (rightParenPos == -1) {
+                    throw new IllegalArgumentException("Mismatched parentheses");
+                }
+
+                // Extract the sub-expression between the parentheses
+                String[] subTokens = Arrays.copyOfRange(tokens, i + 1, rightParenPos);
+                newExpression.append(String.valueOf(evaluate(subTokens))).append(" "); // Recursively evaluate the sub-expression
+
+                i = rightParenPos; // Update the index to the position of the right parenthesis
+                Log.d("evaluateParens", "Jumping to pos of right parens: " + i);
+            } else {
+                Log.d("evaluateParens", "i : " + i + ", symbol = : " + tokens[i]);
+
+                newExpression.append(tokens[i]).append(" ");
+            }
+        }
+
+        String[] newTokens = tokenizeExpression(String.valueOf(newExpression));
+        Log.d("evaluateParens", "Returning the tokens: " + Arrays.toString(newTokens));
+        return newTokens;
+    }
 
     //---------------------------------------------------------------------------
     // Helper method to find the corresponding right parenthesis
