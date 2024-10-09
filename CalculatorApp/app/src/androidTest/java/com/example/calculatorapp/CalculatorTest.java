@@ -24,10 +24,17 @@ public class CalculatorTest {
         assertEquals("1", calculator.getNumberStack().peek());
 
         // single digit number, negative
+        calculator.pushOperator("-");
         calculator.inputDigit("1");
-        calculator.toggleSign();
         calculator.submitNumber();
         assertEquals("-1", calculator.getNumberStack().peek());
+
+        // stacked negatives
+        calculator.pushOperator("-");
+        calculator.pushOperator("-");
+        calculator.inputDigit("1");
+        calculator.submitNumber();
+        assertEquals("--1", calculator.getNumberStack().peek());
 
         // multi-digit number
         calculator.inputDigit("2");
@@ -83,9 +90,9 @@ public class CalculatorTest {
         assertEquals("1.1", calculator.getNumberStack().peek());
 
         // negative decimal
+        calculator.pushOperator("-");
         calculator.inputDigit("1");
         calculator.inputDigit(".");
-        calculator.toggleSign();
         calculator.inputDigit("1");
         calculator.submitNumber();
         assertEquals("-1.1", calculator.getNumberStack().peek());
@@ -131,8 +138,8 @@ public class CalculatorTest {
         assertEquals("+", calculator.getOperatorStack().peek());
 
         // simple operator with negative before operator
+        calculator.pushOperator("-");
         calculator.inputDigit("1");
-        calculator.toggleSign();
         calculator.pushOperator("+");
         assertEquals("-1", calculator.getNumberStack().peek());
         assertEquals("+", calculator.getOperatorStack().peek());
@@ -148,6 +155,20 @@ public class CalculatorTest {
             // do nothing about it.
         }
 
+        calculator.clear();
+        
+        // stacked negatives
+        calculator.pushOperator("-");
+        calculator.inputDigit("1");
+        calculator.pushOperator("-");
+        calculator.pushOperator("-");
+        calculator.pushOperator("-");
+        calculator.inputDigit("1");
+        calculator.submitNumber();
+        assertEquals("-1 - --1", calculator.getFullExpression());
+        assertEquals("-2.0", calculator.evaluateExpression());
+
+        calculator.clear();
 
         // decimal operator
         calculator.inputDigit("1");
@@ -180,14 +201,26 @@ public class CalculatorTest {
         assertEquals("2", calculator.getCurrentInput());
 
         calculator.clear();
+
+        // minus as negative operators
+        calculator.pushOperator("-");
+        calculator.inputDigit("4");
+        assertEquals("-4", calculator.getCurrentInput());
+        calculator.pushOperator("-");
+        calculator.inputDigit("2");
+        calculator.submitNumber();
+        assertEquals("[-4, 2]", calculator.getNumberStack().toString());
+        assertEquals("[-]", calculator.getOperatorStack().toString());
+
+        calculator.clear();
         // multiple operators with negatives
         calculator.inputDigit("1");
         calculator.pushOperator("+");
+        calculator.pushOperator("-");
         calculator.inputDigit("4");
-        calculator.toggleSign();
+        calculator.pushOperator("-");
         calculator.pushOperator("-");
         calculator.inputDigit("2");
-        calculator.toggleSign();
         assertEquals("[1, -4]", calculator.getNumberStack().toString());
         assertEquals("[+, -]", calculator.getOperatorStack().toString());
         assertEquals("-2", calculator.getCurrentInput());
@@ -244,18 +277,18 @@ public class CalculatorTest {
         calculator.clear();
 
         // multiple operators with negatives
+        calculator.pushOperator("-");
         calculator.inputDigit("1");
-        calculator.toggleSign();
         calculator.pushOperator("+");
         calculator.inputDigit("2");
         calculator.pushOperator("-");
+        calculator.pushOperator("-");
         calculator.inputDigit("3");
-        calculator.toggleSign();
         calculator.pushOperator("*");
         calculator.inputDigit("4");
         calculator.pushOperator("/");
+        calculator.pushOperator("-");
         calculator.inputDigit("5");
-        calculator.toggleSign();
         assertEquals("-1 + 2 - -3 * 4 / -5", calculator.getFullExpression());
 
     }

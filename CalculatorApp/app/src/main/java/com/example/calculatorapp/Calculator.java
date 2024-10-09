@@ -38,7 +38,12 @@ public class Calculator {
         if(currentInput.length() == 0)
         {
             isNegative = false;
-        }
+        } 
+//        else if(digit.equals("-"))
+//        {
+//            isNegative = !isNegative;
+//            Log.d("inputDigit", "Received a negative; the current sign is: " + (isNegative? "positive" : "negative"));
+//        }
         if(digit.equals("."))
         {
             if(!currentInput.toString().contains("."))
@@ -69,6 +74,16 @@ public class Calculator {
     public void submitNumber() {
         if (currentInput.length() > 0)
         {
+            for(int i = 0; i < currentInput.length(); i++)
+            {
+                if(currentInput.charAt(i) == '-')
+                {
+                    currentInput.deleteCharAt(i);
+                    isNegative = !isNegative;
+                    Log.d("submitNumber", "Found a negative; the current sign is: " + (isNegative? "negative" : "positive"));
+                }
+            }
+            Log.d("submitNumber", "Final value to submit is : " + (isNegative? "negative" : "positive"));
             String numberToSubmit = isNegative ? "-" + currentInput.toString() : currentInput.toString();
             numberStack.push(numberToSubmit); // Store the number
             currentInput.setLength(0);  // Clear current input
@@ -91,6 +106,13 @@ public class Calculator {
             return;
         }
 
+        // handle negative with the minus sign
+        if(operator.equals("-") && (currentInput.length() == 0 || currentInput.charAt(currentInput.length() - 1) == '-'))
+        {
+            Log.d("pushOp", "Sending negative instead of minus");
+            inputDigit("-");
+            return;
+        }
         // otherwise, if there is something to submit, then submit it and push the operator
         if(currentInput.length() > 0)
         {
@@ -280,6 +302,25 @@ public class Calculator {
         String[] tokens = tokenizeExpression(fullExpression); // Tokenize it
         Log.d("evaluateExpression", "Tokens after splitting: " + Arrays.toString(tokens));
 
+        // scan tokens to eliminate double negatives?
+        for (int j = 0; j < tokens.length; j++) {
+            StringBuilder tokenBuilder = new StringBuilder(tokens[j]);
+
+            // Iterate through the string with index `i` and `i + 1`
+            for (int i = 0; i < tokenBuilder.length() - 1; i++) {
+                if (tokenBuilder.charAt(i) == '-' && tokenBuilder.charAt(i + 1) == '-') {
+                    // Delete both consecutive hyphens
+                    tokenBuilder.delete(i, i + 2);
+
+                    // Adjust the index since we removed two characters
+                    i -= 1;
+                }
+            }
+
+            // Replace the modified token in the array
+            tokens[j] = tokenBuilder.toString();
+        }
+
         String result = "";
         try {
             result = String.valueOf(evaluate(tokens));
@@ -323,37 +364,6 @@ public class Calculator {
 
         for (int i = 0; i < newTokens.length; i++) {
             Log.d("EvaluateLoop", "Token at position " + i + ": " + newTokens[i]);
-//            if (isLeftParen(tokens[i])) {
-//                // Find the corresponding right parenthesis
-//                int rightParenPos = findRightParen(tokens, i);
-//                if (rightParenPos == -1) {
-//                    throw new IllegalArgumentException("Mismatched parentheses");
-//                }
-//
-//                // Extract the sub-expression between the parentheses
-//                String[] subTokens = Arrays.copyOfRange(tokens, i + 1, rightParenPos);
-//                double subResult = evaluate(subTokens); // Recursively evaluate the sub-expression
-//
-//                // Only apply the operator if it has higher precedence than the next operator
-//                if (!operators.isEmpty()) {
-//                    String lastOperator = operators.pop(); // Get the operator before the '('
-//
-//                    // Check if lastOperator has higher precedence than the next operator
-//                    if (operators.isEmpty() || precedence(lastOperator) >= precedence(operators.peek())) {
-//                        double lastValue = numbers.isEmpty() ? 0 : numbers.pop(); // Get the last number or 0 if empty
-//                        subResult = applyOperator(lastOperator, lastValue, subResult); // Apply the operator to the last number and subResult
-//                    } else {
-//                        // If the precedence is lower, just push the subResult onto the stack
-//                        numbers.push(subResult); // Push the result of the sub-expression onto the numbers stack
-//                    }
-//                } else {
-//                    numbers.push(subResult); // If no operator, just push the subResult
-//                }
-//
-//                i = rightParenPos; // Update the index to the position of the right parenthesis
-//            }
-
-//            else
                 if (isNumber(newTokens[i])) {
                 numbers.push(Double.parseDouble(newTokens[i]));
             } else if (isOperator(newTokens[i])) {
