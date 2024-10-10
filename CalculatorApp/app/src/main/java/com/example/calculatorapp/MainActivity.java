@@ -10,6 +10,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.Collections;
+import java.util.Stack;
+
 public class MainActivity extends AppCompatActivity implements NumPad_Fragment.OnFragmentInteractionListener, ScientificFragment.OnFragmentInteractionListener {
     private Calculator calculator;
 
@@ -37,7 +40,29 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
                     .replace(R.id.numPadFragCont, new NumPad_Fragment())
                     .commit();
         }
-        calculator = new Calculator();
+        calculator = new Calculator(this);
+
+        if (savedInstanceState != null) {
+            Log.d("Saving", "Loaded the position saved data.");
+
+            // Restore stacks
+            calculator.numberStack = new Stack<>();
+            calculator.operatorStack = new Stack<>();
+            Collections.addAll(calculator.numberStack, savedInstanceState.getStringArray("numberStack"));
+            Collections.addAll(calculator.operatorStack, savedInstanceState.getStringArray("operatorStack"));
+
+            // Restore StringBuilders
+            calculator.currentInput = new StringBuilder(savedInstanceState.getString("currentInput"));
+            calculator.orderOfInputs = new StringBuilder(savedInstanceState.getString("orderOfInputs"));
+
+            // Restore other variables
+//            calculator.memVar = savedInstanceState.getString("memVar");
+            calculator.isNegative = savedInstanceState.getBoolean("isNegative");
+            calculator.lastResult = savedInstanceState.getDouble("lastResult");
+            calculator.hasResult = savedInstanceState.getBoolean("hasResult");
+
+            updateOutput();
+        }
     }
 
     // global variables for calculator
@@ -114,6 +139,21 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
             case "clear":
                 calculator.clear();
                 break;
+            case "memSave":
+                calculator.memSave();
+                break;
+            case "memClear":
+                calculator.memClear();
+                break;
+            case "memRecall":
+                calculator.memRecall();
+                break;
+            case "memSub":
+                calculator.memSub();
+                break;
+            case "memAdd":
+                calculator.memAdd();
+                break;
             default:
                 break;
         }
@@ -127,5 +167,26 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
         String outMsg = calculator.getFullExpression();
 
         output.setText(outMsg);
+    }
+
+    // save relevant data for when the screen rotates
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Log.d("Saving", "Saving the data.");
+
+        // Convert stacks to arrays for saving
+        outState.putStringArray("numberStack", calculator.getNumberStack().toArray(new String[0]));
+        outState.putStringArray("operatorStack", calculator.getOperatorStack().toArray(new String[0]));
+
+        // Convert StringBuilders to Strings
+        outState.putString("currentInput", calculator.getCurrentInput().toString());
+        outState.putString("orderOfInputs", calculator.orderOfInputs.toString());
+
+        // Save other variables
+//        outState.putString("memVar", calculator.memVar);
+        outState.putBoolean("isNegative", calculator.isNegative);
+        outState.putDouble("lastResult", calculator.lastResult);
+        outState.putBoolean("hasResult", calculator.hasResult);
     }
 }

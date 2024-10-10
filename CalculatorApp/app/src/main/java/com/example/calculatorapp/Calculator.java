@@ -1,25 +1,30 @@
 package com.example.calculatorapp;
 
 import android.util.Log;
+import android.widget.Toast;
+import android.content.Context;
 
 import java.util.Arrays;
 import java.util.Stack;
 
 public class Calculator {
     // global variables
-    private Stack<String> numberStack;  // stores the user's current input
-    private Stack<String> operatorStack;    // stores the operators used
-    private StringBuilder currentInput; // stores previous input from the user after an operator is selected
-    private boolean isNegative;
-    private double lastResult = 0.0;
-    private boolean hasResult = false;
-    private StringBuilder orderOfInputs;  // will track the order of the inputs where 1 is a number and 0 is an operator.
+    Stack<String> numberStack;  // stores the user's current input
+    Stack<String> operatorStack;    // stores the operators used
+    StringBuilder currentInput; // stores previous input from the user after an operator is selected
+    boolean isNegative;
+    double lastResult = 0.0;
+    boolean hasResult = false;
+    StringBuilder orderOfInputs;  // will track the order of the inputs where 1 is a number and 0 is an operator.
+    String memVar = "";
+    private Context context; // Declare a Context variable
 
 
     //---------------------------------------------------------------------------
     // Calculator() constructor to initialize each of the stacks and the currentInput
     //---------------------------------------------------------------------------
-    public Calculator() {
+    public Calculator(Context context) {
+        this.context = context;
         numberStack = new Stack<>();
         operatorStack = new Stack<>();
         currentInput = new StringBuilder();
@@ -148,6 +153,80 @@ public class Calculator {
                 Log.d("orderOfInputs", "Appended 0, op was: " + prevOp + ", replaced with: " + operator);
                 return;
             }
+        }
+    }
+
+    //---------------------------------------------------------------------------
+    // saves the last result into the memSave function
+    //---------------------------------------------------------------------------
+    public void memSave()
+    {
+        if(hasResult)
+        {
+            memVar = String.valueOf(lastResult);
+            Toast.makeText(context, "Memory saved.", Toast.LENGTH_SHORT).show();
+            return;
+
+        } else
+        {
+            Toast.makeText(context, "No result to save.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //---------------------------------------------------------------------------
+    // returns the current memory function and puts it into currentInput
+    //---------------------------------------------------------------------------
+    public void memClear()
+    {
+        // if there is a value being saved, clear it
+        memVar = "";
+        Toast.makeText(context, "Memory cleared.", Toast.LENGTH_SHORT).show();
+
+    }
+
+    //---------------------------------------------------------------------------
+    // clears the value of memVar
+    //---------------------------------------------------------------------------
+    public void memRecall()
+    {
+        // if there is a value being saved, then put it in. If not, do nothing
+        if(memVar != null && !memVar.isEmpty())
+        {
+            currentInput.setLength(0);
+            currentInput.append(memVar);
+            hasResult = false;
+            lastResult = 0;
+        }
+    }
+
+    //---------------------------------------------------------------------------
+    // adds the lstResult to the memVar
+    //---------------------------------------------------------------------------
+    public void memAdd()
+    {
+        if(hasResult && memVar != null && !memVar.isEmpty())
+        {
+            Log.d("memAdd", "Adding something memAdd");
+            double currentMem = Double.parseDouble(memVar);
+            currentMem += lastResult;
+            memVar = String.valueOf(currentMem);
+            Toast.makeText(context, "Value added to memory.", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    //---------------------------------------------------------------------------
+    // subtracts the lastResult form the memVar
+    //---------------------------------------------------------------------------
+    public void memSub()
+    {
+        if(hasResult && memVar != null && !memVar.isEmpty())
+        {
+            Log.d("memSub", "Subtracting something from memSub");
+            double currentMem = Double.parseDouble(memVar);
+            currentMem -= lastResult;
+            memVar = String.valueOf(currentMem);
+            Toast.makeText(context, "Value subtracted from memory.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -448,6 +527,8 @@ public class Calculator {
 
                 i = rightParenPos; // Update the index to the position of the right parenthesis
                 Log.d("evaluateParens", "Jumping to pos of right parens: " + i);
+            } else if(isRightParen(tokens[i])) {
+                throw new IllegalArgumentException("Mismatched parentheses");
             } else {
                 Log.d("evaluateParens", "i : " + i + ", symbol = : " + tokens[i]);
 
