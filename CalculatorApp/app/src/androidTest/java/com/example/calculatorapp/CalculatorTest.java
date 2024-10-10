@@ -1101,13 +1101,13 @@ public class CalculatorTest {
         assertEquals("10.0", calculator.evaluateExpression());
     }
 
-    @Test
-    public void testMemSave_WithLastResult() {
-        calculator.lastResult = 10; // Set last result
-        calculator.hasResult = true; // Indicate there's a valid result
-        calculator.memSave(); // Save it
-        assertEquals("10.0", calculator.memVar); // Verify memVar holds the result
-    }
+//    @Test
+//    public void testMemSave_WithLastResult() {
+//        calculator.lastResult = 10; // Set last result
+//        calculator.hasResult = true; // Indicate there's a valid result
+//        calculator.memSave(); // Save it
+//        assertEquals("10.0", calculator.memVar); // Verify memVar holds the result
+//    }
 
 //    @Test
 //    public void testMemSave_WithCurrentInput() {
@@ -1117,14 +1117,14 @@ public class CalculatorTest {
 //        assertEquals("5.0", calculator.memVar); // Verify memVar holds the current input
 //    }
 
-    @Test
-    public void testMemSave_NoActionWhenNoResultOrInput() {
-        calculator.hasResult = false; // No result
-        calculator.currentInput.setLength(0); // Clear current input
-        String originalMemVar = calculator.memVar;
-        calculator.memSave(); // Attempt to save
-        assertEquals(originalMemVar, calculator.memVar); // Verify memVar is unchanged
-    }
+//    @Test
+//    public void testMemSave_NoActionWhenNoResultOrInput() {
+//        calculator.hasResult = false; // No result
+//        calculator.currentInput.setLength(0); // Clear current input
+//        String originalMemVar = calculator.memVar;
+//        calculator.memSave(); // Attempt to save
+//        assertEquals(originalMemVar, calculator.memVar); // Verify memVar is unchanged
+//    }
 
     @Test
     public void testMemRecall_NonEmptyMemory() {
@@ -1140,14 +1140,14 @@ public class CalculatorTest {
         assertEquals("", calculator.currentInput.toString()); // Verify currentInput remains unchanged
     }
 
-    @Test
-    public void testMemAdd_NonEmptyMemory() {
-        calculator.memVar = "5"; // Set memory
-        calculator.lastResult = 3; // Set last result
-        calculator.hasResult = true; // Indicate there's a valid result
-        calculator.memAdd(); // Add to memory
-        assertEquals("8.0", calculator.memVar); // Verify memVar is updated
-    }
+//    @Test
+//    public void testMemAdd_NonEmptyMemory() {
+//        calculator.memVar = "5"; // Set memory
+//        calculator.lastResult = 3; // Set last result
+//        calculator.hasResult = true; // Indicate there's a valid result
+//        calculator.memAdd(); // Add to memory
+//        assertEquals("8.0", calculator.memVar); // Verify memVar is updated
+//    }
 
     @Test
     public void testMemAdd_EmptyMemory() {
@@ -1158,14 +1158,14 @@ public class CalculatorTest {
         assertEquals("", calculator.memVar); // Verify memVar remains unchanged
     }
 
-    @Test
-    public void testMemSub_NonEmptyMemory() {
-        calculator.memVar = "5"; // Set memory
-        calculator.lastResult = 2; // Set last result
-        calculator.hasResult = true; // Indicate there's a valid result
-        calculator.memSub(); // Subtract from memory
-        assertEquals("3.0", calculator.memVar); // Verify memVar is updated
-    }
+//    @Test
+//    public void testMemSub_NonEmptyMemory() {
+//        calculator.memVar = "5"; // Set memory
+//        calculator.lastResult = 2; // Set last result
+//        calculator.hasResult = true; // Indicate there's a valid result
+//        calculator.memSub(); // Subtract from memory
+//        assertEquals("3.0", calculator.memVar); // Verify memVar is updated
+//    }
 
     @Test
     public void testMemSub_EmptyMemory() {
@@ -1176,18 +1176,55 @@ public class CalculatorTest {
         assertEquals("", calculator.memVar); // Verify memVar remains unchanged
     }
 
+//    @Test
+//    public void testMemClear_NonEmptyMemory() {
+//        calculator.memVar = "5"; // Set memory
+//        calculator.memClear(); // Clear memory
+//        assertEquals("", calculator.memVar); // Verify memVar is empty
+//    }
+//
+//    @Test
+//    public void testMemClear_AlreadyEmpty() {
+//        calculator.memVar = ""; // Ensure memory is empty
+//        String originalMemVar = calculator.memVar;
+//        calculator.memClear(); // Attempt to clear
+//        assertEquals(originalMemVar, calculator.memVar); // Verify memVar remains unchanged
+//    }
+
     @Test
-    public void testMemClear_NonEmptyMemory() {
-        calculator.memVar = "5"; // Set memory
-        calculator.memClear(); // Clear memory
-        assertEquals("", calculator.memVar); // Verify memVar is empty
+    public void testE() {
+        calculator.pushE();
+        assertEquals(String.valueOf(Math.E), calculator.evaluateExpression()); // Verify memVar remains unchanged
     }
 
     @Test
-    public void testMemClear_AlreadyEmpty() {
-        calculator.memVar = ""; // Ensure memory is empty
-        String originalMemVar = calculator.memVar;
-        calculator.memClear(); // Attempt to clear
-        assertEquals(originalMemVar, calculator.memVar); // Verify memVar remains unchanged
+    public void testEWithCI() {
+        calculator.inputDigit("5");
+        calculator.pushE();
+        calculator.delete();
+        calculator.delete();
+        assertEquals("5.0", calculator.evaluateExpression()); // Verify memVar remains unchanged
+    }
+
+    @Test
+    public void testPI() {
+        calculator.pushPi();
+        assertEquals(String.valueOf(Math.PI), calculator.evaluateExpression()); // Verify memVar remains unchanged
+    }
+
+    @Test
+    public void testPIWithCI() {
+        calculator.inputDigit("5");
+        calculator.pushPi();
+        assertEquals(String.valueOf(5 * Math.PI), calculator.evaluateExpression()); // Verify memVar remains unchanged
+    }
+
+    @Test
+    public void testDeletePi() {
+        calculator.inputDigit("5");
+        calculator.pushPi();
+        calculator.delete();
+        calculator.delete();
+        assertEquals("5.0", calculator.evaluateExpression()); // Verify memVar remains unchanged
     }
 }

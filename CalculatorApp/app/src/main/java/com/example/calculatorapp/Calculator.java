@@ -264,6 +264,54 @@ public class Calculator {
     }
 
     //---------------------------------------------------------------------------
+    // inputs e
+    //---------------------------------------------------------------------------
+    public void pushE() {
+        if(currentInput.length() > 0)
+        {
+            // there is a cI, so multiply it by e
+            pushOperator("*");
+            currentInput.append("e");
+
+        } else {
+            // there is not a cI so set cI = e
+            currentInput.append("e");
+        }
+    }
+
+    //---------------------------------------------------------------------------
+    // inputs PI
+    //---------------------------------------------------------------------------
+    public void pushPi() {
+        if(currentInput.length() > 0)
+        {
+            // there is a cI, so multiply it by e
+            pushOperator("*");
+            currentInput.append("P");
+
+        } else {
+            // there is not a cI so set cI = e
+            currentInput.append("P");
+        }
+    }
+
+    //---------------------------------------------------------------------------
+    // inputs PI
+    //---------------------------------------------------------------------------
+    public void pushRand() {
+        if(currentInput.length() > 0)
+        {
+            // there is a cI, so multiply it by e
+            pushOperator("*");
+            currentInput.append(String.valueOf(Math.random()));
+
+        } else {
+            // there is not a cI so set cI = e
+            currentInput.append(String.valueOf(Math.random()));
+        }
+    }
+
+    //---------------------------------------------------------------------------
     // deletes the most recent input
     //---------------------------------------------------------------------------
     public void delete() {
@@ -443,7 +491,14 @@ public class Calculator {
 
         for (int i = 0; i < newTokens.length; i++) {
             Log.d("EvaluateLoop", "Token at position " + i + ": " + newTokens[i]);
-                if (isNumber(newTokens[i])) {
+            if(newTokens[i].equals("e"))
+            {
+                newTokens[i] = String.valueOf(Math.E);
+            } else if(newTokens[i].equals("P"))
+            {
+                newTokens[i] = String.valueOf(Math.PI);
+            }
+            if (isNumber(newTokens[i])) {
                 numbers.push(Double.parseDouble(newTokens[i]));
             } else if (isOperator(newTokens[i])) {
                 // Handle operator precedence
