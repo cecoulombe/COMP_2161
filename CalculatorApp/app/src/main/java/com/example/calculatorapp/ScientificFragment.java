@@ -1,5 +1,7 @@
 package com.example.calculatorapp;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -12,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +40,25 @@ public class ScientificFragment extends Fragment {
 
     public ScientificFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            // Ensure the activity implements the listener interface
+            mListener = (NumPad_Fragment.OnFragmentInteractionListener) context;
+            Log.d("onAttachSci", "Attached scientific to main activity!");
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null; // Avoid memory leaks by setting listener to null when detached
     }
 
     /**
@@ -63,7 +86,7 @@ public class ScientificFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        Log.d("NumPad_Fragment", "Fragment Created");
+        Log.d("Scientific", "Fragment Created");
 
     }
 
@@ -83,91 +106,84 @@ public class ScientificFragment extends Fragment {
         // create and add the GridLayout for calculator buttons
         GridLayout gridLayout = new GridLayout(getActivity());
         gridLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, 0, 5));
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));
         gridLayout.setColumnCount(6);
         gridLayout.setRowCount(4);
+
         addScientificButtons(gridLayout);
         mainLayout.addView(gridLayout);
 
+        Log.d("onCreateViewSci", "Created the science view");
+
         // return the root view
-        return mainLayout;    }
+        return mainLayout;
+    }
 
     private void addScientificButtons(GridLayout layout) {
         // define button ids
-//        String[][] buttonIdsAndText = {
-//                {"delete", "changeSign", "percent", "divide"},
-//                {"seven", "eight", "nine", "multiply"},
-//                {"four", "five", "six", "minus"},
-//                {"one", "two", "three", "plus"},
-//                {"clear", "zero", "decimalPoint", "equal"}
-//        };
-//
-//        for(int row = 0; row < buttonIdsAndText.length;row++)
-//        {
-//            for(int col = 0; col < buttonIdsAndText[row].length; col++)
-//            {
-//                String buttonId = buttonIdsAndText[row][col];
+        String[][] buttonIdsAndText = {
+                {"leftParen", "rightParen", "squared", "cubed", "eRaisedX", "tenRaisedX" },
+                {"raisedToY", "enterExponent", "inverse", "sin", "cos", "tan",},
+                {"squareRoot", "cubeRoot", "yRoot", "sinh", "cosh", "tanh"},
+                {"factorial", "logBase10", "ln", "e", "pi", "rand"},
+        };
+
+        for(int row = 0; row < buttonIdsAndText.length;row++)
+        {
+            for(int col = 0; col < buttonIdsAndText[row].length; col++)
+            {
+                String buttonId = buttonIdsAndText[row][col];
 //                Button button = new Button(getActivity());
-//
-//                // set button text and id
-//                button.setText(getString(getResources().getIdentifier(buttonId, "string", getActivity().getPackageName())));
-//                button.setId(getResources().getIdentifier(buttonId, "id", getActivity().getPackageName()));
-//
-//                // set layout parameters for the button
-//                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-//                params.rowSpec = GridLayout.spec(row, 1f);
-//                params.columnSpec = GridLayout.spec(col, 1f);
-//                params.width = 0;
-//                params.height = 0;
-//                params.setMargins(10, 10, 10, 10);
-//
-//                // Apply layout params to button
-//                button.setLayoutParams(params);
-//
-//                // apply the complete style from styles.xml depending on the button
-//                if(col == buttonIdsAndText[row].length - 1)
-//                {
-//                    button.setTextAppearance(getActivity(), R.style.OperationButton);
-//                    button.setTransformationMethod(null);
-//                    button.setBackgroundResource(R.drawable.rounded_button_background_operators);
-//                }
-//                else if (row == 0)
-//                {
-//                    if(col == 0) {
-//                        button.setTextAppearance(getActivity(), R.style.TextButton);
-//                        button.setTransformationMethod(null);
-//                        button.setBackgroundResource(R.drawable.rounded_button_background_symbols_text);
-//                    }
-//                    else {
-//                        button.setTextAppearance(getActivity(), R.style.SymbolButton);
-//                        button.setTransformationMethod(null);
-//                        button.setBackgroundResource(R.drawable.rounded_button_background_symbols_text);
-//                    }
-//
-//                } else if (row == buttonIdsAndText.length - 1 && col == 0)
-//                {
-//                    button.setTextAppearance(getActivity(), R.style.TextButton);
-//                    button.setTransformationMethod(null);
-//                    button.setBackgroundResource(R.drawable.rounded_button_background_symbols_text);;
-//                } else {
-//                    button.setTextAppearance(getActivity(), R.style.NumberButton);
-//                    button.setTransformationMethod(null);
-//                    button.setBackgroundResource(R.drawable.rounded_button_background_num);
-//                }
-//
-//                // handle button click events
-//                button.setOnClickListener(v ->
-//                {
-//                    if(mListener != null) {
-//                        mListener.onFragmentInteraction(buttonId);
-//                    }
-//                });
-//
-//                // add the button to the GridLayout
-//                layout.addView(button);
-//            }
-//        }
+                Button button = new Button(requireActivity());
+
+                // set button text and id
+                button.setText(getString(getResources().getIdentifier(buttonId, "string", requireActivity().getPackageName())));
+                button.setId(getResources().getIdentifier(buttonId, "id", requireActivity().getPackageName()));
+
+                // set layout parameters for the button
+                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+                params.rowSpec = GridLayout.spec(row, 1f);
+                params.columnSpec = GridLayout.spec(col, 1f);
+                params.width = 0;
+                params.height = 0;
+                params.setMargins(10, 10, 10, 10);
+
+                // Apply layout params to button
+                button.setLayoutParams(params);
+
+                // apply the complete style from styles.xml depending on the button
+                button.setTextAppearance(getActivity(), R.style.SymbolButton);
+                button.setTransformationMethod(null);
+                button.setBackgroundResource(R.drawable.rounded_button_background_symbols_text);
+
+                button.setVisibility(View.VISIBLE);
+
+
+                // handle button click events
+                button.setOnClickListener(v ->
+                {
+                    if(mListener != null) {
+                        mListener.onFragmentInteraction(buttonId);
+                    }
+                });
+
+                // add the button to the GridLayout
+                layout.addView(button);
+                Log.d("ScientificFragment", "Adding button: " + buttonId);
+            }
+        }
+        Log.d("ScientificFragment", "Total buttons added: " + layout.getChildCount());
     }
+
+//    @Override
+//    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        // Ensure all buttons are visible
+//        for (int i = 0; i < layout.getChildCount(); i++) {
+//            layout.getChildAt(i).setVisibility(View.VISIBLE);
+//        }
+//    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

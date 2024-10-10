@@ -29,12 +29,16 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
 
         // Load the fragments
         if (findViewById(R.id.scientificFragCont) != null) {
+            Log.d("MainActivity", "Landscape layout detected. Loading both fragments.");
+
             // Landscape layout detected, add both fragments
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.numPadFragCont, new NumPad_Fragment())
                     .replace(R.id.scientificFragCont, new ScientificFragment())
                     .commit();
         } else {
+            Log.d("MainActivity", "Portrait layout detected. Loading NumPad fragment only.");
+
             // Portrait layout, only add the main fragment
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.numPadFragCont, new NumPad_Fragment())
@@ -153,6 +157,12 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
                 break;
             case "memAdd":
                 calculator.memAdd();
+                break;
+            case "leftParen":
+                calculator.pushOperator("(");
+                break;
+            case "rightParen":
+                calculator.pushOperator(")");
                 break;
             default:
                 break;

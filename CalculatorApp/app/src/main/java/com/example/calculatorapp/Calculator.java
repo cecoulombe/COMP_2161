@@ -200,7 +200,7 @@ public class Calculator {
     }
 
     //---------------------------------------------------------------------------
-    // adds the lstResult to the memVar
+    // adds the lastResult to the memVar
     //---------------------------------------------------------------------------
     public void memAdd()
     {
