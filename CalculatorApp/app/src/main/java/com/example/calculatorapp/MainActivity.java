@@ -173,6 +173,9 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
             case "eRaisedX":
                 calculator.pushFunction("e^");
                 break;
+            case "raisedToY":
+                calculator.pushOperator("^");
+                break;
             case "tenRaisedX":
                 calculator.pushFunction("10^");
                 break;
@@ -205,6 +208,9 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
                 break;
             case "ln":
                 calculator.pushFunction("ln");
+                break;
+            case "inverse":
+                calculator.inverse();
                 break;
             default:
                 break;

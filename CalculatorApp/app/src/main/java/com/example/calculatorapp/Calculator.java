@@ -69,8 +69,15 @@ public class Calculator {
         Stack<String> newNumStack = new Stack<String>();
         Stack<String> newOpStack = new Stack<String>();
 
+        if (hasResult) {
+            numberStack.push(String.valueOf(lastResult)); // Push the last result onto the stack
+            orderOfInputs.append("1");
+            currentInput.setLength(0); // Clear current input to prepare for next digit
+            hasResult = false; // Reset the flag
+        }
+
         // add the a - to the start of the numStack
-        Log.d("toggleSign", "Num stack BEFORE: " + numberStack.toString());
+        Log.d("pushFunction", "Num stack BEFORE: " + numberStack.toString());
         while(!numberStack.isEmpty())
         {
             newNumStack.push(numberStack.pop());
@@ -83,10 +90,10 @@ public class Calculator {
             numberStack.push(newNumStack.pop());
         }
 
-        Log.d("toggleSign", "Num stack AFTER: " + numberStack.toString());
+        Log.d("pushFunction", "Num stack AFTER: " + numberStack.toString());
         
         // add the a parenthesis to the start and a parenthesis to the end of the op stack
-        Log.d("toggleSign", "Op stack BEFORE: " + operatorStack.toString());
+        Log.d("pushFunction", "Op stack BEFORE: " + operatorStack.toString());
 
         while(!operatorStack.isEmpty())
         {
@@ -104,12 +111,12 @@ public class Calculator {
         pushOperator(")");
 
 
-        Log.d("toggleSign", "Op stack AFTER: " + operatorStack.toString());
+        Log.d("pushFunction", "Op stack AFTER: " + operatorStack.toString());
 
         // add two 0s to the start and end of the input order
-        Log.d("toggleSign", "Order of Inputs BEFORE adding sign parens: " + orderOfInputs);
+        Log.d("pushFunction", "Order of Inputs BEFORE adding sign parens: " + orderOfInputs);
         orderOfInputs.insert(0, "10");
-        Log.d("toggleSign", "Order of Inputs AFTER adding sign parens: " + orderOfInputs);
+        Log.d("pushFunction", "Order of Inputs AFTER adding sign parens: " + orderOfInputs);
 
     }
 
@@ -267,6 +274,24 @@ public class Calculator {
             currentMem -= lastResult;
             memVar = String.valueOf(currentMem);
             Toast.makeText(context, "Value subtracted from memory.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //---------------------------------------------------------------------------
+    // inverses the currentInput/result
+    //---------------------------------------------------------------------------
+    public void inverse()
+    {
+        numberStack.push("1");
+        orderOfInputs.append("1");
+        operatorStack.push("/");
+        orderOfInputs.append("0");
+
+        if (hasResult) {
+            numberStack.push(String.valueOf(lastResult)); // Push the last result onto the stack
+            currentInput.setLength(0); // Clear current input to prepare for next digit
+            orderOfInputs.append("1");
+            hasResult = false; // Reset the flag
         }
     }
 
@@ -495,7 +520,10 @@ public class Calculator {
             hasResult = true; // Indicate that we have a result now
         } catch (ArithmeticException e) {
             result = "NaN"; // Handle division by zero, etc.
+        } catch (IllegalArgumentException e) {
+            result = "NaN";
         }
+
         resetState(); // Reset the state after evaluation
         return result;
     }
@@ -537,6 +565,15 @@ public class Calculator {
             } else if(newTokens[i].equals("π"))
             {
                 newTokens[i] = String.valueOf(Math.PI);
+            } else if ("!".equals(newTokens[i]))
+            {
+                double value = applyFunction(newTokens[i], numbers.pop());
+
+                if(value == -0.0)
+                {
+                    value = 0.0;
+                }
+                numbers.push(value);
             }
             if (isNumber(newTokens[i])) {
                 numbers.push(Double.parseDouble(newTokens[i]));
@@ -723,7 +760,7 @@ public class Calculator {
     // checks if the token is an operator (binary)
     //---------------------------------------------------------------------------
     private boolean isOperator(String token) {
-        return token.matches("[+*/\\-]");
+        return token.matches("[+*^/\\-]");
     }
 
     //---------------------------------------------------------------------------
@@ -765,6 +802,8 @@ public class Calculator {
             case "*":
             case "/":
                 return 2;
+            case "^":
+                return 3;
             default:
                 return 0;
         }
@@ -786,6 +825,10 @@ public class Calculator {
                     throw new ArithmeticException();
                 }
                 return left / right;
+            case "^":
+                double powResult = Math.pow(left, right);
+                Log.d("applyOp", "Returning result: " + powResult);
+                return powResult;
             default:
                 throw new UnsupportedOperationException("Operator not supported: " + op);
         }
@@ -812,9 +855,9 @@ public class Calculator {
             case "sqrt":
                 return Math.sqrt(value);
             case "cbrt":
-                double result = Math.cbrt(value);
-                Log.d("apply CBRT", "Returning the result: " + result);
-                return result;
+                double cbrtResult = Math.cbrt(value);
+                Log.d("apply CBRT", "Returning the result: " + cbrtResult);
+                return cbrtResult;
             case "sin":
                 return Math.sin(Math.toRadians(value));  // Converts degrees to radians if needed
             case "cos":
@@ -831,10 +874,32 @@ public class Calculator {
                 return Math.log10(value);
             case "ln":
                 return Math.log(value);
+            case "!":
+                double factResult = factorial(value);
+                Log.d("factorial", "Returning the result " + factResult);
+                return factResult;
             default:
                 throw new UnsupportedOperationException("Function not supported: " + function);
         }
     }
+
+    //---------------------------------------------------------------------------
+    // calculates the factorial of an integer number
+    //---------------------------------------------------------------------------
+    private Double factorial(double value) {
+        if(value != Math.floor(value) || value != Math.abs(value))
+        {
+            return Double.NaN;
+        }
+
+        if(value != 1)
+        {
+            value = value * factorial(value - 1);
+        }
+
+        return value;
+    }
+
     //---------------------------------------------------------------------------
     // handles percent and accounts for single or double operators
     //---------------------------------------------------------------------------
