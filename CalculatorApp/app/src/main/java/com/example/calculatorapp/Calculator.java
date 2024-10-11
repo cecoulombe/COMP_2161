@@ -5,6 +5,8 @@ import android.widget.Toast;
 import android.content.Context;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 
 public class Calculator {
@@ -61,16 +63,54 @@ public class Calculator {
     }
 
     //---------------------------------------------------------------------------
-    // handles the sign button
+    // handles the various function buttons
     //---------------------------------------------------------------------------
-    public void toggleSign() {
-        if (currentInput.length() > 0) {
-            isNegative = !isNegative; // Toggle sign
-        }
-        if(hasResult)
+    public void pushFunction(String function) {
+        Stack<String> newNumStack = new Stack<String>();
+        Stack<String> newOpStack = new Stack<String>();
+
+        // add the a - to the start of the numStack
+        Log.d("toggleSign", "Num stack BEFORE: " + numberStack.toString());
+        while(!numberStack.isEmpty())
         {
-            lastResult = lastResult * -1;
+            newNumStack.push(numberStack.pop());
         }
+
+        newNumStack.push(function);
+
+        while(!newNumStack.isEmpty())
+        {
+            numberStack.push(newNumStack.pop());
+        }
+
+        Log.d("toggleSign", "Num stack AFTER: " + numberStack.toString());
+        
+        // add the a parenthesis to the start and a parenthesis to the end of the op stack
+        Log.d("toggleSign", "Op stack BEFORE: " + operatorStack.toString());
+
+        while(!operatorStack.isEmpty())
+        {
+            newOpStack.push(operatorStack.pop());
+        }
+
+        newOpStack.push("(");
+
+
+        while(!newOpStack.isEmpty())
+        {
+            operatorStack.push(newOpStack.pop());
+        }
+
+        pushOperator(")");
+
+
+        Log.d("toggleSign", "Op stack AFTER: " + operatorStack.toString());
+
+        // add two 0s to the start and end of the input order
+        Log.d("toggleSign", "Order of Inputs BEFORE adding sign parens: " + orderOfInputs);
+        orderOfInputs.insert(0, "10");
+        Log.d("toggleSign", "Order of Inputs AFTER adding sign parens: " + orderOfInputs);
+
     }
 
     //---------------------------------------------------------------------------
@@ -287,11 +327,11 @@ public class Calculator {
         {
             // there is a cI, so multiply it by e
             pushOperator("*");
-            currentInput.append("P");
+            currentInput.append("π");
 
         } else {
             // there is not a cI so set cI = e
-            currentInput.append("P");
+            currentInput.append("π");
         }
     }
 
@@ -494,12 +534,32 @@ public class Calculator {
             if(newTokens[i].equals("e"))
             {
                 newTokens[i] = String.valueOf(Math.E);
-            } else if(newTokens[i].equals("P"))
+            } else if(newTokens[i].equals("π"))
             {
                 newTokens[i] = String.valueOf(Math.PI);
             }
             if (isNumber(newTokens[i])) {
                 numbers.push(Double.parseDouble(newTokens[i]));
+            } else if(operators.isEmpty() && numbers.isEmpty() && newTokens[i].equals("-"))   // check that its the first thing (aside from other ignored negatives)
+            {
+                if (newTokens[i + 1].equals("-"))
+                {
+                    // ignore both of them (double negative)
+                    i = i + 1;
+                } else if(isNumber(newTokens[i + 1]))
+                {
+                    // handle the negative values first
+                    double value = Double.parseDouble(newTokens[i + 1]);
+
+                    value = applyFunction("-", value);
+
+                    if(value == -0.0)
+                    {
+                        value = 0.0;
+                    }
+                    numbers.push(value);
+                    i = i + 1;
+                }
             } else if (isOperator(newTokens[i])) {
                 // Handle operator precedence
                 while (!operators.isEmpty() && precedence(operators.peek()) >= precedence(newTokens[i])) {
@@ -515,9 +575,10 @@ public class Calculator {
                 }
                 operators.push(newTokens[i]);
             } else if (isFunction(newTokens[i])) {
-                double value = numbers.pop();
+                double value;
                 // Check if it's % and follows +/-, treat it as a percentage of the previous number
                 if ("%".equals(newTokens[i]) && !operators.isEmpty() && (operators.peek().equals("+") || operators.peek().equals("-"))) {
+                    value = numbers.pop();
                     double baseValue = numbers.pop();
                     value = baseValue * (value / 100);
                     if(baseValue == -0.0)
@@ -526,7 +587,15 @@ public class Calculator {
                     }
                     numbers.push(baseValue);  // Push baseValue back for addition/subtraction
                 } else {
-                    value = applyFunction(newTokens[i], value);
+                    if ("%".equals(newTokens[i]))
+                    {
+                        value = applyFunction(newTokens[i], numbers.pop());
+                    }
+                    else
+                    {
+                        value = applyFunction(newTokens[i], Double.parseDouble(newTokens[i + 1]));
+                        i += 1;
+                    }
                 }
                 if(value == -0.0)
                 {
@@ -661,7 +730,26 @@ public class Calculator {
     // checks if the token is a function (unary)
     //---------------------------------------------------------------------------
     private boolean isFunction(String token) {
-        return token.equals("%");   // add other functions as buttons are added
+//        return token.equals("%");   // add other functions as buttons are added
+
+        Set<String> validFunctions = new HashSet<>();
+        validFunctions.add("%");
+        validFunctions.add("sqrt");
+        validFunctions.add("cbrt");
+        validFunctions.add("square");
+        validFunctions.add("cube");
+        validFunctions.add("e^");
+        validFunctions.add("10^");
+        validFunctions.add("sin");
+        validFunctions.add("cos");
+        validFunctions.add("tan");
+        validFunctions.add("sinh");
+        validFunctions.add("cosh");
+        validFunctions.add("tanh");
+        validFunctions.add("log");
+        validFunctions.add("ln");
+
+        return validFunctions.contains(token);
     }
 
     //---------------------------------------------------------------------------
@@ -706,21 +794,43 @@ public class Calculator {
     // computes unary operations (%, square, sqrt, &c.)
     //---------------------------------------------------------------------------
     private Double applyFunction(String function, double value) {
+        Log.d("applyFunction", "Received function: " + function + " and value: " + value);
+
         switch(function) {
             case "%":
                 return value / 100;
+            case "-":   // negative, not minus
+                return value * -1;
+            case "square":
+                return Math.pow(value, 2);
+            case "cube":
+                return Math.pow(value, 3);
+            case "e^":
+                return Math.pow(Math.E, value);
+            case "10^":
+                return Math.pow(10, value);
             case "sqrt":
                 return Math.sqrt(value);
+            case "cbrt":
+                double result = Math.cbrt(value);
+                Log.d("apply CBRT", "Returning the result: " + result);
+                return result;
             case "sin":
                 return Math.sin(Math.toRadians(value));  // Converts degrees to radians if needed
             case "cos":
                 return Math.cos(Math.toRadians(value));  // Converts degrees to radians if needed
             case "tan":
                 return Math.tan(Math.toRadians(value));  // Converts degrees to radians if needed
-            case "x²":
-                return Math.pow(value, 2);
-            case "x³":
-                return Math.pow(value, 3);
+            case "sinh":
+                return Math.sinh(Math.toRadians(value));  // Converts degrees to radians if needed
+            case "cosh":
+                return Math.cosh(Math.toRadians(value));  // Converts degrees to radians if needed
+            case "tanh":
+                return Math.tanh(Math.toRadians(value));  // Converts degrees to radians if needed
+            case "log":
+                return Math.log10(value);
+            case "ln":
+                return Math.log(value);
             default:
                 throw new UnsupportedOperationException("Function not supported: " + function);
         }

@@ -166,15 +166,75 @@ public class CalculatorTest {
     @Test
     public void testToggleSignForSingleNumber()
     {
-        // toggle negative in the middle of a number
+        // toggle negative of just a number
         calculator.inputDigit("4");
-        calculator.inputDigit("5");
-        calculator.inputDigit(".");
+        calculator.pushFunction("-");
+        assertEquals("- ( 4 )", calculator.getFullExpression());
+        assertEquals("-4.0", calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testToggleSignForExpression()
+    {
+        // toggle negative of a whole expression
         calculator.inputDigit("1");
-        calculator.toggleSign();
-        calculator.inputDigit("5");
-        calculator.submitNumber();
-        assertEquals("-45.15", calculator.getNumberStack().peek());
+        calculator.pushOperator("+");
+        calculator.inputDigit("4");
+        calculator.pushFunction("-");
+        assertEquals("- ( 1 + 4 )", calculator.getFullExpression());
+        assertEquals("-5.0", calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testNestedToggleSignForExpression()
+    {
+        // toggle negative of a whole expression
+        calculator.inputDigit("1");
+        calculator.pushOperator("+");
+        calculator.inputDigit("4");
+        calculator.pushFunction("-");
+        calculator.pushFunction("-");
+        assertEquals("- ( - ( 1 + 4 ) )", calculator.getFullExpression());
+        assertEquals("5.0", calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testToggleSignWithExpressionAfter()
+    {
+        // toggle negative of a whole expression
+        calculator.inputDigit("1");
+        calculator.pushOperator("+");
+        calculator.inputDigit("4");
+        calculator.pushFunction("-");
+        calculator.pushOperator("*");
+        calculator.inputDigit("3");
+        assertEquals("- ( 1 + 4 ) * 3", calculator.getFullExpression());
+        assertEquals("-15.0", calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testEmbeddedToggleSignWithExpressionAfter()
+    {
+        // toggle negative of a whole expression
+        calculator.inputDigit("1");
+        calculator.pushOperator("+");
+        calculator.inputDigit("4");
+        calculator.pushFunction("-");
+        calculator.pushOperator("*");
+        calculator.inputDigit("3");
+        calculator.pushFunction("-");
+        assertEquals("- ( - ( 1 + 4 ) * 3 )", calculator.getFullExpression());
+        assertEquals("15.0", calculator.evaluateExpression());
+
+        calculator.clear();
     }
 
     @Test   //specifically tests the functionality of the isEmpty method and that an empty value is not pushed
@@ -1194,7 +1254,9 @@ public class CalculatorTest {
     @Test
     public void testE() {
         calculator.pushE();
-        assertEquals(String.valueOf(Math.E), calculator.evaluateExpression()); // Verify memVar remains unchanged
+        assertEquals(String.valueOf(Math.E), calculator.evaluateExpression());
+
+        calculator.clear();
     }
 
     @Test
@@ -1203,20 +1265,26 @@ public class CalculatorTest {
         calculator.pushE();
         calculator.delete();
         calculator.delete();
-        assertEquals("5.0", calculator.evaluateExpression()); // Verify memVar remains unchanged
+        assertEquals("5.0", calculator.evaluateExpression());
+
+        calculator.clear();
     }
 
     @Test
     public void testPI() {
         calculator.pushPi();
-        assertEquals(String.valueOf(Math.PI), calculator.evaluateExpression()); // Verify memVar remains unchanged
+        assertEquals(String.valueOf(Math.PI), calculator.evaluateExpression());
+
+        calculator.clear();
     }
 
     @Test
     public void testPIWithCI() {
         calculator.inputDigit("5");
         calculator.pushPi();
-        assertEquals(String.valueOf(5 * Math.PI), calculator.evaluateExpression()); // Verify memVar remains unchanged
+        assertEquals(String.valueOf(5 * Math.PI), calculator.evaluateExpression());
+
+        calculator.clear();
     }
 
     @Test
@@ -1225,6 +1293,242 @@ public class CalculatorTest {
         calculator.pushPi();
         calculator.delete();
         calculator.delete();
-        assertEquals("5.0", calculator.evaluateExpression()); // Verify memVar remains unchanged
+        assertEquals("5.0", calculator.evaluateExpression());
+
+        calculator.clear();
     }
+
+    // cant really test rand cause there is no way to know what number was chosen
+
+
+    @Test
+    public void testSquaredSignForSingleNumber()
+    {
+        // toggle negative of just a number
+        calculator.inputDigit("4");
+        calculator.pushFunction("square");
+        assertEquals("square ( 4 )", calculator.getFullExpression());
+        assertEquals("16.0", calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testCubedSignForSingleNumber()
+    {
+        // toggle negative of just a number
+        calculator.inputDigit("4");
+        calculator.pushFunction("cube");
+        assertEquals("cube ( 4 )", calculator.getFullExpression());
+        assertEquals("64.0", calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testERaisedXSignForSingleNumber()
+    {
+        // toggle negative of just a number
+        calculator.inputDigit("4");
+        calculator.pushFunction("e^");
+        assertEquals("e^ ( 4 )", calculator.getFullExpression());
+        assertEquals(String.valueOf(Math.pow(Math.E, 4)), calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void test10RaisedXSignForSingleNumber()
+    {
+        // toggle negative of just a number
+        calculator.inputDigit("4");
+        calculator.pushFunction("10^");
+        assertEquals("10^ ( 4 )", calculator.getFullExpression());
+        assertEquals("10000.0", calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testSinSignForSingleNumber()
+    {
+        // toggle negative of just a number
+        calculator.inputDigit("4");
+        calculator.pushFunction("sin");
+        assertEquals("sin ( 4 )", calculator.getFullExpression());
+        assertEquals(String.valueOf(Math.sin(Math.toRadians(4))), calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testSinhSignForSingleNumber()
+    {
+        // toggle negative of just a number
+        calculator.inputDigit("4");
+        calculator.pushFunction("sinh");
+        assertEquals("sinh ( 4 )", calculator.getFullExpression());
+        assertEquals(String.valueOf(Math.sinh(Math.toRadians(4))), calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testCosSignForSingleNumber()
+    {
+        // toggle negative of just a number
+        calculator.inputDigit("4");
+        calculator.pushFunction("cos");
+        assertEquals("cos ( 4 )", calculator.getFullExpression());
+        assertEquals(String.valueOf(Math.cos(Math.toRadians(4))), calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testCoshSignForSingleNumber()
+    {
+        // toggle negative of just a number
+        calculator.inputDigit("4");
+        calculator.pushFunction("cosh");
+        assertEquals("cosh ( 4 )", calculator.getFullExpression());
+        assertEquals(String.valueOf(Math.cosh(Math.toRadians(4))), calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testTanSignForSingleNumber()
+    {
+        // toggle negative of just a number
+        calculator.inputDigit("4");
+        calculator.pushFunction("tan");
+        assertEquals("tan ( 4 )", calculator.getFullExpression());
+        assertEquals(String.valueOf(Math.tan(Math.toRadians(4))), calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testTanhSignForSingleNumber()
+    {
+        // toggle negative of just a number
+        calculator.inputDigit("4");
+        calculator.pushFunction("tanh");
+        assertEquals("tanh ( 4 )", calculator.getFullExpression());
+        assertEquals(String.valueOf(Math.tanh(Math.toRadians(4))), calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testSqrtSignForSingleNumber()
+    {
+        // toggle negative of just a number
+        calculator.inputDigit("4");
+        calculator.pushFunction("sqrt");
+        assertEquals("sqrt ( 4 )", calculator.getFullExpression());
+        assertEquals(String.valueOf(Math.sqrt(4)), calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testCbrtSignForSingleNumber()
+    {
+        // toggle negative of just a number
+        calculator.inputDigit("4");
+        calculator.pushFunction("cbrt");
+        assertEquals("cbrt ( 4 )", calculator.getFullExpression());
+        assertEquals(String.valueOf(Math.cbrt(4)), calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testLogSignForSingleNumber()
+    {
+        // toggle negative of just a number
+        calculator.inputDigit("4");
+        calculator.pushFunction("log");
+        assertEquals("log ( 4 )", calculator.getFullExpression());
+        assertEquals(String.valueOf(Math.log10(4)), calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testLnSignForSingleNumber()
+    {
+        // toggle negative of just a number
+        calculator.inputDigit("4");
+        calculator.pushFunction("ln");
+        assertEquals("ln ( 4 )", calculator.getFullExpression());
+        assertEquals(String.valueOf(Math.log(4)), calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+//
+//    @Test
+//    public void testToggleSignForExpression()
+//    {
+//        // toggle negative of a whole expression
+//        calculator.inputDigit("1");
+//        calculator.pushOperator("+");
+//        calculator.inputDigit("4");
+//        calculator.pushFunction("-");
+//        assertEquals("- ( 1 + 4 )", calculator.getFullExpression());
+//        assertEquals("-5.0", calculator.evaluateExpression());
+//
+//        calculator.clear();
+//    }
+//
+//    @Test
+//    public void testNestedToggleSignForExpression()
+//    {
+//        // toggle negative of a whole expression
+//        calculator.inputDigit("1");
+//        calculator.pushOperator("+");
+//        calculator.inputDigit("4");
+//        calculator.pushFunction("-");
+//        calculator.pushFunction("-");
+//        assertEquals("- ( - ( 1 + 4 ) )", calculator.getFullExpression());
+//        assertEquals("5.0", calculator.evaluateExpression());
+//
+//        calculator.clear();
+//    }
+//
+//    @Test
+//    public void testToggleSignWithExpressionAfter()
+//    {
+//        // toggle negative of a whole expression
+//        calculator.inputDigit("1");
+//        calculator.pushOperator("+");
+//        calculator.inputDigit("4");
+//        calculator.pushFunction("-");
+//        calculator.pushOperator("*");
+//        calculator.inputDigit("3");
+//        assertEquals("- ( 1 + 4 ) * 3", calculator.getFullExpression());
+//        assertEquals("-15.0", calculator.evaluateExpression());
+//
+//        calculator.clear();
+//    }
+//
+//    @Test
+//    public void testEmbeddedToggleSignWithExpressionAfter()
+//    {
+//        // toggle negative of a whole expression
+//        calculator.inputDigit("1");
+//        calculator.pushOperator("+");
+//        calculator.inputDigit("4");
+//        calculator.pushFunction("-");
+//        calculator.pushOperator("*");
+//        calculator.inputDigit("3");
+//        calculator.pushFunction("-");
+//        assertEquals("- ( - ( 1 + 4 ) * 3 )", calculator.getFullExpression());
+//        assertEquals("15.0", calculator.evaluateExpression());
+//
+//        calculator.clear();
+//    }
+
 }

@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
                 calculator.delete();
                 break;
             case "changeSign":
-                calculator.toggleSign();
+                calculator.pushFunction("-");
                 break;
             case "percent":
                 calculator.pushOperator("%");
@@ -163,6 +163,48 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
                 break;
             case "rightParen":
                 calculator.pushOperator(")");
+                break;
+            case "squared":
+                calculator.pushFunction("square");
+                break;
+            case "cubed":
+                calculator.pushFunction("cube");
+                break;
+            case "eRaisedX":
+                calculator.pushFunction("e^");
+                break;
+            case "tenRaisedX":
+                calculator.pushFunction("10^");
+                break;
+            case "sin":
+                calculator.pushFunction("sin");
+                break;
+            case "cos":
+                calculator.pushFunction("cos");
+                break;
+            case "tan":
+                calculator.pushFunction("tan");
+                break;
+            case "sinh":
+                calculator.pushFunction("sinh");
+                break;
+            case "cosh":
+                calculator.pushFunction("cosh");
+                break;
+            case "tanh":
+                calculator.pushFunction("tanh");
+                break;
+            case "squareRoot":
+                calculator.pushFunction("sqrt");
+                break;
+            case "cubeRoot":
+                calculator.pushFunction("cbrt");
+                break;
+            case "logBase10":
+                calculator.pushFunction("log");
+                break;
+            case "ln":
+                calculator.pushFunction("ln");
                 break;
             default:
                 break;
