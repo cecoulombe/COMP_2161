@@ -123,7 +123,7 @@ public class ScientificFragment extends Fragment {
     private void addScientificButtons(GridLayout layout) {
         // define button ids
         String[][] buttonIdsAndText = {
-                {"leftParen", "rightParen", "squared", "cubed", "eRaisedX", "tenRaisedX" },
+                {"changeSign", "percent", "squared", "cubed", "eRaisedX", "tenRaisedX" },
                 {"raisedToY", "enterExponent", "inverse", "sin", "cos", "tan",},
                 {"squareRoot", "cubeRoot", "yRoot", "sinh", "cosh", "tanh"},
                 {"factorial", "logBase10", "ln", "e", "pi", "rand"},

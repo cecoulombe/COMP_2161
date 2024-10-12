@@ -1,17 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- res/drawable/rounded_button_background.xml -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Set the background color -->
-    <solid android:color="#686868" />
-
-    <!-- Set the corner radius to make the button rounded -->
-    <corners android:radius="50dp" />
-
-    <!-- Optional: Add padding within the button -->
-    <padding
-        android:left="1dp"
-        android:top="1dp"
-        android:right="1dp"
-        android:bottom="1dp" />
-
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- State when pressed -->
+    <item android:state_pressed="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="#4D4D4D" /> <!-- Darker color for pressed state -->
+            <corners android:radius="50dp" /> <!-- Keep the same corner radius -->
+            <padding
+                android:left="1dp"
+                android:top="1dp"
+                android:right="1dp"
+                android:bottom="1dp" />
+        </shape>
+    </item>
+    <!-- State when hovered (focused) -->
+    <item android:state_focused="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="#8A8A8A" /> <!-- Lighter color for hover state -->
+            <corners android:radius="50dp" /> <!-- Keep the same corner radius -->
+            <padding
+                android:left="1dp"
+                android:top="1dp"
+                android:right="1dp"
+                android:bottom="1dp" />
+        </shape>
+    </item>
+    <!-- Default state -->
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="#686868" /> <!-- Default color -->
+            <corners android:radius="50dp" /> <!-- Keep the same corner radius -->
+            <padding
+                android:left="1dp"
+                android:top="1dp"
+                android:right="1dp"
+                android:bottom="1dp" />
+        </shape>
+    </item>
+</selector>

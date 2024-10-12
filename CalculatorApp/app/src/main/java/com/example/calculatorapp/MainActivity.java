@@ -1,7 +1,9 @@
 package com.example.calculatorapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -62,10 +64,25 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
             // Restore other variables
 //            calculator.memVar = savedInstanceState.getString("memVar");
             calculator.isNegative = savedInstanceState.getBoolean("isNegative");
-            calculator.lastResult = savedInstanceState.getDouble("lastResult");
+            calculator.lastResult = savedInstanceState.getString("lastResult");
             calculator.hasResult = savedInstanceState.getBoolean("hasResult");
 
             updateOutput();
+        }
+
+        // Check if the dialog has been shown before
+        SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        boolean hasSeenDialog = prefs.getBoolean("hasSeenDialog", false);
+
+        // Show the dialog if it's the user's first time
+        if (!hasSeenDialog) {
+            FeatureOutlineDialog dialog = new FeatureOutlineDialog();
+            dialog.show(getSupportFragmentManager(), "FeatureOutlineDialog");
+
+            // Update the preference so the dialog isn't shown again
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("hasSeenDialog", true);
+            editor.apply();
         }
     }
 
@@ -171,13 +188,16 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
                 calculator.pushFunction("cube");
                 break;
             case "eRaisedX":
-                calculator.pushFunction("e^");
+                calculator.pushFunction("e ^");
                 break;
             case "raisedToY":
                 calculator.pushOperator("^");
                 break;
             case "tenRaisedX":
-                calculator.pushFunction("10^");
+                calculator.pushFunction("10 ^");
+                break;
+            case "enterExponent":
+                calculator.pushOperator("E");
                 break;
             case "sin":
                 calculator.pushFunction("sin");
@@ -203,14 +223,29 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
             case "cubeRoot":
                 calculator.pushFunction("cbrt");
                 break;
+            case "yRoot":
+                calculator.pushOperator("root");
+                break;
             case "logBase10":
                 calculator.pushFunction("log");
                 break;
             case "ln":
                 calculator.pushFunction("ln");
                 break;
+            case "e":
+                calculator.pushE();
+                break;
+            case "pi":
+                calculator.pushPi();
+                break;
+            case "rand":
+                calculator.pushRand();
+                break;
             case "inverse":
                 calculator.inverse();
+                break;
+            case "factorial":
+                calculator.pushOperator("!");
                 break;
             default:
                 break;
@@ -221,10 +256,18 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
     // updates the textview to show the current operation or result on pressing equal
     private void updateOutput() {
         TextView output  = findViewById(R.id.outputTextview);
+        HorizontalScrollView horizontalScrollView = findViewById(R.id.horizontalScrollView);
 
         String outMsg = calculator.getFullExpression();
 
         output.setText(outMsg);
+        // Force the HorizontalScrollView to scroll to the end
+        horizontalScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                horizontalScrollView.scrollTo(horizontalScrollView.getWidth(), 0);  // Scroll to the end
+            }
+        });
     }
 
     // save relevant data for when the screen rotates
@@ -244,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
         // Save other variables
 //        outState.putString("memVar", calculator.memVar);
         outState.putBoolean("isNegative", calculator.isNegative);
-        outState.putDouble("lastResult", calculator.lastResult);
+        outState.putString("lastResult", calculator.lastResult);
         outState.putBoolean("hasResult", calculator.hasResult);
     }
 }

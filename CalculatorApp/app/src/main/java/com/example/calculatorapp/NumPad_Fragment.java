@@ -173,7 +173,7 @@ public class NumPad_Fragment extends Fragment {
     private void addCalculatorButtons(GridLayout layout) {
         // define button ids
         String[][] buttonIdsAndText = {
-                {"delete", "changeSign", "percent", "divide"},
+                {"delete", "leftParen", "rightParen", "divide"},
                 {"seven", "eight", "nine", "multiply"},
                 {"four", "five", "six", "minus"},
                 {"one", "two", "three", "plus"},

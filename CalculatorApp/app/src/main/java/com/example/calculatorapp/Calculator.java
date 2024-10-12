@@ -5,6 +5,7 @@ import android.widget.Toast;
 import android.content.Context;
 
 import java.util.Arrays;
+import java.util.EmptyStackException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
@@ -15,7 +16,7 @@ public class Calculator {
     Stack<String> operatorStack;    // stores the operators used
     StringBuilder currentInput; // stores previous input from the user after an operator is selected
     boolean isNegative;
-    double lastResult = 0.0;
+    String lastResult = "0.0";
     boolean hasResult = false;
     StringBuilder orderOfInputs;  // will track the order of the inputs where 1 is a number and 0 is an operator.
     String memVar = "";
@@ -66,58 +67,20 @@ public class Calculator {
     // handles the various function buttons
     //---------------------------------------------------------------------------
     public void pushFunction(String function) {
-        Stack<String> newNumStack = new Stack<String>();
-        Stack<String> newOpStack = new Stack<String>();
 
-        if (hasResult) {
-            numberStack.push(String.valueOf(lastResult)); // Push the last result onto the stack
-            orderOfInputs.append("1");
-            currentInput.setLength(0); // Clear current input to prepare for next digit
-            hasResult = false; // Reset the flag
-        }
-
-        // add the a - to the start of the numStack
-        Log.d("pushFunction", "Num stack BEFORE: " + numberStack.toString());
-        while(!numberStack.isEmpty())
+        // add the function and ( to the stacks
+        numberStack.push(function);
+        orderOfInputs.append("1");
+        if(hasResult && isNumber(lastResult))
         {
-            newNumStack.push(numberStack.pop());
+            currentInput.append(lastResult);
+            hasResult = false;
         }
-
-        newNumStack.push(function);
-
-        while(!newNumStack.isEmpty())
-        {
-            numberStack.push(newNumStack.pop());
+        else {
+            hasResult = false;
         }
-
-        Log.d("pushFunction", "Num stack AFTER: " + numberStack.toString());
-        
-        // add the a parenthesis to the start and a parenthesis to the end of the op stack
-        Log.d("pushFunction", "Op stack BEFORE: " + operatorStack.toString());
-
-        while(!operatorStack.isEmpty())
-        {
-            newOpStack.push(operatorStack.pop());
-        }
-
-        newOpStack.push("(");
-
-
-        while(!newOpStack.isEmpty())
-        {
-            operatorStack.push(newOpStack.pop());
-        }
-
-        pushOperator(")");
-
-
-        Log.d("pushFunction", "Op stack AFTER: " + operatorStack.toString());
-
-        // add two 0s to the start and end of the input order
-        Log.d("pushFunction", "Order of Inputs BEFORE adding sign parens: " + orderOfInputs);
-        orderOfInputs.insert(0, "10");
-        Log.d("pushFunction", "Order of Inputs AFTER adding sign parens: " + orderOfInputs);
-
+        operatorStack.push("(");
+        orderOfInputs.append("0");
     }
 
     //---------------------------------------------------------------------------
@@ -149,14 +112,19 @@ public class Calculator {
     // pushes an operator into the operator stack
     //---------------------------------------------------------------------------
     public void pushOperator(String operator) {
-        if (hasResult) {
-            numberStack.push(String.valueOf(lastResult)); // Push the last result onto the stack
+        if (hasResult && isNumber(lastResult)) {
+            Log.d("pushOperator", "lastResult is a number");
+            numberStack.push(lastResult); // Push the last result onto the stack
+            orderOfInputs.append("1");
             currentInput.setLength(0); // Clear current input to prepare for next digit
+            Log.d("pushOperator", "The number stack now is: " + getNumberStack());
             hasResult = false; // Reset the flag
             operatorStack.push(operator);
             orderOfInputs.append("0");
             return;
         }
+
+        Log.d("pushOperator", "lastResult is a NOT number");
 
         // handle negative with the minus sign
         if(operator.equals("-") && (currentInput.length() == 0 || currentInput.charAt(currentInput.length() - 1) == '-'))
@@ -208,7 +176,7 @@ public class Calculator {
     //---------------------------------------------------------------------------
     public void memSave()
     {
-        if(hasResult)
+        if(hasResult && isNumber(lastResult))
         {
             memVar = String.valueOf(lastResult);
             Toast.makeText(context, "Memory saved.", Toast.LENGTH_SHORT).show();
@@ -242,7 +210,11 @@ public class Calculator {
             currentInput.setLength(0);
             currentInput.append(memVar);
             hasResult = false;
-            lastResult = 0;
+            lastResult = "0";
+            Toast.makeText(context, "Memory recalled.", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(context, "Nothing to recall.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -251,11 +223,11 @@ public class Calculator {
     //---------------------------------------------------------------------------
     public void memAdd()
     {
-        if(hasResult && memVar != null && !memVar.isEmpty())
+        if(hasResult && isNumber(lastResult) && memVar != null && !memVar.isEmpty())
         {
             Log.d("memAdd", "Adding something memAdd");
             double currentMem = Double.parseDouble(memVar);
-            currentMem += lastResult;
+            currentMem += Double.parseDouble(lastResult);
             memVar = String.valueOf(currentMem);
             Toast.makeText(context, "Value added to memory.", Toast.LENGTH_SHORT).show();
 
@@ -267,11 +239,11 @@ public class Calculator {
     //---------------------------------------------------------------------------
     public void memSub()
     {
-        if(hasResult && memVar != null && !memVar.isEmpty())
+        if(hasResult && isNumber(lastResult) && memVar != null && !memVar.isEmpty())
         {
             Log.d("memSub", "Subtracting something from memSub");
             double currentMem = Double.parseDouble(memVar);
-            currentMem -= lastResult;
+            currentMem -= Double.parseDouble(lastResult);
             memVar = String.valueOf(currentMem);
             Toast.makeText(context, "Value subtracted from memory.", Toast.LENGTH_SHORT).show();
         }
@@ -287,7 +259,7 @@ public class Calculator {
         operatorStack.push("/");
         orderOfInputs.append("0");
 
-        if (hasResult) {
+        if (hasResult && isNumber(lastResult)) {
             numberStack.push(String.valueOf(lastResult)); // Push the last result onto the stack
             currentInput.setLength(0); // Clear current input to prepare for next digit
             orderOfInputs.append("1");
@@ -364,15 +336,49 @@ public class Calculator {
     // inputs PI
     //---------------------------------------------------------------------------
     public void pushRand() {
+        String randNum = String.valueOf(Math.random());
+
+
+        Log.d("pushRand", "Checking the format of the number");
+        String regex = "^\\d{1,10}(\\.\\d{0,9})?$";
+
+        // If the input is valid and doesn't exceed the max length
+        if (randNum.length() <= 10 && randNum.matches(regex)) {
+            // Valid input, proceed with processing
+            // e.g., update the display or save the input
+            Log.d("pushRand", "Length is ok, letting it through");
+        } else {
+            // Invalid input; truncate it to fit the constraints
+            // Initialize a new input to store the truncated value
+            String truncatedInput = randNum;
+
+            Log.d("pushRand", "Too long... truncating value");
+            // Loop to truncate the least significant digit
+            while (truncatedInput.length() > 10) {
+                // Check if there is a decimal point
+                int decimalIndex = truncatedInput.indexOf('.');
+                if (decimalIndex != -1 && truncatedInput.length() - decimalIndex > 10) {
+                    // If there is a decimal and the total length exceeds, remove the last character
+                    Log.d("pushRand", "Too long... removed a decimal");
+                    truncatedInput = truncatedInput.substring(0, truncatedInput.length() - 1);
+                } else {
+                    // If no decimal or total length is still too long, truncate the last character
+                    Log.d("pushRand", "Too long.. removing a value");
+                    truncatedInput = truncatedInput.substring(0, truncatedInput.length() - 1);
+                }
+            }
+            Log.d("pushRand", "Saving the truncated result: " + truncatedInput);
+            randNum = truncatedInput;
+        }
+
         if(currentInput.length() > 0)
         {
             // there is a cI, so multiply it by e
             pushOperator("*");
-            currentInput.append(String.valueOf(Math.random()));
-
+            currentInput.append(randNum);
         } else {
             // there is not a cI so set cI = e
-            currentInput.append(String.valueOf(Math.random()));
+            currentInput.append(randNum);
         }
     }
 
@@ -421,7 +427,7 @@ public class Calculator {
         // display results if there are any
         if(hasResult)
         {
-            return String.valueOf(lastResult);
+            return lastResult;
         }
 
         // build the expression of inputs
@@ -479,7 +485,7 @@ public class Calculator {
         numberStack.clear();
         operatorStack.clear();
         currentInput.setLength(0);
-        lastResult = 0;
+        lastResult = "0";
         hasResult = false;
         orderOfInputs.setLength(0);
         Log.d("Clear", "Cleared all stacks, input, and results");
@@ -516,15 +522,61 @@ public class Calculator {
         String result = "";
         try {
             result = String.valueOf(evaluate(tokens));
-            lastResult = Double.parseDouble(result); // Store the result after evaluation
-            hasResult = true; // Indicate that we have a result now
         } catch (ArithmeticException e) {
             result = "NaN"; // Handle division by zero, etc.
         } catch (IllegalArgumentException e) {
-            result = "NaN";
+            if(e.equals("Mismatched Parentheses"))
+            {
+                result = "Error: Missing ( or )";
+            }
+            else {
+                result = "NaN"; // Handle division by zero, etc.
+            }
+        } catch (EmptyStackException e) {
+            result = "Invalid";
+        } finally
+        {
+            lastResult = result; // Store the result after evaluation
+            hasResult = true; // There will always be a result, even if its not a good one
         }
 
+        if(isNumber(lastResult))
+        {
+            Log.d("evaluateExpression", "Checking the format of the number");
+            String regex = "^\\d{1,10}(\\.\\d{0,9})?$";
+
+            // If the input is valid and doesn't exceed the max length
+            if (result.length() <= 10 && result.matches(regex)) {
+                // Valid input, proceed with processing
+                // e.g., update the display or save the input
+                Log.d("evaluateExpression", "Length is ok, letting it through");
+            } else {
+                // Invalid input; truncate it to fit the constraints
+                // Initialize a new input to store the truncated value
+                String truncatedInput = result;
+
+                Log.d("evaluateExpression", "Too long... truncating value");
+                // Loop to truncate the least significant digit
+                while (truncatedInput.length() > 10) {
+                    // Check if there is a decimal point
+                    int decimalIndex = truncatedInput.indexOf('.');
+                    if (decimalIndex != -1 && truncatedInput.length() - decimalIndex > 10) {
+                        // If there is a decimal and the total length exceeds, remove the last character
+                        Log.d("evaluateExpression", "Too long... removed a decimal");
+                        truncatedInput = truncatedInput.substring(0, truncatedInput.length() - 1);
+                    } else {
+                        // If no decimal or total length is still too long, truncate the last character
+                        Log.d("evaluateExpression", "Too long.. removing a value");
+                        truncatedInput = truncatedInput.substring(0, truncatedInput.length() - 1);
+                    }
+                }
+                Log.d("evaluateExpression", "Saving the truncated result: " + truncatedInput);
+                result = truncatedInput;
+            }
+        }
         resetState(); // Reset the state after evaluation
+        Log.d("evaluateExpression", "Returning the following result: " + result);
+        lastResult = result;
         return result;
     }
 
@@ -577,7 +629,7 @@ public class Calculator {
             }
             if (isNumber(newTokens[i])) {
                 numbers.push(Double.parseDouble(newTokens[i]));
-            } else if(operators.isEmpty() && numbers.isEmpty() && newTokens[i].equals("-"))   // check that its the first thing (aside from other ignored negatives)
+            } else if((i == 0 || isOperator(newTokens[i - 1])) && newTokens[i].equals("-"))   // check that its the first thing (aside from other ignored negatives)
             {
                 if (newTokens[i + 1].equals("-"))
                 {
@@ -760,7 +812,7 @@ public class Calculator {
     // checks if the token is an operator (binary)
     //---------------------------------------------------------------------------
     private boolean isOperator(String token) {
-        return token.matches("[+*^/\\-]");
+        return token.matches("[+*E^/\\-]") || token.equals("root");
     }
 
     //---------------------------------------------------------------------------
@@ -803,7 +855,10 @@ public class Calculator {
             case "/":
                 return 2;
             case "^":
+            case "root":
                 return 3;
+            case "E":
+                return 4;
             default:
                 return 0;
         }
@@ -829,6 +884,14 @@ public class Calculator {
                 double powResult = Math.pow(left, right);
                 Log.d("applyOp", "Returning result: " + powResult);
                 return powResult;
+            case "E":
+                double EResult = left * Math.pow(10, right);
+                Log.d("applyOp", "Returning result: " + EResult);
+                return EResult;
+            case "root":
+                double rootResult = Math.pow(right, 1 / left);
+                Log.d("applyOp", "Returning result: " + rootResult);
+                return rootResult;
             default:
                 throw new UnsupportedOperationException("Operator not supported: " + op);
         }

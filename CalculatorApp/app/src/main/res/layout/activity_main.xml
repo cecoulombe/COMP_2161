@@ -11,17 +11,32 @@
     android:background="#16171A">
 
     <!--Set up the output display -->
-    <TextView
-        android:id="@+id/outputTextview"
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:text="@string/defaultOutput"
-        android:textSize="70sp"
-        android:textStyle="bold"
-        android:padding="10dp"
-        android:background="#7B9B7B"
-        android:textAlignment="textEnd" />
+        android:fillViewport="true"
+        android:scrollbars="horizontal"
+        android:background="#7B9B7B">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end">
+            <TextView
+                android:id="@+id/outputTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:scrollHorizontally="true"
+                android:text="@string/defaultOutput"
+                android:textSize="70sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:padding="10dp"
+                android:textAlignment="textEnd" />
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/numPadFragCont"

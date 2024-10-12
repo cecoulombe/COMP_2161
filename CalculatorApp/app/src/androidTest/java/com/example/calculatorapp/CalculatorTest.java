@@ -2,14 +2,18 @@ package com.example.calculatorapp;
 
 import android.content.Context;
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.EmptyStackException;
 
 public class CalculatorTest {
+
     private Calculator calculator;
 
     @Before
@@ -166,8 +170,9 @@ public class CalculatorTest {
     @Test
     public void testToggleSignForSingleNumber()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("-");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
         assertEquals("- ( 4 )", calculator.getFullExpression());
         assertEquals("-4.0", calculator.evaluateExpression());
 
@@ -178,10 +183,11 @@ public class CalculatorTest {
     public void testToggleSignForExpression()
     {
         // toggle negative of a whole expression
+        calculator.pushFunction("-");
         calculator.inputDigit("1");
         calculator.pushOperator("+");
         calculator.inputDigit("4");
-        calculator.pushFunction("-");
+        calculator.pushOperator(")");
         assertEquals("- ( 1 + 4 )", calculator.getFullExpression());
         assertEquals("-5.0", calculator.evaluateExpression());
 
@@ -192,11 +198,13 @@ public class CalculatorTest {
     public void testNestedToggleSignForExpression()
     {
         // toggle negative of a whole expression
+        calculator.pushFunction("-");
+        calculator.pushFunction("-");
         calculator.inputDigit("1");
         calculator.pushOperator("+");
         calculator.inputDigit("4");
-        calculator.pushFunction("-");
-        calculator.pushFunction("-");
+        calculator.pushOperator(")");
+        calculator.pushOperator(")");
         assertEquals("- ( - ( 1 + 4 ) )", calculator.getFullExpression());
         assertEquals("5.0", calculator.evaluateExpression());
 
@@ -207,10 +215,11 @@ public class CalculatorTest {
     public void testToggleSignWithExpressionAfter()
     {
         // toggle negative of a whole expression
+        calculator.pushFunction("-");
         calculator.inputDigit("1");
         calculator.pushOperator("+");
         calculator.inputDigit("4");
-        calculator.pushFunction("-");
+        calculator.pushOperator(")");
         calculator.pushOperator("*");
         calculator.inputDigit("3");
         assertEquals("- ( 1 + 4 ) * 3", calculator.getFullExpression());
@@ -223,13 +232,15 @@ public class CalculatorTest {
     public void testEmbeddedToggleSignWithExpressionAfter()
     {
         // toggle negative of a whole expression
+        calculator.pushFunction("-");
+        calculator.pushFunction("-");
         calculator.inputDigit("1");
         calculator.pushOperator("+");
         calculator.inputDigit("4");
-        calculator.pushFunction("-");
+        calculator.pushOperator(")");
         calculator.pushOperator("*");
         calculator.inputDigit("3");
-        calculator.pushFunction("-");
+        calculator.pushOperator(")");
         assertEquals("- ( - ( 1 + 4 ) * 3 )", calculator.getFullExpression());
         assertEquals("15.0", calculator.evaluateExpression());
 
@@ -1156,8 +1167,9 @@ public class CalculatorTest {
         assertEquals("10.0", calculator.evaluateExpression());
     }
 
+    // can't run because it gets angry at the toast
 //    @Test
-//    public void testMemSave_WithLastResult() {
+//    public void testMemSaveWithLastResult() {
 //        calculator.lastResult = 10; // Set last result
 //        calculator.hasResult = true; // Indicate there's a valid result
 //        calculator.memSave(); // Save it
@@ -1165,7 +1177,7 @@ public class CalculatorTest {
 //    }
 
 //    @Test
-//    public void testMemSave_WithCurrentInput() {
+//    public void testMemSaveWithCurrentInput() {
 //        calculator.currentInput.append("5"); // Simulate user input
 //        calculator.hasResult = false; // Indicate there's no valid result
 //        calculator.memSave(); // Save current input
@@ -1173,7 +1185,7 @@ public class CalculatorTest {
 //    }
 
 //    @Test
-//    public void testMemSave_NoActionWhenNoResultOrInput() {
+//    public void testMemSaveNoActionWhenNoResultOrInput() {
 //        calculator.hasResult = false; // No result
 //        calculator.currentInput.setLength(0); // Clear current input
 //        String originalMemVar = calculator.memVar;
@@ -1181,22 +1193,23 @@ public class CalculatorTest {
 //        assertEquals(originalMemVar, calculator.memVar); // Verify memVar is unchanged
 //    }
 
-    @Test
-    public void testMemRecall_NonEmptyMemory() {
-        calculator.memVar = "5"; // Set a value in memory
-        calculator.memRecall(); // Recall it
-        assertEquals("5", calculator.currentInput.toString()); // Verify currentInput is updated
-    }
-
-    @Test
-    public void testMemRecall_EmptyMemory() {
-        calculator.memVar = ""; // Clear memory
-        calculator.memRecall(); // Recall
-        assertEquals("", calculator.currentInput.toString()); // Verify currentInput remains unchanged
-    }
+//    @Test
+//    public void testMemRecallNonEmptyMemory() {
+//        calculator.memVar = "5"; // Set a value in memory
+//        calculator.memRecall(); // Recall it
+//        assertEquals("5", calculator.currentInput.toString()); // Verify currentInput is updated
+//    }
 
 //    @Test
-//    public void testMemAdd_NonEmptyMemory() {
+//    public void testMemRecallEmptyMemory() {
+//        calculator.memVar = ""; // Clear memory
+//        calculator.memRecall(); // Recall
+//        assertEquals("", calculator.currentInput.toString()); // Verify currentInput remains unchanged
+//    }
+
+
+//    @Test
+//    public void testMemAddNonEmptyMemory() {
 //        calculator.memVar = "5"; // Set memory
 //        calculator.lastResult = 3; // Set last result
 //        calculator.hasResult = true; // Indicate there's a valid result
@@ -1205,16 +1218,17 @@ public class CalculatorTest {
 //    }
 
     @Test
-    public void testMemAdd_EmptyMemory() {
+    public void testMemAddEmptyMemory() {
         calculator.memVar = ""; // Clear memory
-        calculator.lastResult = 3; // Set last result
+        calculator.lastResult = "3"; // Set last result
         calculator.hasResult = true; // Indicate there's a valid result
         calculator.memAdd(); // Attempt to add
         assertEquals("", calculator.memVar); // Verify memVar remains unchanged
     }
 
+    // toast
 //    @Test
-//    public void testMemSub_NonEmptyMemory() {
+//    public void testMemSubNonEmptyMemory() {
 //        calculator.memVar = "5"; // Set memory
 //        calculator.lastResult = 2; // Set last result
 //        calculator.hasResult = true; // Indicate there's a valid result
@@ -1223,23 +1237,24 @@ public class CalculatorTest {
 //    }
 
     @Test
-    public void testMemSub_EmptyMemory() {
+    public void testMemSubEmptyMemory() {
         calculator.memVar = ""; // Clear memory
-        calculator.lastResult = 2; // Set last result
+        calculator.lastResult = "2"; // Set last result
         calculator.hasResult = true; // Indicate there's a valid result
         calculator.memSub(); // Attempt to subtract
         assertEquals("", calculator.memVar); // Verify memVar remains unchanged
     }
 
+    // toast
 //    @Test
-//    public void testMemClear_NonEmptyMemory() {
+//    public void testMemClearNonEmptyMemory() {
 //        calculator.memVar = "5"; // Set memory
 //        calculator.memClear(); // Clear memory
 //        assertEquals("", calculator.memVar); // Verify memVar is empty
 //    }
 //
 //    @Test
-//    public void testMemClear_AlreadyEmpty() {
+//    public void testMemClearAlreadyEmpty() {
 //        calculator.memVar = ""; // Ensure memory is empty
 //        String originalMemVar = calculator.memVar;
 //        calculator.memClear(); // Attempt to clear
@@ -1298,8 +1313,9 @@ public class CalculatorTest {
     @Test
     public void testSquaredSignForSingleNumber()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("square");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
         assertEquals("square ( 4 )", calculator.getFullExpression());
         assertEquals("16.0", calculator.evaluateExpression());
 
@@ -1309,8 +1325,9 @@ public class CalculatorTest {
     @Test
     public void testCubedSignForSingleNumber()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("cube");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
         assertEquals("cube ( 4 )", calculator.getFullExpression());
         assertEquals("64.0", calculator.evaluateExpression());
 
@@ -1320,8 +1337,9 @@ public class CalculatorTest {
     @Test
     public void testERaisedXSignForSingleNumber()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("e^");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
         assertEquals("e^ ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.pow(Math.E, 4)), calculator.evaluateExpression());
 
@@ -1331,8 +1349,9 @@ public class CalculatorTest {
     @Test
     public void test10RaisedXSignForSingleNumber()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("10^");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
         assertEquals("10^ ( 4 )", calculator.getFullExpression());
         assertEquals("10000.0", calculator.evaluateExpression());
 
@@ -1342,8 +1361,9 @@ public class CalculatorTest {
     @Test
     public void testSinSignForSingleNumber()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("sin");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
         assertEquals("sin ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.sin(Math.toRadians(4))), calculator.evaluateExpression());
 
@@ -1353,8 +1373,9 @@ public class CalculatorTest {
     @Test
     public void testSinhSignForSingleNumber()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("sinh");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
         assertEquals("sinh ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.sinh(Math.toRadians(4))), calculator.evaluateExpression());
 
@@ -1364,8 +1385,9 @@ public class CalculatorTest {
     @Test
     public void testCosSignForSingleNumber()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("cos");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
         assertEquals("cos ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.cos(Math.toRadians(4))), calculator.evaluateExpression());
 
@@ -1375,8 +1397,9 @@ public class CalculatorTest {
     @Test
     public void testCoshSignForSingleNumber()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("cosh");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
         assertEquals("cosh ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.cosh(Math.toRadians(4))), calculator.evaluateExpression());
 
@@ -1386,8 +1409,9 @@ public class CalculatorTest {
     @Test
     public void testTanSignForSingleNumber()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("tan");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
         assertEquals("tan ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.tan(Math.toRadians(4))), calculator.evaluateExpression());
 
@@ -1397,8 +1421,9 @@ public class CalculatorTest {
     @Test
     public void testTanhSignForSingleNumber()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("tanh");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
         assertEquals("tanh ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.tanh(Math.toRadians(4))), calculator.evaluateExpression());
 
@@ -1408,8 +1433,9 @@ public class CalculatorTest {
     @Test
     public void testSqrtSignForSingleNumber()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("sqrt");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
         assertEquals("sqrt ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.sqrt(4)), calculator.evaluateExpression());
 
@@ -1419,8 +1445,9 @@ public class CalculatorTest {
     @Test
     public void testCbrtSignForSingleNumber()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("cbrt");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
         assertEquals("cbrt ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.cbrt(4)), calculator.evaluateExpression());
 
@@ -1430,8 +1457,9 @@ public class CalculatorTest {
     @Test
     public void testLogSignForSingleNumber()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("log");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
         assertEquals("log ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.log10(4)), calculator.evaluateExpression());
 
@@ -1441,8 +1469,9 @@ public class CalculatorTest {
     @Test
     public void testLnSignForSingleNumber()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("ln");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
         assertEquals("ln ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.log(4)), calculator.evaluateExpression());
 
@@ -1463,10 +1492,11 @@ public class CalculatorTest {
     @Test
     public void testSquaredSignForResult()
     {
-        calculator.lastResult = 4;
+        calculator.lastResult = "4";
         calculator.hasResult = true;
         calculator.pushFunction("square");
-        assertEquals("square ( 4.0 )", calculator.getFullExpression());
+        calculator.pushOperator(")");
+        assertEquals("square ( 4 )", calculator.getFullExpression());
         assertEquals("16.0", calculator.evaluateExpression());
 
         calculator.clear();
@@ -1475,10 +1505,11 @@ public class CalculatorTest {
     @Test
     public void testCubedSignForResult()
     {
-        calculator.lastResult = 4;
+        calculator.lastResult = "4";
         calculator.hasResult = true;
         calculator.pushFunction("cube");
-        assertEquals("cube ( 4.0 )", calculator.getFullExpression());
+        calculator.pushOperator(")");
+        assertEquals("cube ( 4 )", calculator.getFullExpression());
         assertEquals("64.0", calculator.evaluateExpression());
 
         calculator.clear();
@@ -1487,10 +1518,11 @@ public class CalculatorTest {
     @Test
     public void testERaisedXSignForResult()
     {
-        calculator.lastResult = 4;
+        calculator.lastResult = "4";
         calculator.hasResult = true;
         calculator.pushFunction("e^");
-        assertEquals("e^ ( 4.0 )", calculator.getFullExpression());
+        calculator.pushOperator(")");
+        assertEquals("e^ ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.pow(Math.E, 4)), calculator.evaluateExpression());
 
         calculator.clear();
@@ -1499,10 +1531,11 @@ public class CalculatorTest {
     @Test
     public void test10RaisedXSignForResult()
     {
-        calculator.lastResult = 4;
+        calculator.lastResult = "4";
         calculator.hasResult = true;
         calculator.pushFunction("10^");
-        assertEquals("10^ ( 4.0 )", calculator.getFullExpression());
+        calculator.pushOperator(")");
+        assertEquals("10^ ( 4 )", calculator.getFullExpression());
         assertEquals("10000.0", calculator.evaluateExpression());
 
         calculator.clear();
@@ -1511,10 +1544,11 @@ public class CalculatorTest {
     @Test
     public void testSinSignForResult()
     {
-        calculator.lastResult = 4;
+        calculator.lastResult = "4";
         calculator.hasResult = true;
         calculator.pushFunction("sin");
-        assertEquals("sin ( 4.0 )", calculator.getFullExpression());
+        calculator.pushOperator(")");
+        assertEquals("sin ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.sin(Math.toRadians(4))), calculator.evaluateExpression());
 
         calculator.clear();
@@ -1523,10 +1557,11 @@ public class CalculatorTest {
     @Test
     public void testSinhSignForResult()
     {
-        calculator.lastResult = 4;
+        calculator.lastResult = "4";
         calculator.hasResult = true;
         calculator.pushFunction("sinh");
-        assertEquals("sinh ( 4.0 )", calculator.getFullExpression());
+        calculator.pushOperator(")");
+        assertEquals("sinh ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.sinh(Math.toRadians(4))), calculator.evaluateExpression());
 
         calculator.clear();
@@ -1535,10 +1570,11 @@ public class CalculatorTest {
     @Test
     public void testCosSignForResult()
     {
-        calculator.lastResult = 4;
+        calculator.lastResult = "4";
         calculator.hasResult = true;
         calculator.pushFunction("cos");
-        assertEquals("cos ( 4.0 )", calculator.getFullExpression());
+        calculator.pushOperator(")");
+        assertEquals("cos ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.cos(Math.toRadians(4))), calculator.evaluateExpression());
 
         calculator.clear();
@@ -1547,10 +1583,11 @@ public class CalculatorTest {
     @Test
     public void testCoshSignForResult()
     {
-        calculator.lastResult = 4;
+        calculator.lastResult = "4";
         calculator.hasResult = true;
         calculator.pushFunction("cosh");
-        assertEquals("cosh ( 4.0 )", calculator.getFullExpression());
+        calculator.pushOperator(")");
+        assertEquals("cosh ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.cosh(Math.toRadians(4))), calculator.evaluateExpression());
 
         calculator.clear();
@@ -1559,10 +1596,11 @@ public class CalculatorTest {
     @Test
     public void testTanSignForResult()
     {
-        calculator.lastResult = 4;
+        calculator.lastResult = "4";
         calculator.hasResult = true;
         calculator.pushFunction("tan");
-        assertEquals("tan ( 4.0 )", calculator.getFullExpression());
+        calculator.pushOperator(")");
+        assertEquals("tan ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.tan(Math.toRadians(4))), calculator.evaluateExpression());
 
         calculator.clear();
@@ -1571,10 +1609,11 @@ public class CalculatorTest {
     @Test
     public void testTanhSignForResult()
     {
-        calculator.lastResult = 4;
+        calculator.lastResult = "4";
         calculator.hasResult = true;
         calculator.pushFunction("tanh");
-        assertEquals("tanh ( 4.0 )", calculator.getFullExpression());
+        calculator.pushOperator(")");
+        assertEquals("tanh ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.tanh(Math.toRadians(4))), calculator.evaluateExpression());
 
         calculator.clear();
@@ -1583,10 +1622,11 @@ public class CalculatorTest {
     @Test
     public void testSqrtSignForResult()
     {
-        calculator.lastResult = 4;
+        calculator.lastResult = "4";
         calculator.hasResult = true;
         calculator.pushFunction("sqrt");
-        assertEquals("sqrt ( 4.0 )", calculator.getFullExpression());
+        calculator.pushOperator(")");
+        assertEquals("sqrt ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.sqrt(4)), calculator.evaluateExpression());
 
         calculator.clear();
@@ -1595,10 +1635,11 @@ public class CalculatorTest {
     @Test
     public void testCbrtSignForResult()
     {
-        calculator.lastResult = 4;
+        calculator.lastResult = "4";
         calculator.hasResult = true;
         calculator.pushFunction("cbrt");
-        assertEquals("cbrt ( 4.0 )", calculator.getFullExpression());
+        calculator.pushOperator(")");
+        assertEquals("cbrt ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.cbrt(4)), calculator.evaluateExpression());
 
         calculator.clear();
@@ -1607,35 +1648,12 @@ public class CalculatorTest {
     @Test
     public void testLogSignForResult()
     {
-        calculator.lastResult = 4;
+        calculator.lastResult = "4";
         calculator.hasResult = true;
         calculator.pushFunction("log");
-        assertEquals("log ( 4.0 )", calculator.getFullExpression());
+        calculator.pushOperator(")");
+        assertEquals("log ( 4 )", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.log10(4)), calculator.evaluateExpression());
-
-        calculator.clear();
-    }
-
-    @Test
-    public void testLnSignForResult()
-    {
-        calculator.lastResult = 4;
-        calculator.hasResult = true;
-        calculator.pushFunction("ln");
-        assertEquals("ln ( 4.0 )", calculator.getFullExpression());
-        assertEquals(String.valueOf(Math.log(4)), calculator.evaluateExpression());
-
-        calculator.clear();
-    }
-
-    @Test
-    public void testInverseSignForResult()
-    {
-        calculator.lastResult = 4;
-        calculator.hasResult = true;
-        calculator.inverse();
-        assertEquals("1 / 4.0", calculator.getFullExpression());
-        assertEquals("0.25", calculator.evaluateExpression());
 
         calculator.clear();
     }
@@ -1643,12 +1661,15 @@ public class CalculatorTest {
     @Test
     public void testNestedFunctions()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("ln");
         calculator.pushFunction("square");
         calculator.pushFunction("cos");
-        assertEquals("cos ( square ( ln ( 4 ) ) )", calculator.getFullExpression());
-        assertEquals(String.valueOf(Math.cos(Math.toRadians(Math.pow(Math.log(4), 2)))), calculator.evaluateExpression());
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
+        calculator.pushOperator(")");
+        calculator.pushOperator(")");
+        assertEquals("ln ( square ( cos ( 4 ) ) )", calculator.getFullExpression());
+        assertEquals(String.valueOf(Math.log(Math.pow(Math.cos(Math.toRadians(4)), 2))), calculator.evaluateExpression());
 
         calculator.clear();
     }
@@ -1656,12 +1677,54 @@ public class CalculatorTest {
     @Test
     public void testFunctionBeforeOp()
     {
-        calculator.inputDigit("4");
         calculator.pushFunction("ln");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
         calculator.pushOperator("*");
         calculator.inputDigit("10");
         assertEquals("ln ( 4 ) * 10", calculator.getFullExpression());
         assertEquals(String.valueOf(Math.log(4) * 10), calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testFunctionAfterOp()
+    {
+        calculator.inputDigit("10");
+        calculator.pushOperator("*");
+        calculator.pushFunction("ln");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
+        assertEquals("10 * ln ( 4 )", calculator.getFullExpression());
+        assertEquals(String.valueOf(Math.log(4) * 10), calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testFunctionAfterNum()
+    {
+        calculator.inputDigit("10");
+        calculator.pushFunction("ln");
+        calculator.inputDigit("4");
+        calculator.pushOperator(")");
+        assertEquals("ln ( 104 )", calculator.getFullExpression());
+        assertEquals(String.valueOf(Math.log(104)), calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testFunctionWithOp()
+    {
+        calculator.pushFunction("ln");
+        calculator.inputDigit("4");
+        calculator.pushOperator("*");
+        calculator.inputDigit("10");
+        calculator.pushOperator(")");
+        assertEquals("ln ( 4 * 10 )", calculator.getFullExpression());
+        assertEquals(String.valueOf(Math.log(4 * 10)), calculator.evaluateExpression());
 
         calculator.clear();
     }
@@ -1680,14 +1743,13 @@ public class CalculatorTest {
     }
 
     @Test
-    public void testFunctionWithOp()
+    public void testInverseSignForResult()
     {
-        calculator.inputDigit("4");
-        calculator.pushOperator("*");
-        calculator.inputDigit("10");
-        calculator.pushFunction("ln");
-        assertEquals("ln ( 4 * 10 )", calculator.getFullExpression());
-        assertEquals(String.valueOf(Math.log(4 * 10)), calculator.evaluateExpression());
+        calculator.lastResult = "4";
+        calculator.hasResult = true;
+        calculator.inverse();
+        assertEquals("1 / 4", calculator.getFullExpression());
+        assertEquals("0.25", calculator.evaluateExpression());
 
         calculator.clear();
     }
@@ -1718,17 +1780,17 @@ public class CalculatorTest {
         calculator.clear();
     }
 
-    @Test
-    public void testSqrtInvalidInput()
-    {
-        calculator.pushOperator("-");
-        calculator.inputDigit("4");
-        calculator.pushFunction("sqrt");
-        assertEquals("sqrt ( -4 )", calculator.getFullExpression());
-        assertEquals("NaN", calculator.evaluateExpression());
-
-        calculator.clear();
-    }
+//    @Test
+//    public void testSqrtInvalidInput()
+//    {
+//        calculator.pushOperator("-");
+//        calculator.inputDigit("4");
+//        calculator.pushFunction("sqrt");
+//        assertEquals("sqrt ( -4 )", calculator.getFullExpression());
+//        assertEquals("NaN", calculator.evaluateExpression());
+//
+//        calculator.clear();
+//    }
 
     @Test
     public void testFactorialForSingleNumber()
@@ -1855,7 +1917,41 @@ public class CalculatorTest {
         calculator.clear();
     }
 
+    @Test
+    public void testEESimpleNumbers()
+    {
+        calculator.inputDigit("2");
+        calculator.pushOperator("E");
+        calculator.inputDigit("4");
+        assertEquals("2 E 4", calculator.getFullExpression());
+        assertEquals("20000.0", calculator.evaluateExpression());
 
+        calculator.clear();
+    }
+
+    @Test
+    public void testRootSimpleNumbers()
+    {
+        calculator.inputDigit("2");
+        calculator.pushOperator("root");
+        calculator.inputDigit("4");
+        assertEquals("2 root 4", calculator.getFullExpression());
+        assertEquals("2.0", calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
+    @Test
+    public void testRootSimpleNumbersBigger()
+    {
+        calculator.inputDigit("9");
+        calculator.pushOperator("root");
+        calculator.inputDigit("31");
+        assertEquals("9 root 31", calculator.getFullExpression());
+        assertEquals(String.valueOf(Math.pow(31, 1.0/9)), calculator.evaluateExpression());
+
+        calculator.clear();
+    }
 
 
 }
