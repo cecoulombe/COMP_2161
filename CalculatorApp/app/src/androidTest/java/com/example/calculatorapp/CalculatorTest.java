@@ -1953,5 +1953,17 @@ public class CalculatorTest {
         calculator.clear();
     }
 
+    @Test
+    public void testMultiplyBigNumbers()
+    {
+        calculator.inputDigit("33333");
+        calculator.pushOperator("*");
+        calculator.inputDigit("99999");
+        assertEquals("33333 * 99999", calculator.getFullExpression());
+        assertEquals("3,333,266,667", calculator.evaluateExpression());
+
+        calculator.clear();
+    }
+
 
 }

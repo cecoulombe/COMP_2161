@@ -30,7 +30,7 @@
                 android:textColor="@color/black"
                 android:scrollHorizontally="true"
                 android:text="@string/defaultOutput"
-                android:textSize="70sp"
+                android:textSize="60sp"
                 android:textStyle="bold"
                 android:maxLines="1"
                 android:padding="10dp"

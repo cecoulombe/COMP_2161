@@ -1,5 +1,6 @@
 package com.example.calculatorapp;
 
+import android.content.res.Configuration;
 import android.util.Log;
 import android.widget.Toast;
 import android.content.Context;
@@ -7,6 +8,7 @@ import android.content.Context;
 import java.util.Arrays;
 import java.util.EmptyStackException;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.Stack;
 
@@ -339,37 +341,37 @@ public class Calculator {
         String randNum = String.valueOf(Math.random());
 
 
-        Log.d("pushRand", "Checking the format of the number");
-        String regex = "^\\d{1,10}(\\.\\d{0,9})?$";
-
-        // If the input is valid and doesn't exceed the max length
-        if (randNum.length() <= 10 && randNum.matches(regex)) {
-            // Valid input, proceed with processing
-            // e.g., update the display or save the input
-            Log.d("pushRand", "Length is ok, letting it through");
-        } else {
-            // Invalid input; truncate it to fit the constraints
-            // Initialize a new input to store the truncated value
-            String truncatedInput = randNum;
-
-            Log.d("pushRand", "Too long... truncating value");
-            // Loop to truncate the least significant digit
-            while (truncatedInput.length() > 10) {
-                // Check if there is a decimal point
-                int decimalIndex = truncatedInput.indexOf('.');
-                if (decimalIndex != -1 && truncatedInput.length() - decimalIndex > 10) {
-                    // If there is a decimal and the total length exceeds, remove the last character
-                    Log.d("pushRand", "Too long... removed a decimal");
-                    truncatedInput = truncatedInput.substring(0, truncatedInput.length() - 1);
-                } else {
-                    // If no decimal or total length is still too long, truncate the last character
-                    Log.d("pushRand", "Too long.. removing a value");
-                    truncatedInput = truncatedInput.substring(0, truncatedInput.length() - 1);
-                }
-            }
-            Log.d("pushRand", "Saving the truncated result: " + truncatedInput);
-            randNum = truncatedInput;
-        }
+//        Log.d("pushRand", "Checking the format of the number");
+//        String regex = "^\\d{1,15}(\\.\\d{0,9})?$";
+//
+//        // If the input is valid and doesn't exceed the max length
+//        if (randNum.length() <= 15 && randNum.matches(regex)) {
+//            // Valid input, proceed with processing
+//            // e.g., update the display or save the input
+//            Log.d("pushRand", "Length is ok, letting it through");
+//        } else {
+//            // Invalid input; truncate it to fit the constraints
+//            // Initialize a new input to store the truncated value
+//            String truncatedInput = randNum;
+//
+//            Log.d("pushRand", "Too long... truncating value");
+//            // Loop to truncate the least significant digit
+//            while (truncatedInput.length() > 10) {
+//                // Check if there is a decimal point
+//                int decimalIndex = truncatedInput.indexOf('.');
+//                if (decimalIndex != -1 && truncatedInput.length() - decimalIndex > 10) {
+//                    // If there is a decimal and the total length exceeds, remove the last character
+//                    Log.d("pushRand", "Too long... removed a decimal");
+//                    truncatedInput = truncatedInput.substring(0, truncatedInput.length() - 1);
+//                } else {
+//                    // If no decimal or total length is still too long, truncate the last character
+//                    Log.d("pushRand", "Too long.. removing a value");
+//                    truncatedInput = truncatedInput.substring(0, truncatedInput.length() - 1);
+//                }
+//            }
+//            Log.d("pushRand", "Saving the truncated result: " + truncatedInput);
+//            randNum = truncatedInput;
+//        }
 
         if(currentInput.length() > 0)
         {
@@ -398,23 +400,29 @@ public class Calculator {
             return;
         }
 
-        Log.d("delete", "The last char in orderOfInputs was " + orderOfInputs.charAt(orderOfInputs.length() - 1));
-        boolean lastOpIs0 = orderOfInputs.charAt(orderOfInputs.length() - 1) == '0';
-        Log.d("delete", "The last op is 0? " + lastOpIs0);
-
-        if(orderOfInputs.charAt(orderOfInputs.length() - 1) == '0') {
-            Log.d("delete", "The last input is an op");
-            if (!operatorStack.isEmpty()) {
-                operatorStack.pop();
-                orderOfInputs.deleteCharAt(orderOfInputs.length() - 1);
-                Log.d("delete", "Deleted the last operator and shortened the list");
-                if (orderOfInputs.charAt(orderOfInputs.length() - 1) == '1') {
-                    String lastNumber = numberStack.pop();
-                    currentInput.append(lastNumber);
+        if(orderOfInputs.length() > 0)
+        {
+            Log.d("delete", "The last char in orderOfInputs was " + orderOfInputs.charAt(orderOfInputs.length() - 1));
+            boolean lastOpIs0 = orderOfInputs.charAt(orderOfInputs.length() - 1) == '0';
+            Log.d("delete", "The last op is 0? " + lastOpIs0);
+            if(orderOfInputs.charAt(orderOfInputs.length() - 1) == '0') {
+                Log.d("delete", "The last input is an op");
+                if (!operatorStack.isEmpty()) {
+                    operatorStack.pop();
                     orderOfInputs.deleteCharAt(orderOfInputs.length() - 1);
-                    Log.d("delete", "Next input was a num, so moved it over to currentInput");
+                    Log.d("delete", "Deleted the last operator and shortened the list");
+                    if (orderOfInputs.charAt(orderOfInputs.length() - 1) == '1') {
+                        String lastNumber = numberStack.pop();
+                        currentInput.append(lastNumber);
+                        orderOfInputs.deleteCharAt(orderOfInputs.length() - 1);
+                        Log.d("delete", "Next input was a num, so moved it over to currentInput");
+                    }
                 }
             }
+        }
+        else
+        {
+            Log.d("delete", "Nothing to delete.");
         }
     }
 
@@ -521,7 +529,12 @@ public class Calculator {
 
         String result = "";
         try {
-            result = String.valueOf(evaluate(tokens));
+            result = String.format(Locale.US,"%.7g",evaluate(tokens));
+            if (result.contains("e")) {
+                result = result.replace("e", "E"); // Change to uppercase E
+            }
+            result = result.replace("E+", "E"); // Remove the '+' sign before the exponent
+
         } catch (ArithmeticException e) {
             result = "NaN"; // Handle division by zero, etc.
         } catch (IllegalArgumentException e) {
@@ -536,47 +549,12 @@ public class Calculator {
             result = "Invalid";
         } finally
         {
-            lastResult = result; // Store the result after evaluation
+            lastResult = result;
             hasResult = true; // There will always be a result, even if its not a good one
         }
 
-        if(isNumber(lastResult))
-        {
-            Log.d("evaluateExpression", "Checking the format of the number");
-            String regex = "^\\d{1,10}(\\.\\d{0,9})?$";
-
-            // If the input is valid and doesn't exceed the max length
-            if (result.length() <= 10 && result.matches(regex)) {
-                // Valid input, proceed with processing
-                // e.g., update the display or save the input
-                Log.d("evaluateExpression", "Length is ok, letting it through");
-            } else {
-                // Invalid input; truncate it to fit the constraints
-                // Initialize a new input to store the truncated value
-                String truncatedInput = result;
-
-                Log.d("evaluateExpression", "Too long... truncating value");
-                // Loop to truncate the least significant digit
-                while (truncatedInput.length() > 10) {
-                    // Check if there is a decimal point
-                    int decimalIndex = truncatedInput.indexOf('.');
-                    if (decimalIndex != -1 && truncatedInput.length() - decimalIndex > 10) {
-                        // If there is a decimal and the total length exceeds, remove the last character
-                        Log.d("evaluateExpression", "Too long... removed a decimal");
-                        truncatedInput = truncatedInput.substring(0, truncatedInput.length() - 1);
-                    } else {
-                        // If no decimal or total length is still too long, truncate the last character
-                        Log.d("evaluateExpression", "Too long.. removing a value");
-                        truncatedInput = truncatedInput.substring(0, truncatedInput.length() - 1);
-                    }
-                }
-                Log.d("evaluateExpression", "Saving the truncated result: " + truncatedInput);
-                result = truncatedInput;
-            }
-        }
         resetState(); // Reset the state after evaluation
         Log.d("evaluateExpression", "Returning the following result: " + result);
-        lastResult = result;
         return result;
     }
 

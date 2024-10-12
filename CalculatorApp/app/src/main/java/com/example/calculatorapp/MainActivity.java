@@ -1,6 +1,7 @@
 package com.example.calculatorapp;
 
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.HorizontalScrollView;
@@ -12,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.Stack;
 
@@ -152,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
                 calculator.pushOperator("+");
                 break;
             case "equal":
+                int orientation = getResources().getConfiguration().orientation;
                 calculator.evaluateExpression();
                 break;
             case "decimalPoint":
