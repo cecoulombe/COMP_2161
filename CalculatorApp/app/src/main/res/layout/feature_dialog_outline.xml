@@ -5,17 +5,22 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/featureText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/WelcomeMsg"
-        android:textSize="20sp" />
-
-    <Button
-        android:id="@+id/close_button"
-        android:background="@drawable/rounded_button_background_symbols_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="X" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+        <TextView
+            android:id="@+id/featureText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/WelcomeMsg"
+            android:textSize="20sp" />
+    </ScrollView>
+        <Button
+            android:id="@+id/close_button"
+            android:background="@drawable/rounded_button_background_symbols_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X" />
 </LinearLayout>

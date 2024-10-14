@@ -10,6 +10,15 @@
     android:textColor="#000000"
     android:background="#16171A">
 
+
+    <!--  Dropdown menu  -->
+    <Spinner
+        android:id="@+id/mySpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        android:background="#DBDBDB"/>
+
     <!--Set up the output display -->
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView"
@@ -30,7 +39,7 @@
                 android:textColor="@color/black"
                 android:scrollHorizontally="true"
                 android:text="@string/defaultOutput"
-                android:textSize="60sp"
+                android:textSize="50sp"
                 android:textStyle="bold"
                 android:maxLines="1"
                 android:padding="10dp"

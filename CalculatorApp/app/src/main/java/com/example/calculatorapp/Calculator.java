@@ -1,6 +1,5 @@
 package com.example.calculatorapp;
 
-import android.content.res.Configuration;
 import android.util.Log;
 import android.widget.Toast;
 import android.content.Context;
@@ -18,11 +17,12 @@ public class Calculator {
     Stack<String> operatorStack;    // stores the operators used
     StringBuilder currentInput; // stores previous input from the user after an operator is selected
     boolean isNegative;
-    String lastResult = "0.0";
+    String lastResult = "";
     boolean hasResult = false;
     StringBuilder orderOfInputs;  // will track the order of the inputs where 1 is a number and 0 is an operator.
     String memVar = "";
     private Context context; // Declare a Context variable
+    private String spinnerChoice;
 
 
     //---------------------------------------------------------------------------
@@ -38,6 +38,21 @@ public class Calculator {
     }
 
     //---------------------------------------------------------------------------
+    // gets the spinner option from the main activity (setter)
+    //---------------------------------------------------------------------------
+    public void setSpinnerChoice(String spinnerChoice) {
+        this.spinnerChoice = spinnerChoice;
+        Log.d("setSelectedOption", "Spinner updated to be: " + getSpinnerChoice());
+    }
+
+    //---------------------------------------------------------------------------
+    // returns the current spinner options
+    //---------------------------------------------------------------------------
+    public String getSpinnerChoice() {
+        return spinnerChoice;
+    }
+
+    //---------------------------------------------------------------------------
     // method to input a digit or decimal point
     //---------------------------------------------------------------------------
     public void inputDigit(String digit) {
@@ -48,12 +63,7 @@ public class Calculator {
         if(currentInput.length() == 0)
         {
             isNegative = false;
-        } 
-//        else if(digit.equals("-"))
-//        {
-//            isNegative = !isNegative;
-//            Log.d("inputDigit", "Received a negative; the current sign is: " + (isNegative? "positive" : "negative"));
-//        }
+        }
         if(digit.equals("."))
         {
             if(!currentInput.toString().contains("."))
@@ -69,7 +79,11 @@ public class Calculator {
     // handles the various function buttons
     //---------------------------------------------------------------------------
     public void pushFunction(String function) {
-
+        // don't push functions if its in running calculation mode
+        if(getSpinnerChoice().equals("Running Calculations")) {
+            Toast.makeText(context, "Cannot use functions in Running Calculation mode.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         // add the function and ( to the stacks
         numberStack.push(function);
         orderOfInputs.append("1");
@@ -135,7 +149,30 @@ public class Calculator {
             inputDigit("-");
             return;
         }
-        // otherwise, if there is something to submit, then submit it and push the operator
+        // if the user wants the running option, then evaluate whats there and push the result
+        if(getSpinnerChoice().equals("Running Calculations"))
+        {
+            if(isLeftParen(operator) || isRightParen(operator))
+            {
+                // don't push parens or functions in running calc mode
+                Toast.makeText(context, "Cannot use parentheses in Running Calculation mode.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(currentInput.length() > 0 && isOperator(operator))
+            {
+                submitNumber(); // This submits the current input if exists
+                currentInput.append(evaluateExpression());
+                numberStack.push(lastResult); // Push the last result onto the stack
+                orderOfInputs.append("1");
+                currentInput.setLength(0);
+                hasResult = false; // Reset the flag
+                operatorStack.push(operator);
+                orderOfInputs.append("0");
+                return;
+            }
+        }
+
+        // if there is something to submit, then submit it and push the operator
         if(currentInput.length() > 0)
         {
             submitNumber(); // This submits the current input if exists
@@ -535,6 +572,10 @@ public class Calculator {
             }
             result = result.replace("E+", "E"); // Remove the '+' sign before the exponent
 
+            if (result.contains(".")) { // Check if it is a decimal number
+                result = result.replaceAll("\\.?0*$", ""); // Remove trailing zeros after decimal
+            }
+
         } catch (ArithmeticException e) {
             result = "NaN"; // Handle division by zero, etc.
         } catch (IllegalArgumentException e) {
@@ -696,11 +737,6 @@ public class Calculator {
 
         // iterate through the list
 
-        // if its not a left paren, submit it to the newTokens
-        // if its a left paren, then find the right paren
-        // submit the range from left to right paren into evaluate, which will call this recursively
-        // push the result of evaluate onto the tokens
-        // return the newTokens
         for (int i = 0; i < tokens.length; i++) {
             Log.d("evaluateParens", "Looking at the position: " + i + "which is token " + tokens[i]);
             if (isLeftParen(tokens[i])) {

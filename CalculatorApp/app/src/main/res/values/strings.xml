@@ -81,5 +81,11 @@
     <string name="rand">rand</string>
 
     <!--    Welcome message-->
-    <string name="WelcomeMsg">Welcome!\n COMP 2161 Assignment 4, Calculator App\n- Feature of the app include:\n- Basic operations: +, -, *, / and a separate = button\n- Parentheses\n- Delete and clear buttons\n- Memory add, clear, recall, subtract, and add\n- Support for decimal point and negative numbers\n- 2D interface\n- Features exclusive to landscape mode:\n\t- Toggle sign (+/- button)\n\t- Exponent functions\n\t- Logarithmic functions and e\n\t- Trigonometric functions and pi\n\t- Random number between 0 and 1\n\t- Maximum number length is 10 characters</string>
+    <string name="WelcomeMsg">Welcome!\n COMP 2161 Assignment 4, Calculator App\n- Feature of the app include:\n- Basic operations: +, -, *, / and a separate = button\n- Parentheses\n- Delete and clear buttons\n- Memory add, clear, recall, subtract, and add\n- Support for decimal point and negative numbers\n- 2D interface\nMaximum number length is 10 characters, will convert to scientific notation if violated\n- Drop down menu to select mode: running calculations or order of operations (PEMDAS). Default in portrait is running calculation and default in landscape is PEMDAS to allow for function use.\n\nFeatures exclusive to landscape mode:\n\t- Toggle sign (+/- button)\n\t- Exponent functions\n\t- Logarithmic functions and e\n\t- Trigonometric functions and pi\n\t- Random number between 0 and 1</string>
+
+    <!--  Drop down options  -->
+    <string-array name="spinner_items">
+        <item>Running Calculations</item>
+        <item>Order of Operations</item>
+    </string-array>
 </resources>

@@ -4,7 +4,9 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.HorizontalScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -13,12 +15,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.Stack;
 
+import android.view.View;
+import android.widget.AdapterView;
+
 public class MainActivity extends AppCompatActivity implements NumPad_Fragment.OnFragmentInteractionListener, ScientificFragment.OnFragmentInteractionListener {
     private Calculator calculator;
+    private Spinner mySpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +91,48 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
             editor.putBoolean("hasSeenDialog", true);
             editor.apply();
         }
+
+        // set up drop down spinner
+        // Get a reference to the Spinner
+        mySpinner = findViewById(R.id.mySpinner);
+
+        // Create the ArrayAdapter using a resource array
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.spinner_items,
+                R.layout.spinner_item // Use your custom layout here
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mySpinner.setAdapter(adapter);
+
+        // Set the spinner selection initially based on orientation
+        setSpinnerSelectionBasedOnOrientation();
+
+        mySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Get the selected item
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                calculator.setSpinnerChoice(selectedItem); // Send the value to the Calculator
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle the case where nothing is selected
+                String defaultItem = ""; // Variable to hold the default item
+
+                // Determine the default item based on orientation
+                int orientation = getResources().getConfiguration().orientation;
+                if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    defaultItem = parent.getItemAtPosition(1).toString(); // Second item for landscape
+                } else {
+                    defaultItem = parent.getItemAtPosition(0).toString(); // First item for portrait
+                }
+
+                calculator.setSpinnerChoice(defaultItem); // Send the default item to the Calculator
+            }
+        });
+
     }
 
     // global variables for calculator
@@ -254,6 +301,23 @@ public class MainActivity extends AppCompatActivity implements NumPad_Fragment.O
                 break;
         }
         updateOutput();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Recheck the orientation and set the spinner selection accordingly
+        setSpinnerSelectionBasedOnOrientation();
+    }
+
+    // update spinner based on orientation
+    private void setSpinnerSelectionBasedOnOrientation() {
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mySpinner.setSelection(1); // Set to the second item for landscape
+        } else {
+            mySpinner.setSelection(0); // Set to the first item for portrait
+        }
     }
 
     // updates the textview to show the current operation or result on pressing equal
