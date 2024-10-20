@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Passcode label-->
+    <style name="PasscodeTitle">
+        <item name="android:layout_marginBottom">50dp</item>
+        <!--   Text formatting    -->
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">35sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!--Passcode box-->
+    <style name="PasscodeTextview">
+        <item name="android:background">@drawable/passcode_box</item>
+        <item name="android:layout_marginBottom">50dp</item>
+        <item name="android:padding">10dp</item>
+        <!--   Text formatting    -->
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">60sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!--Countdown textview-->
+    <style name="CountdownTextview">
+        <item name="android:layout_marginBottom">50dp</item>
+        <!--   Text formatting    -->
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#DDDDDD</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!--Verify button-->
+    <style name="VerifyButton">
+        <item name="android:layout_marginBottom">50dp</item>
+        <item name="android:background">@drawable/verify_button</item>
+        <item name="android:backgroundTint">@null</item>
+        <!--   Text formatting    -->
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#DDDDDD</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!--Clear button-->
+    <style name="ClearButton">
+        <item name="android:layout_marginTop">50dp</item>
+        <item name="android:layout_marginBottom">50dp</item>
+        <item name="android:background">@drawable/verify_button</item>
+        <item name="android:backgroundTint">@null</item>
+        <!--   Text formatting    -->
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#DDDDDD</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+</resources>

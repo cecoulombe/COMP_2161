@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">SecurityTokenApp</string>
+    <string name="PasscodeTitle">PASSCODE</string>
+    <string name="VerifyButton">VERIFY</string>
+    <string name="PassButton">PASS</string>
+    <string name="DefaultPass">000 000</string>
+    <string name="DefaultCountdown">0 seconds remaining</string>
+    <string name="CountdownMsg">%1$d seconds remaining</string>
+    <string name="UpdateCountMsg">Updating passcode</string>
+    <string name="ClearButton">CLEAR HISTORY</string>
 </resources>
