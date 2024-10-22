@@ -1,8 +1,12 @@
 package com.example.securitytokenapp;
 
+import static com.example.securitytokenapp.MainActivity.KEY_ENTRIES;
+import static com.example.securitytokenapp.MainActivity.PREFS_NAME;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -12,6 +16,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +27,6 @@ public class SecondActivity extends AppCompatActivity {
     private ListView listView;
     private PasscodeAdapter adapter;
     private List<String> entriesList; // Keep a reference to the list
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +61,39 @@ public class SecondActivity extends AppCompatActivity {
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearPasswordEntries(); // Call the method to clear entries
+                entriesList.clear(); // Clear the list
+                adapter.notifyDataSetChanged(); // Notify the adapter about the data change
+                clearPasswordEntries(); // Clear the saved entries in SharedPreferences
             }
+        });
+
+        // button to return to main
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> {
+            // Save the list of password entries before going back
+            savePasswordEntries();
+
+            // Return to MainActivity and finish SecondActivity
+            Intent intent = new Intent(SecondActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+//            finish(); // Close SecondActivity
         });
     }
 
-    private void clearPasswordEntries()
-    {
-        entriesList.clear();
-        adapter.notifyDataSetChanged();
+    private void clearPasswordEntries() {
+        SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(KEY_ENTRIES, null); // Remove the saved entries
+        editor.apply();
+    }
+
+    // Save entries before finishing the activity
+    private void savePasswordEntries() {
+        SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        String json = new Gson().toJson(entriesList);  // Convert the list to JSON
+        editor.putString(KEY_ENTRIES, json);
+        editor.apply();
     }
 }
-

@@ -8,4 +8,5 @@
     <string name="CountdownMsg">%1$d seconds remaining</string>
     <string name="UpdateCountMsg">Updating passcode</string>
     <string name="ClearButton">CLEAR HISTORY</string>
+    <string name="BackButton">&lt; back to passcode</string>
 </resources>
