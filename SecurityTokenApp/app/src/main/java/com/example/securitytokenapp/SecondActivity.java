@@ -1,32 +1,34 @@
 package com.example.securitytokenapp;
 
-import static com.example.securitytokenapp.MainActivity.KEY_ENTRIES;
-import static com.example.securitytokenapp.MainActivity.PREFS_NAME;
-
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SecondActivity extends AppCompatActivity {
-    private ListView listView;
-    private PasscodeAdapter adapter;
-    private List<String> entriesList; // Keep a reference to the list
+    private ArrayAdapter<String> adapter;
+    private boolean isSwitchingActivities = false;
+    private String entry;
+    private boolean justCleared;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,61 +41,146 @@ public class SecondActivity extends AppCompatActivity {
             return insets;
         });
 
-        listView = findViewById(R.id.listview); // Replace with your actual ListView ID
-
-        // Retrieve the string array passed from MainActivity
-        String[] passwordEntries = getIntent().getStringArrayExtra("passwordEntries");
-
-        // Convert the array to a List for the adapter
-        entriesList = new ArrayList<>();
-        if (passwordEntries != null) {
-            for (String entry : passwordEntries) {
-                entriesList.add(entry);
-            }
-        }
-
-        // Create an instance of the PasscodeAdapter
-        adapter = new PasscodeAdapter(this, entriesList);
+        // Initialize the passwordEntries list and adapter
+        List<String> passwordEntries = PasswordManager.getInstance().getEntries();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, passwordEntries);
+        ListView listView = findViewById(R.id.listview);
         listView.setAdapter(adapter);
 
-        // Button to clear entries
-        Button clearButton = findViewById(R.id.clearButton); // Replace with your actual Button ID
-        clearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                entriesList.clear(); // Clear the list
-                adapter.notifyDataSetChanged(); // Notify the adapter about the data change
-                clearPasswordEntries(); // Clear the saved entries in SharedPreferences
-            }
-        });
+        String oldEntry = getEntry();
+        if(!PasswordManager.getInstance().getLoadFLag() && !oldEntry.equals("null"))
+        {
+            // haven't loaded yet so load it and set flag
+            String entry = getEntry();
+            PasswordManager.getInstance().addEntry(entry); // Add the received passcode to the list
+            adapter.notifyDataSetChanged(); // Notify the adapter to refresh the ListView
+            PasswordManager.getInstance().setLoadFlag();
+        }
 
-        // button to return to main
+        // Retrieve the passcode from the Intent
+        justCleared = getClearFlag();
+        int passcode = getIntent().getIntExtra("passcode", -1);
+        String timestamp = getIntent().getStringExtra("timestamp");
+        if (passcode != -1 && timestamp != null) {
+            entry = timestamp + "\n\t" + passcode;
+            Log.d("justClearedTest", "checking if entry is a repeat or it just cleared");
+            if(!entry.equals(getEntry()) || justCleared)
+            {
+                Log.d("justClearedTest", justCleared ? "Just cleared, adding prev entry": "Didn't clear, new code added");
+                justCleared = false;
+                setClearFlag();
+                saveEntry(entry);
+                PasswordManager.getInstance().addEntry(entry); // Add the received passcode to the list
+                adapter.notifyDataSetChanged(); // Notify the adapter to refresh the ListView
+            }
+            else
+            {
+                Log.d("justClearedTest", justCleared ? "Just cleared but entry is a repeat": "Didn't clear and a repeated entry");
+            }
+        } else {
+            Log.d("SecondActivity", "No passcode received.");
+        }
+
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> {
-            // Save the list of password entries before going back
-            savePasswordEntries();
-
-            // Return to MainActivity and finish SecondActivity
+            isSwitchingActivities = true;
             Intent intent = new Intent(SecondActivity.this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
-//            finish(); // Close SecondActivity
+            finish();
+        });
+
+        Button clearButton = findViewById(R.id.clearButton);
+        clearButton.setOnClickListener(v -> {
+            Log.d("ClearButton", "Button was pressed, clearing the list and adding: " + entry);
+            PasswordManager.getInstance().clearEntries();
+            saveEntry(entry);
+            justCleared = true;
+            setClearFlag();
+            adapter.notifyDataSetChanged();
         });
     }
 
-    private void clearPasswordEntries() {
-        SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Update the adapter if the password entries have changed
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(isSwitchingActivities)
+        {
+            // changing activities, save the data
+            Log.d("saving_act2", "App is NOT exiting, just changing activities. Save the data");
+        }
+        else
+        {
+            if (isFinishing())
+            {
+                // app is exiting, clear the data but store entry
+                Log.d("saving_act2", "App is exiting, need to clear and save the final piece of data");
+            }
+            else
+            {
+                Log.d("saving_act2", "Act is NOT exiting, might be a config change");
+                PasswordManager.getInstance().clearEntries();
+            }
+
+        }
+    }
+
+    private void saveEntry(String entry)
+    {
+        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(KEY_ENTRIES, null); // Remove the saved entries
+        editor.putString("entry", entry);
         editor.apply();
     }
 
-    // Save entries before finishing the activity
-    private void savePasswordEntries() {
-        SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+    private void setClearFlag()
+    {
+        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        String json = new Gson().toJson(entriesList);  // Convert the list to JSON
-        editor.putString(KEY_ENTRIES, json);
+        editor.putBoolean("justCleared", justCleared);
         editor.apply();
     }
+
+    private String getEntry()
+    {
+        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        return sharedPref.getString("entry", "null");
+    }
+
+    private Boolean getClearFlag()
+    {
+        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        return sharedPref.getBoolean("justCleared", false);
+    }
+
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        Log.d("configChange_act2", "Changed the orientation of the device");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(isSwitchingActivities)
+        {
+            // changing activities, save the data
+            Log.d("saving_act2", "App is NOT exiting, just changing activities. Save the data");
+        }
+        else
+        {
+            // app is exiting, clear the data but store entry
+            Log.d("saving_act2", "App is exiting, need to clear and save the final piece of data");
+        }
+    }
+
+    // No need for BroadcastReceiver or saving/loading functionality
 }

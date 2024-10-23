@@ -13,6 +13,7 @@ public class TimeTickReceiver extends BroadcastReceiver {
     // define an interface for the listener
     public interface OnTimeTickListener {
         void onMinuteUpdated(int currentMinute);
+        void checkBeforeUpdate();
     }
 
     private OnTimeTickListener listener;
@@ -35,6 +36,7 @@ public class TimeTickReceiver extends BroadcastReceiver {
             // send the current minute to the listener
             if(listener != null)
             {
+                listener.checkBeforeUpdate();
                 listener.onMinuteUpdated(currentMinute);
             }
         }
