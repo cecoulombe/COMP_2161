@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="textColor">#333333</color>
-    <color name="backgroundColor">#F0F0F0</color>
+    <color name="textColor">#F0F0F0</color>
+    <color name="backgroundColor">#333333</color>
     <color name="mainMenuButtonStartPressed">#1A1A1A</color>
     <color name="mainMenuButtonEndPressed">000000</color>
     <color name="mainMenuButtonStartDefault">5C5C5C</color>

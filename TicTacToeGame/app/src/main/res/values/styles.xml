@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="layouts">
+        <item name="android:background">@color/backgroundColor</item>
+        <item name="android:padding">50dp</item>
+    </style>
+    <style name="welcomeMessage">
+        <item name="android:textSize">40sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+    <style name="listButtons">
+        <item name="android:background">@drawable/main_menu_buttons</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+</resources>

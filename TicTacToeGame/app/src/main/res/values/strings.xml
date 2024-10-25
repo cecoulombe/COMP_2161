@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">TicTacToeGame</string>
-    <string name="title_activity_extra_names">ExtraNamesActivity</string>
+    <string name="welcomeMessage">Welcome to\nTic Tac Toe!</string>
+    <string name="EnterNameButton">Enter Name</string>
+    <string name="PlayGameButton">Play New Game</string>
+    <string name="StandingsButton">Standings</string>
 </resources>
