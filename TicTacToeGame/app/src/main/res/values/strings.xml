@@ -4,4 +4,5 @@
     <string name="EnterNameButton">Enter Name</string>
     <string name="PlayGameButton">Play New Game</string>
     <string name="StandingsButton">Standings</string>
+    <string name="settingsButtonDescription">Settings</string>
 </resources>

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -10,5 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/listButtons"
-        android:text="" /> <!-- Text will be set in the adapter -->
+        app:backgroundTint="@null"
+        android:text="" />
 </LinearLayout>

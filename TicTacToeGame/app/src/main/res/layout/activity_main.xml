@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -10,19 +10,40 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/welcomeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/welcomeMessage"
         style="@style/welcomeMessage"
-        android:layout_gravity="center_horizontal">
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
     </TextView>
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:divider="@android:color/transparent"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="50dp"
+        android:dividerHeight="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/welcomeTextView">
     </ListView>
+    <ImageButton
+        android:id="@+id/settings_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_settings"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent"
+        android:layout_marginHorizontal="10dp"
+        android:contentDescription="@string/settingsButtonDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

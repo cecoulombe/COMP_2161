@@ -5,12 +5,15 @@
         <item name="android:padding">50dp</item>
     </style>
     <style name="welcomeMessage">
-        <item name="android:textSize">40sp</item>
+        <item name="android:textSize">50sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
     </style>
     <style name="listButtons">
-        <item name="android:background">@drawable/main_menu_buttons</item>
+        <item name="android:background">@drawable/main_menu_buttons</item> <!-- Ensure this drawable exists -->
+        <item name="android:backgroundTint">@null</item>
         <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

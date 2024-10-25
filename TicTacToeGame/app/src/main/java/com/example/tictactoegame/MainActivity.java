@@ -1,6 +1,9 @@
 package com.example.tictactoegame;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
@@ -44,5 +47,12 @@ public class MainActivity extends AppCompatActivity {
         // Create and set the adapter
         ButtonAdapter adapter = new ButtonAdapter(this, buttonLabels, activities);
         listView.setAdapter(adapter);
+
+        // manage the settings button
+        ImageButton settingButton = findViewById(R.id.settings_button);
+        settingButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
+        });
     }
 }
