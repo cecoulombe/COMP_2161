@@ -4,6 +4,16 @@
         <item name="android:background">@color/backgroundColor</item>
         <item name="android:padding">50dp</item>
     </style>
+    <style name="iconButtons">
+        <item name="android:background">@drawable/icon_buttons</item> <!-- Ensure this drawable exists -->
+        <item name="android:backgroundTint">@null</item>
+
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+
+<!--  Main Activity  -->
     <style name="welcomeMessage">
         <item name="android:textSize">50sp</item>
         <item name="android:textStyle">bold</item>
@@ -15,5 +25,29 @@
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">30sp</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+<!--Enter Name Activity-->
+    <style name="enterNameMsgStyle">
+        <item name="android:textSize">40sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
+    <style name="enterNameEditText">
+        <item name="android:textSize">35sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
+    <style name="saveButton">
+        <item name="android:background">@drawable/main_menu_buttons</item> <!-- Ensure this drawable exists -->
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="existingNamesLabel">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
     </style>
 </resources>

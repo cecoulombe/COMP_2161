@@ -34,11 +34,8 @@
     </ListView>
     <ImageButton
         android:id="@+id/settings_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        style="@style/iconButtons"
         android:src="@drawable/ic_settings"
-        android:scaleType="fitXY"
-        android:background="@android:color/transparent"
         android:layout_marginHorizontal="10dp"
         android:contentDescription="@string/settingsButtonDescription"
         app:layout_constraintEnd_toEndOf="parent"

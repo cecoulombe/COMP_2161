@@ -1,8 +1,15 @@
 <resources>
+    // Main Activity
     <string name="app_name">TicTacToeGame</string>
     <string name="welcomeMessage">Welcome to\nTic Tac Toe!</string>
     <string name="EnterNameButton">Enter Name</string>
     <string name="PlayGameButton">Play New Game</string>
     <string name="StandingsButton">Standings</string>
     <string name="settingsButtonDescription">Settings</string>
+
+    // Enter Names Activity
+    <string name="enterNameMsg">Enter a new player name:</string>
+    <string name="defaultName">name</string>
+    <string name="saveNameButton">SAVE</string>
+    <string name="existingPlayersLabel">Existing players:</string>
 </resources>

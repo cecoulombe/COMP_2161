@@ -5,6 +5,85 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/layouts"
     tools:context=".EnterNamesActivity">
+
+    <ImageButton
+        android:id="@+id/returnToMainButton"
+        style="@style/iconButtons"
+        android:src="@drawable/ic_back"
+        android:layout_margin="20dp"
+        android:contentDescription="@string/settingsButtonDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/enterNameMsgTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enterNameMsg"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/returnToMainButton"
+        style="@style/enterNameMsgStyle">
+    </TextView>
+
+    <EditText
+        android:id="@+id/enterNameEditText"
+        style="@style/enterNameEditText"
+        android:autofillHints=""
+        android:hint="@string/defaultName"
+        android:inputType="textCapSentences"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/enterNameMsgTextView">
+    </EditText>
+
+    <Button
+        android:id="@+id/saveNameButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/main_menu_buttons"
+        style="@style/saveButton"
+        app:backgroundTint="@null"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/saveNameButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/enterNameEditText">
+    </Button>
+    <TextView
+        android:id="@+id/existingPlayersLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/existingPlayersLabel"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/saveNameButton"
+        style="@style/existingNamesLabel">
+    </TextView>
+    <ListView
+        android:id="@+id/existingPlayersListView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enterNameMsg"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="20dp"
+        android:scrollbars="vertical"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/existingPlayersLabel">
+    </ListView>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
