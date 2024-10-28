@@ -4,6 +4,10 @@
         <item name="android:background">@color/backgroundColor</item>
         <item name="android:padding">50dp</item>
     </style>
+    <style name="listLayouts">
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textSize">16dp</item>
+    </style>
     <style name="iconButtons">
         <item name="android:background">@drawable/icon_buttons</item> <!-- Ensure this drawable exists -->
         <item name="android:backgroundTint">@null</item>
@@ -49,5 +53,18 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
+
+    <!--Show Standings Activity-->
+    <style name="showStandingsMsgStyle">
+        <item name="android:textSize">35sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
+
+    <!-- Settings Activity -->
+    <style name="CustomPreference" parent="Preference">
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:titleTextColor">@color/textColor</item>
     </style>
 </resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="YourCustomStyleable">
+        <attr name="textColor" format="color" />
+        <attr name="headerBackground" format="color" />
+        <attr name="mainMenuButtonStartPressed" format="color" />
+        <attr name="mainMenuButtonEndPressed" format="color" />
+        <attr name="mainMenuButtonStartDefault" format="color" />
+        <attr name="mainMenuButtonEndDefault" format="color" />
+    </declare-styleable>
+</resources>

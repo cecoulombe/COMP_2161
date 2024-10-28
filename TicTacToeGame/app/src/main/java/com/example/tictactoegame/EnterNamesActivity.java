@@ -111,7 +111,7 @@ public class EnterNamesActivity extends AppCompatActivity {
         List<String> playerNames = manager.getPlayerNames();
 
         // set up an array adapter for the listview
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, playerNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item_enter_names, playerNames);
         listView.setAdapter(adapter);
     }
 

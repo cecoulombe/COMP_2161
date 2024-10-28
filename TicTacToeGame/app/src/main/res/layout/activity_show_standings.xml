@@ -3,8 +3,77 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    style="@style/layouts"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ShowStandingsActivity">
 
+    <ImageButton
+        android:id="@+id/returnToMainButton"
+        style="@style/iconButtons"
+        android:src="@drawable/ic_back"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/returnButtonDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/returnToMainButton">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/showStandingsMsgStyle"
+            android:text="@string/standingsMsg"
+            android:paddingBottom="20dp"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableLayout
+                android:id="@+id/standingsTableLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <!-- Table Header Row -->
+                <TableRow android:background="@color/headerBackground">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/textColor"
+                        android:text="@string/playerNameHeader"
+                        android:padding="8dp"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/textColor"
+                        android:text="@string/gamesPlayedHeader"
+                        android:padding="8dp"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/textColor"
+                        android:text="@string/gamesWonHeader"
+                        android:padding="8dp"/>
+                    <!-- Percent Column Header -->
+                    <TextView
+                        android:id="@+id/winPercentHeader"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/textColor"
+                        android:text="@string/winPercentHeader"
+                        android:padding="8dp"/>
+                </TableRow>
+
+                <!-- Data Rows will be added dynamically here -->
+
+            </TableLayout>
+        </ScrollView>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

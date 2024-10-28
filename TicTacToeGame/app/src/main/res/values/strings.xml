@@ -1,5 +1,5 @@
 <resources>
-    // Main Activity
+    <!--    Main Activity   -->
     <string name="app_name">TicTacToeGame</string>
     <string name="welcomeMessage">Welcome to\nTic Tac Toe!</string>
     <string name="EnterNameButton">Enter Name</string>
@@ -7,9 +7,32 @@
     <string name="StandingsButton">Standings</string>
     <string name="settingsButtonDescription">Settings</string>
 
-    // Enter Names Activity
+    <!--    Enter Names Activity    -->
     <string name="enterNameMsg">Enter a new player name:</string>
+    <string name="returnButtonDescription">Return to main menu</string>
     <string name="defaultName">name</string>
     <string name="saveNameButton">SAVE</string>
     <string name="existingPlayersLabel">Existing players:</string>
+
+    <!--    Show Standings Activity    -->
+    <string name="standingsMsg">Player standings:</string>
+    <string name="playerNameHeader">Name</string>
+    <string name="gamesPlayedHeader">Games</string>
+    <string name="gamesWonHeader">Wins</string>
+    <string name="winPercentHeader">Win %</string>
+
+    <!-- Settings Fragment -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="darkModeTitle">Enable Dark Mode</string>
+    <string name="winPercentTitle">Show Win Percentage</string>
+    <string name="winRateInGameTitle">Show Win Rate in Game</string>
+    <string name="timeLimitTitle">Enable Time Limit for Moves</string>
+    <string name="timerEditTextTitle">Player Turn Countdown</string>
+    <string name="darkModeSummary">Switches the app to dark mode</string>
+    <string name="winPercentSummary">Displays player win percentage in standings</string>
+    <string name="winRateInGameSummary">Displays player win rate in the game</string>
+    <string name="timeLimitSummary">Adds a timer to player moves</string>
+    <string name="timerEditTextSummary">Click here to set the countdown time in seconds for each player\'s turn</string>
+
+
 </resources>

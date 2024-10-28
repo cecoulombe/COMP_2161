@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/xml/preferences.xml -->
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreferenceCompat
+        android:key="dark_mode"
+        android:title="@string/darkModeTitle"
+        android:summary="@string/darkModeSummary"
+        android:defaultValue="false"/>
+
+    <SwitchPreferenceCompat
+        android:key="win_percentage"
+        android:title="@string/winPercentTitle"
+        android:defaultValue="false"
+        android:summary="@string/winPercentSummary"/>
+
+    <SwitchPreferenceCompat
+        android:key="show_win_rate"
+        android:title="@string/winRateInGameTitle"
+        android:defaultValue="false"
+        android:summary="@string/winRateInGameSummary"/>
+    <SwitchPreferenceCompat
+        android:key="time_limit"
+        android:title="@string/timeLimitTitle"
+        android:defaultValue="false"
+        android:summary="@string/timeLimitSummary"/>
+
+    <EditTextPreference
+        android:key="turn_countdown_seconds"
+        android:title="Player Turn Countdown"
+        android:summary="@string/timerEditTextSummary"
+        android:defaultValue="30"
+        android:inputType="number"/>
+
+    <!-- Add more preferences here -->
+</androidx.preference.PreferenceScreen>
