@@ -14,22 +14,14 @@
         android:summary="@string/winPercentSummary"/>
 
     <SwitchPreferenceCompat
-        android:key="show_win_rate"
-        android:title="@string/winRateInGameTitle"
-        android:defaultValue="false"
-        android:summary="@string/winRateInGameSummary"/>
+        android:key="show_stats"
+        android:title="@string/statsInGameTitle"
+        android:defaultValue="true"
+        android:summary="@string/statsInGameSummary"/>
     <SwitchPreferenceCompat
-        android:key="time_limit"
-        android:title="@string/timeLimitTitle"
-        android:defaultValue="false"
-        android:summary="@string/timeLimitSummary"/>
-
-    <EditTextPreference
-        android:key="turn_countdown_seconds"
-        android:title="Player Turn Countdown"
-        android:summary="@string/timerEditTextSummary"
-        android:defaultValue="30"
-        android:inputType="number"/>
+        android:key="ai_delay"
+        android:title="@string/aiDelayTitle"
+        android:defaultValue="true"/>
 
     <!-- Add more preferences here -->
 </androidx.preference.PreferenceScreen>

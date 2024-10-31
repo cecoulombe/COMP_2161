@@ -1,0 +1,16 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Horizontal Divider for Rows 1 and 2 -->
+    <item>
+        <shape android:shape="rectangle">
+            <size android:width="2dp" android:height="0dp"/>
+            <solid android:color="@color/textColor"/>
+        </shape>
+    </item>
+    <!-- Vertical Divider for Columns 1 and 2 -->
+    <item>
+        <shape android:shape="rectangle">
+            <size android:width="0dp" android:height="2dp"/>
+            <solid android:color="@android:color/darker_gray"/>
+        </shape>
+    </item>
+</layer-list>

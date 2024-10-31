@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class PlayerManager {
     private SharedPreferences prefs;
+    private Gson gson = new Gson();
 
 
     public PlayerManager(SharedPreferences prefs)
@@ -31,5 +32,23 @@ public class PlayerManager {
         }
 
         return playerNames;
+    }
+
+
+    // Retrieve player by name
+    public Player getPlayerByName(String name) {
+        String json = prefs.getString(name, null);
+        if (json != null) {
+            return gson.fromJson(json, Player.class);
+        }
+        return null; // Returns null if player not found
+    }
+
+    // Save player to SharedPreferences
+    public void savePlayer(Player player) {
+        SharedPreferences.Editor editor = prefs.edit();
+        String json = gson.toJson(player);
+        editor.putString(player.getName(), json);
+        editor.apply();
     }
 }

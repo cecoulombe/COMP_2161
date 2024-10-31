@@ -1,7 +1,7 @@
 <resources>
     <!--    Main Activity   -->
     <string name="app_name">TicTacToeGame</string>
-    <string name="welcomeMessage">Welcome to\nTic Tac Toe!</string>
+    <string name="welcomeMessage">Welcome to Tic Tac Toe!</string>
     <string name="EnterNameButton">Enter Name</string>
     <string name="PlayGameButton">Play New Game</string>
     <string name="StandingsButton">Standings</string>
@@ -20,19 +20,33 @@
     <string name="gamesPlayedHeader">Games</string>
     <string name="gamesWonHeader">Wins</string>
     <string name="winPercentHeader">Win %</string>
+    <string name="lastTimeHeader">Last Game</string>
 
     <!-- Settings Fragment -->
+    <string name="resetStatsTitle">Reset player stats</string>
+    <string name="resetStatsSummary">Are you sure you want to reset the player stats? This action will reset all player stats to 0 games and 0 wins</string>
+    <string name="resetPlayerListTitle">Clear player list</string>
+    <string name="resetPlayerListSummary">Are you sure you want to delete all player information? This will delete all players and associated data</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="darkModeTitle">Enable Dark Mode</string>
     <string name="winPercentTitle">Show Win Percentage</string>
-    <string name="winRateInGameTitle">Show Win Rate in Game</string>
-    <string name="timeLimitTitle">Enable Time Limit for Moves</string>
-    <string name="timerEditTextTitle">Player Turn Countdown</string>
+    <string name="statsInGameTitle">Show Stats in Game</string>
+    <string name="aiDelayTitle">Give the AI a delay</string>
     <string name="darkModeSummary">Switches the app to dark mode</string>
     <string name="winPercentSummary">Displays player win percentage in standings</string>
-    <string name="winRateInGameSummary">Displays player win rate in the game</string>
-    <string name="timeLimitSummary">Adds a timer to player moves</string>
-    <string name="timerEditTextSummary">Click here to set the countdown time in seconds for each player\'s turn</string>
+    <string name="statsInGameSummary">Displays player statistics in the game</string>
+    <string name="aiDelaySummary">Creates an artificial 1 second delay before the AI moves to simulate thinking</string>
 
-
+    <!--  Play Game Activity  -->
+    <string name="playGameMsg">Tic Tac Toe!</string>
+    <string name="player1Prompt">Player 1</string>
+    <string name="player2Prompt">Player 2</string>
+    <string name="playerTurnPrompt">%1$s\'s turn</string>
+    <string name="winnerMsg">%1$s\ wins!</string>
+    <string name="startButton">Press to start game</string>
+    <string name="drawMsg">Its a draw!</string>
+    <string name="newGameButton">Press to play a new game!</string>
 </resources>

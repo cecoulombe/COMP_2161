@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/layouts">
+
+    <ImageButton
+        android:id="@+id/returnToMainButton"
+        style="@style/iconButtons"
+        android:src="@drawable/ic_back"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/returnButtonDescription"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"/>
+
+    <FrameLayout
+        android:id="@+id/settings_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@id/returnToMainButton"/>
+
+    <Button
+        android:id="@+id/resetStatsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/resetButton"
+        app:background="@null"
+        android:layout_marginTop="30dp"
+        android:text="@string/resetStatsTitle"
+        android:layout_below="@id/returnToMainButton"
+        android:layout_toEndOf="@id/settings_container"/>
+
+    <Button
+        android:id="@+id/clearPlayersButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/resetButton"
+        app:background="@null"
+        android:text="@string/resetStatsTitle"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@id/settings_container"
+        android:layout_below="@id/resetStatsButton"/>
+
+</RelativeLayout>
+

@@ -83,6 +83,10 @@ public class ShowStandingsActivity extends AppCompatActivity {
         if (isWinPercentageVisible()) {
             headerRow.addView(createTextView(getResources().getString(R.string.winPercentHeader), true, TableRow.LayoutParams.WRAP_CONTENT));
         }
+
+        // add date and time after win % if visible
+        headerRow.addView(createTextView(getResources().getString(R.string.lastTimeHeader), true, TableRow.LayoutParams.WRAP_CONTENT));
+
         standingsTableLayout.addView(headerRow);
 
         // Create rows for each player
@@ -101,6 +105,9 @@ public class ShowStandingsActivity extends AppCompatActivity {
                         : 0;
                 row.addView(createTextView(String.format(Locale.CANADA,"%.2f%%", winPercentage), false, TableRow.LayoutParams.WRAP_CONTENT));
             }
+
+            // add the last time after the win percent (if visible)
+            row.addView(createTextView(player.getTime(), false, TableRow.LayoutParams.WRAP_CONTENT));
 
             standingsTableLayout.addView(row);
         }

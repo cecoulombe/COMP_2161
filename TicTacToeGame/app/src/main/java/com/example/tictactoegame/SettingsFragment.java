@@ -2,7 +2,9 @@ package com.example.tictactoegame;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
@@ -19,14 +21,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
 
-        countdownPreference = findPreference("turn_countdown_seconds");
-        enableCountdownSwitch = findPreference("enable_countdown");
-
-        // Initialize countdown preference state based on the switch
-        if (enableCountdownSwitch != null && countdownPreference != null) {
-            countdownPreference.setEnabled(enableCountdownSwitch.isChecked());
-        }
-
         // Manage dark mode toggle
         SwitchPreferenceCompat darkModeSwitch = findPreference("dark_mode");
         if (darkModeSwitch != null) {
@@ -34,14 +28,39 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 @Override
                 public boolean onPreferenceChange(Preference pref, Object newValue) {
                     boolean isDarkMode = (boolean) newValue;
-
-                    // Apply the theme change
                     applyTheme(isDarkMode);
                     return true;
                 }
             });
         }
+
+        // Manage show_stats toggle
+        SwitchPreferenceCompat showStatsSwitch = findPreference("show_stats");
+        if (showStatsSwitch != null) {
+            showStatsSwitch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference pref, Object newValue) {
+                    boolean showStats = (boolean) newValue;
+                    Log.d("SettingsFragment", "show_stats changed to: " + showStats);
+                    return true; // Update the preference state
+                }
+            });
+        }
+
+        // Manage AI delay toggle
+        SwitchPreferenceCompat aiDelaySwitch = findPreference("ai_delay");
+        if (aiDelaySwitch != null) {
+            aiDelaySwitch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference pref, Object newValue) {
+                    boolean aiDelayEnabled = (boolean) newValue;
+                    Log.d("SettingsFragment", "AI Delay enabled: " + aiDelayEnabled);
+                    return true; // Update the preference state
+                }
+            });
+        }
     }
+
 
     // changes the theme based on the switch in the settings menu
     private void applyTheme(boolean isDarkMode) {
@@ -62,16 +81,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if ("enable_countdown".equals(key)) {
-            boolean isEnabled = sharedPreferences.getBoolean(key, false);
-            if (countdownPreference != null) {
-                countdownPreference.setEnabled(isEnabled);
-            }
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
@@ -81,5 +90,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public void onPause() {
         super.onPause();
         getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String s) {
+        if ("show_stats".equals(s)) {
+            boolean showStatsEnabled = sharedPreferences.getBoolean(s, true); // Default is true
+            Log.d("SettingsFragment", "Show Stats changed to: " + showStatsEnabled);
+        }
     }
 }

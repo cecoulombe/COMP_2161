@@ -1,5 +1,6 @@
 package com.example.tictactoegame;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.preference.PreferenceManager;
 
 import com.example.tictactoegame.ButtonAdapter;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -60,6 +62,13 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
         });
+
+        // creates the android
+        if(!androidExists(this, "Android"))
+        {
+            Player android = new Player("Android", 0, 0);
+            saveAndroid(this, android);
+        }
     }
 
     // checks the user prefs and determines whether or not the app should be in dark mode. Applies any changes
@@ -76,5 +85,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_main);
+    }
+
+    // checks if the android has already been created
+    private boolean androidExists(Context context, String name)
+    {
+        SharedPreferences prefs = context.getSharedPreferences("PlayerData", Context.MODE_PRIVATE);
+        return prefs.contains(name);
+    }
+
+    // creates a new android player (will only run on first launch or when the app data is reset)
+    private void saveAndroid(Context context, Player player)
+    {
+        SharedPreferences prefs = context.getSharedPreferences("PlayerData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(player);
+        editor.putString(player.getName(), json);
+        editor.apply();
     }
 }
