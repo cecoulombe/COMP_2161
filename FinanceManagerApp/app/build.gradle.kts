@@ -1,5 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
+
+    // from the firebase set up
+//    id("com.android.application")
+    // google service gradle plugin
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -40,4 +45,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
 }

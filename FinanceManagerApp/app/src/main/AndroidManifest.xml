@@ -13,6 +13,21 @@
         android:theme="@style/Theme.FinanceManagerApp"
         tools:targetApi="31">
         <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GoalTrackerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NetWorthCalculator"
+            android:exported="false" />
+        <activity
+            android:name=".AccountManagerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WelcomePageActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

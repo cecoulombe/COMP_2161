@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="textColor">#282C35</color>
+    <color name="backgroundColor">#DEDEEB</color>
+    <color name="headerBackground">#9495A9</color>
+    <color name="mainMenuButtonStartPressed">#1A1A1A</color>
+    <color name="mainMenuButtonEndPressed">#000012</color>
+    <color name="mainMenuButtonStartDefault">#4C4D5B</color>
+    <color name="mainMenuButtonEndDefault">#2F303A</color>
 </resources>
