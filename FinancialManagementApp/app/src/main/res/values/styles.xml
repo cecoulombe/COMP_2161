@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="layoutStyle">
+        <item name="android:background">@color/backgroundColor</item>
+        <item name="android:padding">50dp</item>
+    </style>
+    <style name="appTitleStyle">
+        <item name="android:textSize">35sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
+    <style name="noAccountTextStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
+    <style name="signInButton">
+        <item name="android:background">@drawable/sign_in_button</item> <!-- Ensure this drawable exists -->
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="signUpButton">
+        <item name="android:background">@drawable/sign_in_button</item> <!-- Ensure this drawable exists -->
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+</resources>

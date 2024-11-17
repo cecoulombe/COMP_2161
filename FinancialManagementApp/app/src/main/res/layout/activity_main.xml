@@ -1,19 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/layoutStyle"
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/appTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        style="@style/appTitleStyle"
+        android:text="@string/appTitleLabel"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <EditText
+        android:id="@+id/emailInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/emailInputHint"
+        android:layout_below="@id/appTitleTextView"/>
+
+    <EditText
+        android:id="@+id/passwordInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/passwordInputHint"
+        android:layout_below="@id/emailInput"
+        android:layout_marginVertical="15dp" />
+
+    <Button
+        android:id="@+id/signInButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/signInButtonText"
+        android:layout_below="@id/passwordInput"
+        android:layout_alignEnd="@id/passwordInput"
+        style="@style/signInButton"
+        app:backgroundTint="@null"/>
+
+    <TextView
+        android:id="@+id/noAccountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/noAccountLabel"
+        android:layout_below="@id/signInButton"
+        style="@style/noAccountTextStyle"/>
+
+    <Button
+        android:id="@+id/signUpButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/signUpButtonText"
+        android:layout_below="@id/noAccountTextView"
+        android:layout_alignStart="@id/noAccountTextView"
+        style="@style/signUpButton"
+        app:backgroundTint="@null"/>
+
+
+</RelativeLayout>
