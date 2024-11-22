@@ -73,4 +73,72 @@
             />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/signOutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/activitySelectionButtonStyle"
+        app:backgroundTint="@null"
+        android:text="@string/signOutButton"
+        android:maxLines="2"
+        android:layout_margin="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+<!--  Guidelines for contraints  -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorizontalTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorizontalBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerticalLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerticalRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <TextView
+        android:id="@+id/welcomeTextView"
+        style="@style/appTitleStyle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text=""
+        android:layout_marginVertical="10dp"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
+        app:layout_constraintTop_toBottomOf="@id/guidelineHorizontalTop"
+        app:layout_constraintBottom_toTopOf="@id/instructionsTextView"/>
+
+    <TextView
+        android:id="@+id/instructionsTextView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/welcomeInstructions"
+        style="@style/welcomeInstructionsTextStyle"
+        android:layout_marginVertical="10dp"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
+        app:layout_constraintTop_toBottomOf="@id/welcomeTextView"
+        app:layout_constraintBottom_toTopOf="@id/guidelineHorizontalBottom"/>
+
+
+
+    <!--  TODO: add textview for welcome message and for instructions  -->
+<!--  TODO: try to figure out the fucking guidelines  -->
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -8,61 +8,117 @@
     style="@style/layoutStyle"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/appTitleTextView"
+    <!--  Guidelines for constraints  -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorizontalTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="50dp"
-        android:layout_marginTop="50dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorizontalBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerticalLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerticalRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <TextView
+        android:id="@+id/appTitleTextView"
         style="@style/appTitleStyle"
-        android:text="@string/appTitleLabel"/>
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/appTitleLabel"
+        android:layout_marginVertical="10dp"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
+        app:layout_constraintTop_toBottomOf="@id/guidelineHorizontalTop"
+        app:layout_constraintBottom_toTopOf="@id/instructionsTextView"/>
+
+    <TextView
+        android:id="@+id/instructionsTextView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/instructionsLabel"
+        style="@style/instructionsTextStyle"
+        android:layout_marginVertical="10dp"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
+        app:layout_constraintTop_toBottomOf="@id/appTitleTextView"
+        app:layout_constraintBottom_toTopOf="@id/emailInput"/>
+
 
     <EditText
         android:id="@+id/emailInput"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:hint="@string/emailInputHint"
-        android:layout_marginHorizontal="50dp"
-        android:layout_below="@id/appTitleTextView"/>
+        android:layout_marginVertical="10dp"
+        android:inputType="textEmailAddress"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
+        app:layout_constraintTop_toBottomOf="@id/instructionsTextView"
+        app:layout_constraintBottom_toTopOf="@id/passwordInput"/>
 
     <EditText
         android:id="@+id/passwordInput"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:hint="@string/passwordInputHint"
-        android:layout_marginHorizontal="50dp"
-        android:layout_below="@id/emailInput"
-        android:layout_marginVertical="15dp" />
+        android:layout_marginVertical="10dp"
+        android:inputType="textPassword"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
+        app:layout_constraintTop_toBottomOf="@id/emailInput"
+        app:layout_constraintBottom_toTopOf="@id/signInButton"/>
 
     <Button
         android:id="@+id/signInButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/signInButtonText"
-        android:layout_below="@id/passwordInput"
-        android:layout_alignEnd="@id/passwordInput"
         style="@style/signInButton"
-        app:backgroundTint="@null"/>
+        app:backgroundTint="@null"
+        android:layout_marginVertical="10dp"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
+        app:layout_constraintTop_toBottomOf="@id/passwordInput"
+        app:layout_constraintBottom_toTopOf="@id/noAccountTextView"/>
 
     <TextView
         android:id="@+id/noAccountTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="@string/noAccountLabel"
-        android:layout_below="@id/signInButton"
-        android:layout_marginHorizontal="50dp"
-        android:layout_marginTop="20dp"
-        style="@style/noAccountTextStyle"/>
+        style="@style/noAccountTextStyle"
+        android:layout_marginVertical="10dp"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
+        app:layout_constraintTop_toBottomOf="@id/signInButton"
+        app:layout_constraintBottom_toTopOf="@id/signUpButton"/>
 
     <Button
         android:id="@+id/signUpButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/signUpButtonText"
-        android:layout_below="@id/noAccountTextView"
-        android:layout_alignStart="@id/noAccountTextView"
         style="@style/signUpButton"
-        app:backgroundTint="@null"/>
+        app:backgroundTint="@null"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
+        app:layout_constraintTop_toBottomOf="@id/noAccountTextView"
+        app:layout_constraintBottom_toTopOf="@id/guidelineHorizontalBottom"/>
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

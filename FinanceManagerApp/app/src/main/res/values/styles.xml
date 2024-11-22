@@ -8,6 +8,10 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
     </style>
+    <style name="instructionsTextStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
     <style name="noAccountTextStyle">
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">italic</item>
@@ -30,7 +34,18 @@
         <item name="android:background">@drawable/activity_selection_buttons</item> <!-- Ensure this drawable exists -->
         <item name="android:backgroundTint">@null</item>
         <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textSize">16sp</item>
         <item name="android:padding">1dp</item>
+    </style>
+    <style name="signOutButton">
+        <item name="android:background">@drawable/activity_selection_buttons</item> <!-- Ensure this drawable exists -->
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:padding">1dp</item>
+    </style>
+
+<!--  Welcome activity  -->
+    <style name="welcomeInstructionsTextStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
     </style>
 </resources>
