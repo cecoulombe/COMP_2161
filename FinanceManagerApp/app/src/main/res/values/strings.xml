@@ -17,6 +17,6 @@
     <string name="signOutButton">Sign Out</string>
 
     <!--   Welcome Activity -->
-    <string name="welcomeNicknameLabel">Welcome >%1$s\</string>
+    <string name="welcomeNicknameLabel">Welcome %1$s\</string>
     <string name="welcomeInstructions">To navigate through the app, press the corresponding button at the top of the page.</string>
 </resources>

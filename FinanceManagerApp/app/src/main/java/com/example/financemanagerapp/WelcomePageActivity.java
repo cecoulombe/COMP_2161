@@ -4,9 +4,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -16,8 +18,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
@@ -28,6 +33,7 @@ public class WelcomePageActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private String displayName = "";
+    private TextView welcomeMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,14 +79,83 @@ public class WelcomePageActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // when the app is first opened for a new user, prompt for a nickname
-        retrieveNicknameFromFirestore();
-        if(displayName.equals(""))
-        {
-            promptForNickname();
-        }
+        Button signOutButton = findViewById(R.id.signOutButton);
+        signOutButton.setOnClickListener(v -> {
+            savePage();
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(WelcomePageActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
 
-        // load the nickname into the welcome message
+        // initialize the welcome textview
+        welcomeMsg = findViewById(R.id.welcomeTextView);
+
+        // check if a user's document exists
+        checkUserDocs();
+    }
+
+    // verifies if the user exists within the database
+    private void checkUserDocs()
+    {
+        FirebaseUser auth = mAuth.getCurrentUser();
+        if(auth != null)
+        {
+            String userID = auth.getUid();
+
+            DocumentReference userRef = db.collection("users").document(userID);
+
+            userRef.get().addOnCompleteListener(task -> {
+                DocumentSnapshot document = task.getResult();
+                if(document.exists())
+                {
+                    Log.d("Firebase", "User data exists, loading it");
+                    loadUser();
+                } else {
+                    Log.d("Firebase", "User data does not exist, creating a new one");
+                    createNewUser();
+                }
+            });
+        }
+    }
+
+    // loads the user data for an existing user in the firebase
+    private void loadUser()
+    {
+        FirebaseUser auth = mAuth.getCurrentUser();
+        if(auth != null) {
+            String userID = auth.getUid();
+            DocumentReference docRef = db.collection("users").document(userID);
+
+            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    User user = documentSnapshot.toObject(User.class);
+                    GlobalUser.setUser(user);
+                    Log.d("loadUser", "Loading the user data from the firebase, including name? " + user.getName());
+                    getDisplayName();
+                }
+            });
+        }
+    }
+
+    // saves the user data to the firebase
+    private void saveUser()
+    {
+        FirebaseUser auth = mAuth.getCurrentUser();
+        if(auth != null) {
+            String userID = auth.getUid();
+            db.collection("users").document(userID).set(GlobalUser.getUser());
+        }
+    }
+
+    // creates a new user
+    private void createNewUser()
+    {
+        promptForNickname();
+        User user = new User(displayName);
+        GlobalUser.setUser(user);
+        saveUser();
+        updateWelcomeMsg();
     }
 
     // creates an alertDialog which prompts the user for their desired nickname and saves it to firebase
@@ -100,6 +175,7 @@ public class WelcomePageActivity extends AppCompatActivity {
 
         // Create the dialog and get reference to it
         AlertDialog dialog = builder.create();
+        Log.d("NicknamePrompt", "Put up the dialog, now need an input");
 
         // Set up validation when the user clicks "Submit"
         dialog.setOnShowListener(d -> {
@@ -107,7 +183,7 @@ public class WelcomePageActivity extends AppCompatActivity {
             submitButton.setOnClickListener(v -> {
                 // Get the entered nickname
                 String nickname = input.getText().toString().trim();
-
+                Log.d("NicknamePrompt", "has an input, need to validate it: " + nickname);
                 // Perform validation
                 if (nickname.isEmpty()) {
                     // If nickname is empty, show a validation message
@@ -117,7 +193,7 @@ public class WelcomePageActivity extends AppCompatActivity {
                 } else {
                     // If nickname is valid, save it and dismiss the dialog
                     displayName = nickname;
-                    saveNicknameToFirestore(nickname);
+                    Log.d("NicknamePrompt", "Valid nickname entered, saving to displayName: " + displayName);
                     dialog.dismiss();
                 }
             });
@@ -127,55 +203,24 @@ public class WelcomePageActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    // saves the users nickname to firestore for future use
-    private void saveNicknameToFirestore(String nickname)
+    // sets the display name from an existing user
+    private void getDisplayName()
     {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if(user != null)
-        {
-            String userID = user.getUid();
-            Map<String, Object> userMap = new HashMap<>();
-            userMap.put("nickname", nickname);
-
-            // Save to Firestore under the 'users' collection
-            db.collection("users").document(userID)
-                    .set(userMap)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(WelcomePageActivity.this, "Nickname saved!", Toast.LENGTH_SHORT).show();
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(WelcomePageActivity.this, "Error saving nickname", Toast.LENGTH_SHORT).show();
-                    });
-        }
+        displayName = GlobalUser.getUser().getName();
+        Log.d("getDisplayName", "Getting the displayName from the user object: " + displayName);
+        updateWelcomeMsg();
     }
 
-    // retrieves the users nickname from firestore for display
-    private void retrieveNicknameFromFirestore()
+    // updates the welcome message to include the user's nickname
+    private void updateWelcomeMsg()
     {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if(user != null)
-        {
-            String userId = user.getUid();
-
-            // retrieve the user's documents from firestore
-            db.collection("users").document(userId).get()
-                    .addOnSuccessListener(documentSnapshot -> {
-                        if(documentSnapshot.exists())
-                        {
-                            displayName = documentSnapshot.getString("nickname");
-                        } else {
-                            Toast.makeText(WelcomePageActivity.this, "No data found", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(WelcomePageActivity.this, "Error fetching data", Toast.LENGTH_SHORT).show();
-                    });
-        }
+        Log.d("updateWelcomeMsg", "Updating the welcome msg to include the name");
+        String msg = getResources().getString(R.string.welcomeNicknameLabel, displayName);
+        welcomeMsg.setText(msg);
     }
 
-
-    private void savePage()
-    {
+    // save any relevant data on the page
+    private void savePage() {
         // whatever logic needs to happen to save any changes made to the current page
     }
 }

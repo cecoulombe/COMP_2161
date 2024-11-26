@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WelcomePageActivity">
+    tools:context=".WelcomePageActivity"
+    style="@style/layoutStyle">
 
     <LinearLayout
         android:id="@+id/activitySelectionLinearLayout"
@@ -135,10 +136,5 @@
         app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
         app:layout_constraintTop_toBottomOf="@id/welcomeTextView"
         app:layout_constraintBottom_toTopOf="@id/guidelineHorizontalBottom"/>
-
-
-
-    <!--  TODO: add textview for welcome message and for instructions  -->
-<!--  TODO: try to figure out the fucking guidelines  -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
