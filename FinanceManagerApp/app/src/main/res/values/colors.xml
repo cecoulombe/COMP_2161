@@ -7,4 +7,6 @@
     <color name="mainMenuButtonEndPressed">#000012</color>
     <color name="mainMenuButtonStartDefault">#4C4D5B</color>
     <color name="mainMenuButtonEndDefault">#2F303A</color>
+    <color name="tableLayoutBackground">#BBBBCE</color>
+
 </resources>

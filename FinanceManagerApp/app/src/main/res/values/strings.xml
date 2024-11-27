@@ -19,4 +19,24 @@
     <!--   Welcome Activity -->
     <string name="welcomeNicknameLabel">Welcome %1$s\</string>
     <string name="welcomeInstructions">To navigate through the app, press the corresponding button at the top of the page.</string>
+
+    <!--  Account Manager Activity  -->
+    <string name="createNewAccountButtonLabel">Add Account</string>
+    <string name="accountNameHeader">Account Name</string>
+    <string name="accountBalanceHeader">Account Balance</string>
+    <string name="editAccountNameEditTextHint">Enter a new account name</string>
+    <string name="currentAccountNameLabel">Current account name: %1$s\</string>
+    <string name="currentAccountBalanceLabel">Current account balance: %1$s\</string>
+    <string name="enterAmountHint">Enter amount</string>
+    <string name="addButtonLabel">Add</string>
+    <string name="subtractButtonLabel">Subtract</string>
+    <string name="replaceButtonLabel">Replace</string>
+    <string name="cancelButtonLabel">Cancel</string>
+    <string name="name_alertBuilderText">Edit Account Name</string>
+    <string name="balance_alertBuilderText">Edit Account Balance</string>
+    <string name="enterAccountName">Enter new account name below</string>
+    <string name="enterAccountBalance">Enter new account balance below</string>
+    <string name="enterNewNameHint">Account name</string>
+    <string name="enterNewBalanceHint">Account balance</string>
+
 </resources>

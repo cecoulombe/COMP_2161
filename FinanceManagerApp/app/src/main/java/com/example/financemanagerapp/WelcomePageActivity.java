@@ -56,32 +56,27 @@ public class WelcomePageActivity extends AppCompatActivity {
         homeButton.setEnabled(false);
         Button accountManagerButton = findViewById(R.id.accountManagerButton);
         accountManagerButton.setOnClickListener(v -> {
-            savePage();
             Intent intent = new Intent(WelcomePageActivity.this, AccountManagerActivity.class);
             startActivity(intent);
         });
         Button netWorthButton = findViewById(R.id.netWorthButton);
         netWorthButton.setOnClickListener(v -> {
-            savePage();
             Intent intent = new Intent(WelcomePageActivity.this, NetWorthCalculator.class);
             startActivity(intent);
         });
         Button goalTrackerButton = findViewById(R.id.goalTrackerButton);
         goalTrackerButton.setOnClickListener(v -> {
-            savePage();
             Intent intent = new Intent(WelcomePageActivity.this, GoalTrackerActivity.class);
             startActivity(intent);
         });
         ImageButton settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(v -> {
-            savePage();
             Intent intent = new Intent(WelcomePageActivity.this, SettingsActivity.class);
             startActivity(intent);
         });
 
         Button signOutButton = findViewById(R.id.signOutButton);
         signOutButton.setOnClickListener(v -> {
-            savePage();
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(WelcomePageActivity.this, MainActivity.class);
             startActivity(intent);
@@ -219,8 +214,4 @@ public class WelcomePageActivity extends AppCompatActivity {
         welcomeMsg.setText(msg);
     }
 
-    // save any relevant data on the page
-    private void savePage() {
-        // whatever logic needs to happen to save any changes made to the current page
-    }
 }

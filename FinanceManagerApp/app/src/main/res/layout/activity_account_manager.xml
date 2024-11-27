@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AccountManagerActivity">
+    tools:context=".AccountManagerActivity"
+    style="@style/layoutStyle">
 
     <LinearLayout
         android:id="@+id/activitySelectionLinearLayout"
@@ -78,7 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        style="@style/activitySelectionButtonStyle"
+        style="@style/signOutButton"
         app:backgroundTint="@null"
         android:text="@string/signOutButton"
         android:maxLines="2"
@@ -86,13 +87,45 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <!--  Guidelines for contraints  -->
+    <Button
+        android:id="@+id/createNewAccountButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/createNewAccountButton"
+        app:backgroundTint="@null"
+        android:text="@string/createNewAccountButtonLabel"
+        android:maxLines="2"
+        app:layout_constraintStart_toEndOf="@id/guidelineVerticalLeft"
+        app:layout_constraintTop_toBottomOf="@id/guidelineHorizontalBottom"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineHorizontalBottom" />
+
+    <TableLayout
+        android:id="@+id/accountsTableLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        style="@style/tableLayoutStyle"
+        android:stretchColumns="1"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
+        app:layout_constraintTop_toTopOf="@id/guidelineHorizontalTop"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineHorizontalBottomOfTable" />
+
+
+
+    <!--  Guidelines for constraints  -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorizontalTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1"/>
+        app:layout_constraintGuide_percent="0.15"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorizontalBottomOfTable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8" />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorizontalBottom"
         android:layout_width="wrap_content"

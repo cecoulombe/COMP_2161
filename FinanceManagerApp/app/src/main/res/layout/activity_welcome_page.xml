@@ -79,7 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        style="@style/activitySelectionButtonStyle"
+        style="@style/signOutButton"
         app:backgroundTint="@null"
         android:text="@string/signOutButton"
         android:maxLines="2"
@@ -87,7 +87,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-<!--  Guidelines for contraints  -->
+<!--  Guidelines for constraints  -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorizontalTop"
         android:layout_width="wrap_content"

@@ -77,6 +77,20 @@ public class User {
         Log.d("modifyAccountBalance", "No such account exists");
     }
 
+    // returns a specific account reference
+    public int getAccountBalance(String name)
+    {
+        for(Accounts acc : accountsList)
+        {
+            if(acc.getAccountName().equals(name))
+            {
+                return acc.getAccountBalance();
+            }
+        }
+        Log.d("modifyAccountBalance", "No such account exists");
+        return 0;
+    }
+
     // sets the flag to indicate whether or not the account is to be used in the goal tracking
     public void setGoalFlag(String name, boolean flag)
     {

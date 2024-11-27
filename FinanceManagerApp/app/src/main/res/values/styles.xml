@@ -43,8 +43,27 @@
         <item name="android:padding">1dp</item>
     </style>
 
+
 <!--  Welcome activity  -->
     <style name="welcomeInstructionsTextStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
+
+<!--  Account manager activity  -->
+    <style name="createNewAccountButton">
+        <item name="android:background">@drawable/activity_selection_buttons</item> <!-- Ensure this drawable exists -->
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:padding">1dp</item>
+    </style>
+    <style name="editBalanceButtons">
+        <item name="android:background">@drawable/activity_selection_buttons</item> <!-- Ensure this drawable exists -->
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:padding">5dp</item>
+    </style>
+    <style name="createNewAccountInstructions">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
     </style>

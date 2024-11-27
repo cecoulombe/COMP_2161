@@ -70,12 +70,52 @@
         <item name="android:padding">1dp</item>
     </style>
 
-<!--  Welcome activity  -->
+<!--  Account manager activity  -->
+    <style name="createNewAccountButton">
+        <item name="android:background">@drawable/activity_selection_buttons
+        </item> <!-- Ensure this drawable exists -->
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:autoSizeMinTextSize">14sp</item>
+        <item name="android:autoSizeMaxTextSize">50sp</item>
+        <item name="android:autoSizeStepGranularity">2sp</item>
+        <item name="android:padding">1dp</item>
+    </style>
+
+
+    <!--  Welcome activity  -->
     <style name="welcomeInstructionsTextStyle">
         <item name="android:autoSizeTextType">uniform</item>
         <item name="android:autoSizeMinTextSize">10sp</item>
         <item name="android:autoSizeMaxTextSize">20sp</item>
         <item name="android:autoSizeStepGranularity">2sp</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
+
+<!--  Account Manager activity  -->
+    <style name="tableLayoutStyle">
+        <item name="android:background">@color/tableLayoutBackground</item>
+    </style>
+    <style name="editBalanceButtons">
+        <item name="android:background">@drawable/activity_selection_buttons
+        </item> <!-- Ensure this drawable exists -->
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:autoSizeMinTextSize">14sp</item>
+        <item name="android:autoSizeMaxTextSize">50sp</item>
+        <item name="android:autoSizeStepGranularity">2sp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_marginHorizontal">5dp</item>
+    </style>
+    <style name="createNewAccountInstructions">
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:autoSizeMinTextSize">17sp</item>
+        <item name="android:autoSizeMaxTextSize">25sp</item>
+        <item name="android:autoSizeStepGranularity">2sp</item>
+        <item name="android:maxLines">2</item>
         <item name="android:gravity">start</item>
         <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
     </style>
