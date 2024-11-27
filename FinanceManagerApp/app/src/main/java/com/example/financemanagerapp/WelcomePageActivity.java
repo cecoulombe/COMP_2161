@@ -209,7 +209,7 @@ public class WelcomePageActivity extends AppCompatActivity {
     // updates the welcome message to include the user's nickname
     private void updateWelcomeMsg()
     {
-        Log.d("updateWelcomeMsg", "Updating the welcome msg to include the name");
+        Log.d("updateWelcomeMsg", "Updating the welcome msg to include the name: " + displayName);
         String msg = getResources().getString(R.string.welcomeNicknameLabel, displayName);
         welcomeMsg.setText(msg);
     }

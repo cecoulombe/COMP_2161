@@ -22,7 +22,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -31,7 +36,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class AccountManagerActivity extends AppCompatActivity {
-    TableLayout table;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private TableLayout table;
             
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,12 @@ public class AccountManagerActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        loadUser(); // should happen in the welcome activity, failsafe
+
         // set up the buttons across the top to save whatever is currently on the screen and to redirect to the appropriate activity
         // instantiate all buttons and disable the button for the current activity. For the rest, set up the change activity
         ImageButton homeButton = findViewById(R.id.homeButton);
@@ -98,6 +111,8 @@ public class AccountManagerActivity extends AppCompatActivity {
         balanceHeader.setPadding(5, 5, 5, 5);
         headerRow.addView(balanceHeader);
 
+        table.addView(headerRow);
+
         // populate the table form the saved user data
         populateTableFromSavedData();
 
@@ -130,6 +145,8 @@ public class AccountManagerActivity extends AppCompatActivity {
         balanceButton.setText(formattedBalance);
         balanceButton.setOnClickListener(v -> editBalance(v, name));      // handles the popup when the name button is clicked
         tableRow.addView(balanceButton);
+
+        table.addView(tableRow);
     }
 
     // creates a popup which allows the user to enter the name and starting balance for a new account
@@ -154,7 +171,8 @@ public class AccountManagerActivity extends AppCompatActivity {
                     String name = nameEditText.getText().toString().trim();
                     String balance = balanceEditText.getText().toString();
                     double balanceInDollars = Double.parseDouble(balance);
-                    int balanceInCents = (int) balanceInDollars * 100;
+                    Log.d("CreateNewAccountPOPUP", "Creating a new account with input name: " + name + " and input balance: " + balance);
+                    int balanceInCents = (int) (balanceInDollars * 100);
 
                     if(!name.isEmpty() && !balance.isEmpty())
                     {
@@ -163,9 +181,9 @@ public class AccountManagerActivity extends AppCompatActivity {
                             createNewAccount(name, balanceInCents);
                             Toast.makeText(this, "Account created!", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
-
+                        } else {
+                            Toast.makeText(this, "Account with that name already exists.", Toast.LENGTH_SHORT).show();
                         }
-                        Toast.makeText(this, "Account with that name already exists.", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(this, name.isEmpty() ? "Account name must not be empty." : "Account must have an initial balance.", Toast.LENGTH_SHORT).show();
                     }
@@ -189,7 +207,7 @@ public class AccountManagerActivity extends AppCompatActivity {
     {
         // Inflate the custom layout for the dialog
         LinearLayout dialogLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_edit_account, null);
-        TextView currentNameTextView = findViewById(R.id.currentAccountName);
+        TextView currentNameTextView = dialogLayout.findViewById(R.id.currentAccountName);
         EditText editAccountName = dialogLayout.findViewById(R.id.editAccountName);
 
         // set the current name of the button in the textview
@@ -214,8 +232,10 @@ public class AccountManagerActivity extends AppCompatActivity {
                             button.setText(newName);
                             Toast.makeText(this, "Account name updated!", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
+                        } else
+                        {
+                            Toast.makeText(this, "Account with that name already exists. Please try a new name", Toast.LENGTH_SHORT).show();
                         }
-                        Toast.makeText(this, "Account with that name already exists. Please try a new name", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(this, "Account name cannot be empty.", Toast.LENGTH_SHORT).show();
                     }
@@ -243,7 +263,7 @@ public class AccountManagerActivity extends AppCompatActivity {
         // get the current balance of the button from the user
         int balanceInCents = GlobalUser.getUser().getAccountBalance(name);
         double balanceInDollars = balanceInCents / 100.0;
-        NumberFormat currentFormatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
+        DecimalFormat currentFormatter = new DecimalFormat("$#,###,##0.00");
         String formattedBalance = currentFormatter.format(balanceInDollars);
 
         // display the balance in the textview
@@ -268,7 +288,7 @@ public class AccountManagerActivity extends AppCompatActivity {
             {
                 // save the updated value
                 double inputInDollars = Double.parseDouble(input);
-                int inputInCents = (int) inputInDollars * 100;
+                int inputInCents = (int) (inputInDollars * 100);
                 int newBalance = balanceInCents + inputInCents;
                 GlobalUser.getUser().modifyAccountBalance(name, newBalance);
 
@@ -286,7 +306,7 @@ public class AccountManagerActivity extends AppCompatActivity {
             {
                 // save the updated value
                 double inputInDollars = Double.parseDouble(input);
-                int inputInCents = (int) inputInDollars * 100;
+                int inputInCents = (int) (inputInDollars * 100);
                 int newBalance = balanceInCents - inputInCents;
                 GlobalUser.getUser().modifyAccountBalance(name, newBalance);
 
@@ -297,14 +317,14 @@ public class AccountManagerActivity extends AppCompatActivity {
             }
         });
 
-        addButton.setOnClickListener(v ->
+        replaceButton.setOnClickListener(v ->
         {
             String input = editBalanceInput.getText().toString();
             if(!input.isEmpty())
             {
                 // save the updated value
                 double inputInDollars = Double.parseDouble(input);
-                int inputInCents = (int) inputInDollars * 100;
+                int inputInCents = (int) (inputInDollars * 100);
                 GlobalUser.getUser().modifyAccountBalance(name, inputInCents);
 
                 // display the updated value
@@ -327,7 +347,7 @@ public class AccountManagerActivity extends AppCompatActivity {
         // get the current balance of the button from the user
         int balanceInCents = GlobalUser.getUser().getAccountBalance(name);
         double balanceInDollars = balanceInCents / 100.0;
-        NumberFormat currentFormatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
+        DecimalFormat currentFormatter = new DecimalFormat("$#,###,##0.00");
         String formattedBalance = currentFormatter.format(balanceInDollars);
         accountButton.setText(formattedBalance);
     }
@@ -336,16 +356,44 @@ public class AccountManagerActivity extends AppCompatActivity {
     private void populateTableFromSavedData()
     {
         List<Accounts> accountsList = GlobalUser.getUser().getAccountsList();
-        for(Accounts acc : accountsList)
+        if(accountsList != null && !accountsList.isEmpty())
         {
-            createNewAccount_Row(acc.getAccountName());
+            for(Accounts acc : accountsList)
+            {
+                createNewAccount_Row(acc.getAccountName());
+            }
+            Log.d("populateTable", "Added all accounts to the table");
         }
-        Log.d("populateTable", "Added all accounts to the table");
-
+        Log.d("populateTable", "No accounts to add to the list");
     }
 
     private void savePage()
     {
-        // whatever logic needs to happen to save any changes made to the current page
+        // save all user data to the firebase
+        FirebaseUser auth = mAuth.getCurrentUser();
+        if(auth != null) {
+            String userID = auth.getUid();
+            db.collection("users").document(userID).set(GlobalUser.getUser());
+        }
+    }
+
+    // loads the user at the start of the activity to make sure all data is there (failsafe from when the data should have been loaded in the welcome activity)
+    // loads the user data for an existing user in the firebase
+    private void loadUser()
+    {
+        FirebaseUser auth = mAuth.getCurrentUser();
+        if(auth != null) {
+            String userID = auth.getUid();
+            DocumentReference docRef = db.collection("users").document(userID);
+
+            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    User user = documentSnapshot.toObject(User.class);
+                    GlobalUser.setUser(user);
+                    Log.d("loadUser", "Loading the user data from the firebase");
+                }
+            });
+        }
     }
 }

@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     FirebaseAuthException e = (FirebaseAuthException) task.getException();
                     switch (e.getErrorCode()) {
                         case "ERROR_INVALID_EMAIL":
-                            errorMessage = "The email address is badly formatted.";
+                            errorMessage = "The email address is invalid.";
                             break;
                         case "ERROR_WRONG_PASSWORD":
                             errorMessage = "The password is incorrect.";
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                     FirebaseAuthException e = (FirebaseAuthException) task.getException();
                     switch (e.getErrorCode()) {
                         case "ERROR_INVALID_EMAIL":
-                            errorMessage = "The email address is badly formatted.";
+                            errorMessage = "The email address is invalid.";
                             break;
                         case "ERROR_EMAIL_ALREADY_IN_USE":
                             errorMessage = "This email address is already in use.";

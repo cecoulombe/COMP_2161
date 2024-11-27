@@ -147,5 +147,11 @@ public class User {
 
     }
 
+    // returns true as long as there are elements in the list
+//    private boolean listNotEmpty()
+//    {
+//        if()
+//    }
+
 
 }
