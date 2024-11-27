@@ -200,6 +200,9 @@ public class AccountManagerActivity extends AppCompatActivity {
         GlobalUser.getUser().addAccount(name, balance);
 
         createNewAccount_Row(name);
+
+        // save data in event of a crash
+        savePage();
     }
 
     // creates a popup which allows the user to edit the account name
@@ -231,6 +234,8 @@ public class AccountManagerActivity extends AppCompatActivity {
                             GlobalUser.getUser().modifyAccountName(oldName, newName);
                             button.setText(newName);
                             Toast.makeText(this, "Account name updated!", Toast.LENGTH_SHORT).show();
+                            // save data in event of a crash
+                            savePage();
                             dialog.dismiss();
                         } else
                         {
@@ -350,6 +355,9 @@ public class AccountManagerActivity extends AppCompatActivity {
         DecimalFormat currentFormatter = new DecimalFormat("$#,###,##0.00");
         String formattedBalance = currentFormatter.format(balanceInDollars);
         accountButton.setText(formattedBalance);
+
+        // save data in event of a crash
+        savePage();
     }
     
     // looks through each of the accounts and adds a corresponding row
