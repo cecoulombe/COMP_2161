@@ -133,13 +133,26 @@ public class WelcomePageActivity extends AppCompatActivity {
         }
     }
 
-    // saves the user data to the firebase
+    // saves the user data to firebase asynchronously (.set method is async by nature)
     private void saveUser()
     {
+        // save all user data to the firebase
         FirebaseUser auth = mAuth.getCurrentUser();
         if(auth != null) {
             String userID = auth.getUid();
-            db.collection("users").document(userID).set(GlobalUser.getUser());
+
+            db.collection("users").document(userID)
+                    .set(GlobalUser.getUser())
+                    .addOnSuccessListener(aVoid ->
+                    {
+                        Log.d("SavePage", "User data saved successfully.");
+                    })
+                    .addOnFailureListener(e ->
+                    {
+                        Log.d("SavePage", "Error saving user data: " + e.getMessage());
+                    });
+        } else {
+            Log.e("SavePage", "User is not authenticated");
         }
     }
 
@@ -147,10 +160,10 @@ public class WelcomePageActivity extends AppCompatActivity {
     private void createNewUser()
     {
         promptForNickname();
-        User user = new User(displayName);
-        GlobalUser.setUser(user);
-        saveUser();
-        updateWelcomeMsg();
+//        User user = new User(displayName);
+//        GlobalUser.setUser(user);
+//        saveUser();
+//        updateWelcomeMsg();
     }
 
     // creates an alertDialog which prompts the user for their desired nickname and saves it to firebase
@@ -190,6 +203,10 @@ public class WelcomePageActivity extends AppCompatActivity {
                     displayName = nickname;
                     Log.d("NicknamePrompt", "Valid nickname entered, saving to displayName: " + displayName);
                     dialog.dismiss();
+                    User user = new User(displayName);
+                    GlobalUser.setUser(user);
+                    saveUser();
+                    updateWelcomeMsg();
                 }
             });
         });

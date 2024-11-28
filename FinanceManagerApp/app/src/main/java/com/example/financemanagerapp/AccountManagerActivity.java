@@ -375,13 +375,26 @@ public class AccountManagerActivity extends AppCompatActivity {
         Log.d("populateTable", "No accounts to add to the list");
     }
 
+    // saves the user data to firebase asynchronously (.set method is async by nature)
     private void savePage()
     {
         // save all user data to the firebase
         FirebaseUser auth = mAuth.getCurrentUser();
         if(auth != null) {
             String userID = auth.getUid();
-            db.collection("users").document(userID).set(GlobalUser.getUser());
+
+            db.collection("users").document(userID)
+                    .set(GlobalUser.getUser())
+                    .addOnSuccessListener(aVoid ->
+                    {
+                        Log.d("SavePage", "User data saved successfully.");
+                    })
+                    .addOnFailureListener(e ->
+                    {
+                        Log.d("SavePage", "Error saving user data: " + e.getMessage());
+                    });
+        } else {
+            Log.e("SavePage", "User is not authenticated");
         }
     }
 
