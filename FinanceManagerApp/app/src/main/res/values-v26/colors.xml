@@ -8,5 +8,5 @@
     <color name="mainMenuButtonStartDefault">#4C4D5B</color>
     <color name="mainMenuButtonEndDefault">#2F303A</color>
     <color name="tableLayoutBackground">#BBBBCE</color>
-
+    <color name="scrollBackgroundColor">#BBBBCE</color>
 </resources>

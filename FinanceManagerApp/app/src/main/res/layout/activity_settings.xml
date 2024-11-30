@@ -73,6 +73,22 @@
             />
     </LinearLayout>
 
+    <ImageButton
+        android:id="@+id/helpButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        style="@style/helpButton"
+        app:backgroundTint="@null"
+        android:src="@drawable/ic_question_mark"
+        android:scaleType="fitCenter"
+        android:padding="5dp"
+        android:maxLines="2"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/helpButtonDescription"
+        app:layout_constraintTop_toTopOf="@id/signOutButton"
+        app:layout_constraintBottom_toBottomOf="@id/signOutButton"
+        app:layout_constraintEnd_toStartOf="@id/signOutButton"/>
+
     <Button
         android:id="@+id/signOutButton"
         android:layout_width="wrap_content"

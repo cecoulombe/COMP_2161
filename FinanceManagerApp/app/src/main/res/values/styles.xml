@@ -42,6 +42,12 @@
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:padding">1dp</item>
     </style>
+    <style name="helpButton">
+        <item name="android:background">@drawable/activity_selection_buttons</item> <!-- Ensure this drawable exists -->
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:padding">1dp</item>
+    </style>
 
 
 <!--  Welcome activity  -->
@@ -66,5 +72,26 @@
     <style name="createNewAccountInstructions">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
+
+<!--  Net worth calculator  -->
+    <style name="addAssetButton">
+        <item name="android:background">@drawable/activity_selection_buttons</item> <!-- Ensure this drawable exists -->
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:padding">1dp</item>
+    </style>
+    <style name="netWorthDisplay">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
+    <style name="labelsStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
+
+    <style name="scrollViewStyle">
+        <item name="android:background">@color/scrollBackgroundColor</item>
     </style>
 </resources>

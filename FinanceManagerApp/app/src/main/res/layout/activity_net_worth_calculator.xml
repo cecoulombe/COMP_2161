@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    style="@style/layoutStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".NetWorthCalculator">
@@ -73,6 +74,22 @@
             />
     </LinearLayout>
 
+    <ImageButton
+        android:id="@+id/helpButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        style="@style/helpButton"
+        app:backgroundTint="@null"
+        android:src="@drawable/ic_question_mark"
+        android:scaleType="fitCenter"
+        android:padding="5dp"
+        android:maxLines="2"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/helpButtonDescription"
+        app:layout_constraintTop_toTopOf="@id/signOutButton"
+        app:layout_constraintBottom_toBottomOf="@id/signOutButton"
+        app:layout_constraintEnd_toStartOf="@id/signOutButton"/>
+
     <Button
         android:id="@+id/signOutButton"
         android:layout_width="wrap_content"
@@ -86,8 +103,126 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+<!--  Main content of the page's UI  -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
+        app:layout_constraintTop_toTopOf="@id/guidelineHorizontalTop"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineHorizontalBottom">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!--  Accounts which ARE assets  -->
+            <TextView
+                style="@style/labelsStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/accountAssetLabel" />
+            <ScrollView
+                android:id="@+id/assetAccountsScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                style="@style/scrollViewStyle"
+                android:layout_marginBottom="10dp">
+                <LinearLayout
+                    android:id="@+id/assetAccountsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
+            </ScrollView>
+            <!--  Assets which are NOT accounts  -->
+            <TextView
+                style="@style/labelsStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/otherAssetsLabel" />
+            <ScrollView
+                android:id="@+id/assetsScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="10dp">
 
-    <!--  Guidelines for contraints  -->
+                <TableLayout
+                    android:id="@+id/assetsTableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/tableLayoutStyle"
+                    android:stretchColumns="1" />
+            </ScrollView>
+            <Button
+                android:id="@+id/addAssetButton"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                style="@style/addAssetButton"
+                app:backgroundTint="@null"
+                android:text="@string/addAssetButton" />
+            <!--  Accounts which ARE liabilities  -->
+            <TextView
+                style="@style/labelsStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/accountLiabilitiesLabel" />
+            <ScrollView
+                android:id="@+id/liabilityAccountsScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                style="@style/scrollViewStyle"
+                android:layout_marginBottom="10dp">
+                <LinearLayout
+                    android:id="@+id/liabilityAccountsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
+            </ScrollView>
+            <!--  Liabilities which are NOT accounts  -->
+            <TextView
+                style="@style/labelsStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/otherLiabilitiesLabel" />
+            <ScrollView
+                android:id="@+id/liabilitiesScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="10dp">
+
+                <TableLayout
+                    android:id="@+id/liabilitiesTableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/tableLayoutStyle"
+                    android:stretchColumns="1" />
+            </ScrollView>
+            <Button
+                android:id="@+id/addLiabilityButton"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                style="@style/addAssetButton"
+                app:backgroundTint="@null"
+                android:text="@string/addLiabilityButton" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/netWorthDisplayTextView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/displayDefault"
+        style="@style/netWorthDisplay"
+        app:layout_constraintTop_toTopOf="@id/guidelineHorizontalBottom"
+        app:layout_constraintBottom_toBottomOf="@id/signOutButton"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVerticalEndOfDisplay"/>
+
+    <!--  Guidelines for constraints  -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorizontalTop"
         android:layout_width="wrap_content"
@@ -106,6 +241,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.1" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerticalEndOfDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.55" />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVerticalRight"
         android:layout_width="wrap_content"

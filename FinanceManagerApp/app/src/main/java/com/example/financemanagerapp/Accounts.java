@@ -7,7 +7,8 @@ public class Accounts {
     String accountName;
     int accountBalance; // using an integer to represent the actual balance * 100 so that it doens't lose precision
     boolean useInGoal;
-    boolean useInNetWorth;
+    boolean isAsset;
+    boolean isLiability;
 
     // constructor for firebase
     public Accounts() {}
@@ -18,7 +19,8 @@ public class Accounts {
         this.accountName = accountName;
         this.accountBalance = accountBalance;
         this.useInGoal = false;
-        this.useInNetWorth = false;
+        this.isAsset = false;
+        this.isLiability = false;
     }
 
     // returns the account name
@@ -39,10 +41,16 @@ public class Accounts {
         return useInGoal;
     }
 
-    // returns the net worth flag
-    public boolean getUseInNetWorth()
+    // returns the asset flag
+    public boolean getIsAsset()
     {
-        return useInNetWorth;
+        return isAsset;
+    }
+
+    // return the liability flag
+    public boolean getIsLiability()
+    {
+        return isLiability;
     }
 
     // sets the account name
@@ -63,9 +71,15 @@ public class Accounts {
         useInGoal = flag;
     }
 
-    // sets the net worth flag
-    public void setUseInNetWorth(boolean flag)
+    // sets the asset flag
+    public void setIsAsset(boolean flag)
     {
-        useInNetWorth = flag;
+        isAsset = flag;
+    }
+
+    // sets the liability flag
+    public void setIsLiability(boolean flag)
+    {
+        isLiability = flag;
     }
 }

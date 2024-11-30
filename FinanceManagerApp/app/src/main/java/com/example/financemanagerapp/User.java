@@ -10,6 +10,8 @@ public class User {
     // attributes
     private String name;
     private List<Accounts> accountsList;
+    private List<Accounts> assetsList;
+    private List<Accounts> liabilitiesList;
 
     // public constructor for firebase
     public User() {}
@@ -19,6 +21,8 @@ public class User {
     {
         this.name = name;
         accountsList = new ArrayList<>();
+        assetsList = new ArrayList<>();
+        liabilitiesList = new ArrayList<>();
     }
 
     // returns the user's name
@@ -32,6 +36,19 @@ public class User {
     {
         return accountsList;
     }
+
+    // returns the list of assets
+    public List<Accounts> getAssetsList()
+    {
+        return assetsList;
+    }
+
+    // returns the list of liabilities
+    public List<Accounts> getLiabilitiesList()
+    {
+        return liabilitiesList;
+    }
+
 
     // sets the user's name
     public void setName(String newName)
@@ -91,6 +108,110 @@ public class User {
         return 0;
     }
 
+    // adds an account to the list
+    public void addAsset(String accountName, int accountBalance)
+    {
+        if(!assetExists(accountName))
+        {
+            assetsList.add(new Accounts(accountName, accountBalance));
+        }
+        Log.d("addAccount", "An account with that name already exists");
+    }
+
+    // modifies an account name
+    public void modifyAssetName(String oldName, String newName)
+    {
+        for(Accounts acc : assetsList)
+        {
+            if(acc.getAccountName().equals(oldName))
+            {
+                acc.setAccountName(newName);
+                return;
+            }
+        }
+        Log.d("modifyAccountName", "No such account exists");
+    }
+
+    // modifies an account balance
+    public void modifyAssetBalance(String name, int newBalance)
+    {
+        for(Accounts acc : assetsList)
+        {
+            if(acc.getAccountName().equals(name))
+            {
+                acc.setAccountBalance(newBalance);
+                return;
+            }
+        }
+        Log.d("modifyAccountBalance", "No such account exists");
+    }
+
+    // returns a specific account reference
+    public int getAssetBalance(String name)
+    {
+        for(Accounts acc : assetsList)
+        {
+            if(acc.getAccountName().equals(name))
+            {
+                return acc.getAccountBalance();
+            }
+        }
+        Log.d("modifyAccountBalance", "No such account exists");
+        return 0;
+    }
+
+    // adds an account to the list
+    public void addLiability(String accountName, int accountBalance)
+    {
+        if(!liabilityExists(accountName))
+        {
+            liabilitiesList.add(new Accounts(accountName, accountBalance));
+        }
+        Log.d("addAccount", "An account with that name already exists");
+    }
+
+    // modifies an account name
+    public void modifyLiabilityName(String oldName, String newName)
+    {
+        for(Accounts acc : liabilitiesList)
+        {
+            if(acc.getAccountName().equals(oldName))
+            {
+                acc.setAccountName(newName);
+                return;
+            }
+        }
+        Log.d("modifyAccountName", "No such account exists");
+    }
+
+    // modifies an account balance
+    public void modifyLiabilityBalance(String name, int newBalance)
+    {
+        for(Accounts acc : liabilitiesList)
+        {
+            if(acc.getAccountName().equals(name))
+            {
+                acc.setAccountBalance(newBalance);
+                return;
+            }
+        }
+        Log.d("modifyAccountBalance", "No such account exists");
+    }
+
+    // returns a specific account reference
+    public int getLiabilityBalance(String name)
+    {
+        for(Accounts acc : liabilitiesList)
+        {
+            if(acc.getAccountName().equals(name))
+            {
+                return acc.getAccountBalance();
+            }
+        }
+        Log.d("modifyAccountBalance", "No such account exists");
+        return 0;
+    }
+
     // sets the flag to indicate whether or not the account is to be used in the goal tracking
     public void setGoalFlag(String name, boolean flag)
     {
@@ -105,24 +226,92 @@ public class User {
         Log.d("setGoalFlag", "No such account exists");
     }
 
-    // sets the flag to indicate whether or not the account is to be used in the net worth calculations
-    public void setNetWorthFlag(String name, boolean flag)
+    // sets the flag to indicate if the account is an asset
+    public void setIsAsset(String name, boolean flag)
     {
         for(Accounts acc : accountsList)
         {
             if(acc.getAccountName().equals(name))
             {
-                acc.setUseInNetWorth(flag);
+                acc.setIsAsset(flag);
                 return;
             }
         }
         Log.d("setNetWorthFlag", "No such account exists");
     }
 
+    // sets the flag to indicate if the account is a liability
+    public void setIsLiability(String name, boolean flag)
+    {
+        for(Accounts acc : accountsList)
+        {
+            if(acc.getAccountName().equals(name))
+            {
+                acc.setIsLiability(flag);
+                return;
+            }
+        }
+        Log.d("setNetWorthFlag", "No such account exists");
+    }
+
+    // returns if the account is an asset
+    public boolean getIsAsset(String name)
+    {
+        for(Accounts acc : accountsList)
+        {
+            if(acc.getAccountName().equals(name))
+            {
+                return acc.getIsAsset();
+            }
+        }
+        Log.d("setNetWorthFlag", "No such account exists");
+        return false;
+    }
+
+    // returns if the account is a liability
+    public boolean getIsLiability(String name)
+    {
+        for(Accounts acc : accountsList)
+        {
+            if(acc.getAccountName().equals(name))
+            {
+                return acc.getIsLiability();
+            }
+        }
+        Log.d("setNetWorthFlag", "No such account exists");
+        return false;
+    }
+
     // returns true if there exists an account with that name
     public boolean accountExists(String name)
     {
         for(Accounts acc : accountsList)
+        {
+            if(acc.getAccountName().equals(name))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // returns true if there exists an account with that name
+    public boolean assetExists(String name)
+    {
+        for(Accounts acc : assetsList)
+        {
+            if(acc.getAccountName().equals(name))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // returns true if there exists an account with that name
+    public boolean liabilityExists(String name)
+    {
+        for(Accounts acc : liabilitiesList)
         {
             if(acc.getAccountName().equals(name))
             {
@@ -146,12 +335,4 @@ public class User {
         Log.d("deleteAccount", "No such account exists");
 
     }
-
-    // returns true as long as there are elements in the list
-//    private boolean listNotEmpty()
-//    {
-//        if()
-//    }
-
-
 }

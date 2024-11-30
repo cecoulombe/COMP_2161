@@ -94,6 +94,11 @@ public class AccountManagerActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        ImageButton helpButton = findViewById(R.id.helpButton);
+        helpButton.setOnClickListener(v -> {
+            helpPopup();
+        });
+
         // add the headers to the table
         table = findViewById(R.id.accountsTableLayout);
 
@@ -173,12 +178,18 @@ public class AccountManagerActivity extends AppCompatActivity {
                     // get user input and update the button text
                     String name = nameEditText.getText().toString().trim();
                     String balance = balanceEditText.getText().toString();
-                    double balanceInDollars = Double.parseDouble(balance);
                     Log.d("CreateNewAccountPOPUP", "Creating a new account with input name: " + name + " and input balance: " + balance);
-                    int balanceInCents = (int) (balanceInDollars * 100);
+                    int balanceInCents;
 
-                    if(!name.isEmpty() && !balance.isEmpty())
+                    if(!name.isEmpty())
                     {
+                        if(balance.isEmpty())
+                        {
+                            balanceInCents = 0;
+                        } else {
+                            double balanceInDollars = Double.parseDouble(balance);
+                            balanceInCents = (int) (balanceInDollars * 100);
+                        }
                         if(!GlobalUser.getUser().accountExists(name))
                         {
                             createNewAccount(name, balanceInCents);
@@ -374,8 +385,24 @@ public class AccountManagerActivity extends AppCompatActivity {
                 createNewAccount_Row(acc.getAccountName());
             }
             Log.d("populateTable", "Added all accounts to the table");
+        } else {
+            Log.d("populateTable", "No accounts to add to the list");
         }
-        Log.d("populateTable", "No accounts to add to the list");
+    }
+
+    // creates a popup with info on how to navigate the current activity
+    private void helpPopup()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.helpPopupTitle));
+        builder.setMessage(getResources().getString(R.string.helpPopupInfo_AccountManager));
+
+        // set a neutral button to dismiss the message
+        builder.setNeutralButton("OK", (dialog, which) -> dialog.dismiss());
+
+        // show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     // saves the user data to firebase asynchronously (.set method is async by nature)
