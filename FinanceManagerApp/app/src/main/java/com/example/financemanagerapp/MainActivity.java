@@ -100,94 +100,148 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // sign in an existing user
-    private void signIn(String email, String password)
-    {
+//    private void signIn(String email, String password)
+//    {
+//        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+//            if(task.isSuccessful())
+//            {
+//                // sign in success
+//                FirebaseUser user = mAuth.getCurrentUser();
+//                launchWelcomePage();
+//            } else {
+//                // Sign in failed, get specific error
+//                String errorMessage = "Authentication failed.";
+//
+//                if (task.getException() instanceof FirebaseAuthException) {
+//                    FirebaseAuthException e = (FirebaseAuthException) task.getException();
+//                    switch (e.getErrorCode()) {
+//                        case "ERROR_INVALID_EMAIL":
+//                            errorMessage = "The email address is invalid.";
+//                            break;
+//                        case "ERROR_WRONG_PASSWORD":
+//                            errorMessage = "The password is incorrect.";
+//                            break;
+//                        case "ERROR_USER_NOT_FOUND":
+//                            errorMessage = "No account found with this email.";
+//                            break;
+//                        case "ERROR_USER_DISABLED":
+//                            errorMessage = "This account has been disabled.";
+//                            break;
+//                        case "ERROR_TOO_MANY_REQUESTS":
+//                            errorMessage = "Too many login attempts. Please try again later.";
+//                            break;
+//                        case "ERROR_OPERATION_NOT_ALLOWED":
+//                            errorMessage = "Login with email and password is disabled. Please contact support.";
+//                            break;
+//                        // Add more cases as needed
+//                        default:
+//                            errorMessage = e.getLocalizedMessage();
+//                            break;
+//                    }
+//                } else if (task.getException() != null) {
+//                    errorMessage = task.getException().getLocalizedMessage();
+//                }
+//
+//                Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+//            }
+//        });
+//    }
+    private void signIn(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
-            if(task.isSuccessful())
-            {
-                // sign in success
+            if (task.isSuccessful()) {
+                // sign-in success
                 FirebaseUser user = mAuth.getCurrentUser();
+                Toast.makeText(this, "Sign in successful.", Toast.LENGTH_SHORT).show();
                 launchWelcomePage();
             } else {
-                // Sign in failed, get specific error
-                String errorMessage = "Authentication failed.";
-
+                // Check if the error is due to "user not found"
+                String errorMessage = "Authentication failed. Incorrect email and password or account does not exist.";
                 if (task.getException() instanceof FirebaseAuthException) {
                     FirebaseAuthException e = (FirebaseAuthException) task.getException();
-                    switch (e.getErrorCode()) {
-                        case "ERROR_INVALID_EMAIL":
-                            errorMessage = "The email address is invalid.";
-                            break;
-                        case "ERROR_WRONG_PASSWORD":
-                            errorMessage = "The password is incorrect.";
-                            break;
-                        case "ERROR_USER_NOT_FOUND":
-                            errorMessage = "No account found with this email.";
-                            break;
-                        case "ERROR_USER_DISABLED":
-                            errorMessage = "This account has been disabled.";
-                            break;
-                        case "ERROR_TOO_MANY_REQUESTS":
-                            errorMessage = "Too many login attempts. Please try again later.";
-                            break;
-                        case "ERROR_OPERATION_NOT_ALLOWED":
-                            errorMessage = "Login with email and password is disabled. Please contact support.";
-                            break;
-                        // Add more cases as needed
-                        default:
-                            errorMessage = e.getLocalizedMessage();
-                            break;
+                    if (e.getErrorCode().equals("ERROR_USER_NOT_FOUND")) {
+                        errorMessage = "No account found with this email.";
+                        // Optionally show a dialog asking the user if they want to create a new account
                     }
-                } else if (task.getException() != null) {
-                    errorMessage = task.getException().getLocalizedMessage();
                 }
-
                 Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG).show();
             }
         });
     }
+
 
 
     // create an account for a new user
-    private void createAccount(String email, String password)
-    {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
-            if(task.isSuccessful()) {
-                // Successfully created an account
-                FirebaseUser user = mAuth.getCurrentUser();
-                launchWelcomePage();
-            } else {
-                // Account creation failed, get specific error
-                String errorMessage = "Account Creation Failed";
-
-                if (task.getException() instanceof FirebaseAuthException) {
-                    FirebaseAuthException e = (FirebaseAuthException) task.getException();
-                    switch (e.getErrorCode()) {
-                        case "ERROR_INVALID_EMAIL":
-                            errorMessage = "The email address is invalid.";
-                            break;
-                        case "ERROR_EMAIL_ALREADY_IN_USE":
-                            errorMessage = "This email address is already in use.";
-                            break;
-                        case "ERROR_WEAK_PASSWORD":
-                            errorMessage = "The password is too weak. Please use a stronger password.";
-                            break;
-                        case "ERROR_OPERATION_NOT_ALLOWED":
-                            errorMessage = "Account creation is disabled. Please contact support.";
-                            break;
-                        // Add more cases as needed
-                        default:
-                            errorMessage = e.getLocalizedMessage();
-                            break;
-                    }
-                } else if (task.getException() != null) {
-                    errorMessage = task.getException().getLocalizedMessage();
+//    private void createAccount(String email, String password)
+//    {
+//        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+//            if(task.isSuccessful()) {
+//                // Successfully created an account
+//                FirebaseUser user = mAuth.getCurrentUser();
+//                launchWelcomePage();
+//            } else {
+//                // Account creation failed, get specific error
+//                String errorMessage = "Account Creation Failed";
+//
+//                if (task.getException() instanceof FirebaseAuthException) {
+//                    FirebaseAuthException e = (FirebaseAuthException) task.getException();
+//                    switch (e.getErrorCode()) {
+//                        case "ERROR_INVALID_EMAIL":
+//                            errorMessage = "The email address is invalid.";
+//                            break;
+//                        case "ERROR_EMAIL_ALREADY_IN_USE":
+//                            errorMessage = "This email address is already in use.";
+//                            break;
+//                        case "ERROR_WEAK_PASSWORD":
+//                            errorMessage = "The password is too weak. Please use a stronger password.";
+//                            break;
+//                        case "ERROR_OPERATION_NOT_ALLOWED":
+//                            errorMessage = "Account creation is disabled. Please contact support.";
+//                            break;
+//                        // Add more cases as needed
+//                        default:
+//                            errorMessage = e.getLocalizedMessage();
+//                            break;
+//                    }
+//                } else if (task.getException() != null) {
+//                    errorMessage = task.getException().getLocalizedMessage();
+//                }
+//
+//                Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+//            }
+//        });
+//    }
+    private void createAccount(String email, String password) {
+        mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // Check if the email is already associated with an account
+                if (task.getResult().getSignInMethods().isEmpty()) {
+                    // Email is not in use, proceed to create an account
+                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, innerTask -> {
+                        if(innerTask.isSuccessful()) {
+                            // Account creation success
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(this, "Account creation successful, signing in to account.", Toast.LENGTH_SHORT).show();
+                            launchWelcomePage();
+                        } else {
+                            // Handle account creation failure
+                            String errorMessage = "Account Creation Failed. Ensure email and passcode are valid.";
+                            if (innerTask.getException() instanceof FirebaseAuthException) {
+                                FirebaseAuthException e = (FirebaseAuthException) innerTask.getException();
+                                // Handle specific error codes
+                            }
+                            Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else {
+                    Toast.makeText(MainActivity.this, "This email address is already in use.", Toast.LENGTH_LONG).show();
                 }
-
-                Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+            } else {
+                // Handle fetchSignInMethodsForEmail failure
+                Toast.makeText(MainActivity.this, "Error checking email usage.", Toast.LENGTH_LONG).show();
             }
         });
     }
+
 
     // sign out user (called from pressing the sign out button on the other pages?)
     private void signOut()

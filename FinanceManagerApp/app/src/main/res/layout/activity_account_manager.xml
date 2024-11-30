@@ -100,18 +100,32 @@
         app:layout_constraintTop_toBottomOf="@id/guidelineHorizontalBottom"
         app:layout_constraintBottom_toBottomOf="@id/guidelineHorizontalBottom" />
 
-    <TableLayout
-        android:id="@+id/accountsTableLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        style="@style/tableLayoutStyle"
-        android:stretchColumns="1"
-        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
-        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
-        app:layout_constraintTop_toTopOf="@id/guidelineHorizontalTop"
-        app:layout_constraintBottom_toBottomOf="@id/guidelineHorizontalBottomOfTable" />
+<!--    <TableLayout-->
+<!--        android:id="@+id/accountsTableLayout"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        style="@style/tableLayoutStyle"-->
+<!--        android:stretchColumns="1"-->
+<!--        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"-->
+<!--        app:layout_constraintTop_toTopOf="@id/guidelineHorizontalTop"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/guidelineHorizontalBottomOfTable" />-->
 
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TableLayout
+            android:id="@+id/accountsTableLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/tableLayoutStyle"
+            android:stretchColumns="1"
+            app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
+            app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
+            app:layout_constraintTop_toTopOf="@id/guidelineHorizontalTop"
+            app:layout_constraintBottom_toBottomOf="@id/guidelineHorizontalBottomOfTable" />
+    </ScrollView>
 
     <!--  Guidelines for constraints  -->
     <androidx.constraintlayout.widget.Guideline

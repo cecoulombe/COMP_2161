@@ -1,6 +1,7 @@
 package com.example.financemanagerapp;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -102,12 +103,14 @@ public class AccountManagerActivity extends AppCompatActivity {
         TextView nameHeader = new TextView(this);
         nameHeader.setText(getResources().getString(R.string.accountNameHeader));
         nameHeader.setTextSize(18);
-        nameHeader.setPadding(5, 5, 5, 5);
+        nameHeader.setTypeface(null, Typeface.BOLD);
+        nameHeader.setPadding(5, 5, 10, 5);
         headerRow.addView(nameHeader);
 
         TextView balanceHeader = new TextView(this);
         balanceHeader.setText(getResources().getString(R.string.accountBalanceHeader));
         balanceHeader.setTextSize(18);
+        balanceHeader.setTypeface(null, Typeface.BOLD);
         balanceHeader.setPadding(5, 5, 5, 5);
         headerRow.addView(balanceHeader);
 
