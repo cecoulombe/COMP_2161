@@ -1,11 +1,13 @@
 package com.example.financemanagerapp;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -29,10 +31,20 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.jjoe64.graphview.DefaultLabelFormatter;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -97,10 +109,18 @@ public class NetWorthCalculator extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // create the button to show info for the page
         ImageButton helpButton = findViewById(R.id.helpButton);
         helpButton.setOnClickListener(v -> {
             helpPopup();
         });
+
+        // create the button to show the graph
+        ImageButton showGraphButton = findViewById(R.id.showGraphButton);
+        showGraphButton.setOnClickListener(v -> {
+            graphPopup();
+        });
+
 
         // allow nested scrolling
         ScrollView assetAccountsScrollView = findViewById(R.id.assetAccountsScrollView);
@@ -596,7 +616,18 @@ public class NetWorthCalculator extends AppCompatActivity {
         } else {
             netWorthTextView.setTextColor(getResources().getColor(R.color.textColor));
         }
+
+        String date = getDate();
+        GlobalUser.getUser().addNetWorth(sum, date);
     }
+
+    // returns the current date as a string
+    private String getDate()
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return dateFormat.format(new Date());
+    }
+
 
     // returns the sum of all asset accounts
     private int getAssetAccounts()
@@ -680,6 +711,119 @@ public class NetWorthCalculator extends AppCompatActivity {
         return sum;
     }
 
+    // creates and displays the popup with the chart for net worth history
+    private void graphPopup()
+    {
+        // show the populated graph
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_graph);
+        dialog.setCancelable(true);
+
+        GraphView graphView = dialog.findViewById(R.id.graphView);
+
+        populateGraphView(graphView);
+
+        // Find and set up the close button (X) in the top-right corner
+        ImageButton closeButton = dialog.findViewById(R.id.closeButton);
+        closeButton.setOnClickListener(v -> dialog.dismiss()); // Dismiss the dialog when the button is clicked
+
+        dialog.show();
+    }
+
+    // populates the graph with the net worth history data
+    private void populateGraphView(GraphView graphView)
+    {
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
+        List<NetWorth> netWorthList = GlobalUser.getUser().getNetWorthHistory();
+
+        if(netWorthList != null && !netWorthList.isEmpty())
+        {
+            // sort the list chronologically
+            Collections.sort(netWorthList, new Comparator<NetWorth>() {
+                @Override
+                public int compare(NetWorth o1, NetWorth o2)
+                {
+                    return parseDate(o1.getDate()).compareTo(parseDate(o2.getDate()));
+                }
+            });
+
+            // prepare DataPoints for the graph
+            int n = netWorthList.size();
+            DataPoint[] dataPoints = new DataPoint[n];
+            String[] dateLabels = new String[n];
+            for(int i = 0; i < n; i++)
+            {
+                NetWorth netWorth = netWorthList.get(i);
+                Date date = parseDate(netWorth.getDate());
+                int balanceInCents = netWorth.getNetWorth();
+                double balanceInDollars = balanceInCents / 100.0;
+
+                dataPoints[i] = new DataPoint(date.getTime(), balanceInDollars);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("MMM dd");
+                dateLabels[i] = sdf.format(date);
+            }
+
+            // update the graph series
+            series.resetData(dataPoints);
+
+            series.setThickness(8);
+
+            // add the series to the graph
+            graphView.addSeries(series);
+
+            // customize the graph
+            customizeGraph(graphView, dateLabels, series);
+        }
+    }
+
+    // converts the date string into a usable date
+    private Date parseDate(String dateString)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+        try
+        {
+            return sdf.parse(dateString);
+        } catch (ParseException e)
+        {
+            e.printStackTrace();
+            return new Date(0); // fall back to epoch if parsing fails
+        }
+    }
+
+    // customizes the graph
+    private void customizeGraph(GraphView graphView, String[] dateLabels, LineGraphSeries<DataPoint> series)
+    {
+        graphView.setTitle(getResources().getString(R.string.netWorthGraphTitle));
+        graphView.getGridLabelRenderer().setHorizontalAxisTitle(getResources().getString(R.string.xAxisLabel));
+        graphView.getGridLabelRenderer().setVerticalAxisTitle(getResources().getString(R.string.yAxisLabel));
+
+        // Disable horizontal axis labels (x-axis)
+        graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+                    return ""; // Return an empty string for x-axis labels
+                } else {
+                    return super.formatLabel(value, isValueX); // Keep y-axis labels as is
+                }
+            }
+        });
+
+        graphView.getViewport().setXAxisBoundsManual(true);
+        graphView.getViewport().setMinX(series.getLowestValueX());
+        graphView.getViewport().setMaxX(series.getHighestValueX());
+
+        graphView.getViewport().setYAxisBoundsManual(true);
+        graphView.getViewport().setMinY(series.getLowestValueY());
+        graphView.getViewport().setMaxY(series.getHighestValueY());
+
+        // enable scrolling and zooming
+        graphView.getViewport().setScrollable(true);
+        graphView.getViewport().setScalable(true);
+
+    }
 
     // saves the user data to firebase asynchronously (.set method is async by nature)
     private void savePage()

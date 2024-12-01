@@ -37,24 +37,28 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation(libs.firebase.firestore)
-    implementation(libs.core)
-    implementation(libs.ext.junit)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
 
-    // For mocking classes (optional, if needed for mocking GlobalUser)
-    testImplementation("org.mockito:mockito-core:4.0.0")
-
-    // Import the Firebase BoM
+    // Firebase dependencies with latest BoM
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
 
+    // GraphView library (no exclusions needed unless identified as problematic)
+    implementation("com.jjoe64:graphview:4.2.2")
+
+    // Exclude support-compat from conflicting libraries
+    implementation(libs.firebase.firestore) {
+        exclude(group = "com.android.support", module = "support-compat")
+    }
+
+    // Testing dependencies
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.core)
 }
+
+

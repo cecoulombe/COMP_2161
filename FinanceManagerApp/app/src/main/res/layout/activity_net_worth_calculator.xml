@@ -75,6 +75,22 @@
     </LinearLayout>
 
     <ImageButton
+        android:id="@+id/showGraphButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        style="@style/helpButton"
+        app:backgroundTint="@null"
+        android:src="@drawable/ic_chart"
+        android:scaleType="fitCenter"
+        android:padding="5dp"
+        android:maxLines="2"
+        android:layout_margin="2dp"
+        android:contentDescription="@string/helpButtonDescription"
+        app:layout_constraintTop_toBottomOf="@id/guidelineHorizontalTop"
+        app:layout_constraintStart_toEndOf="@id/guidelineVerticalRight"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageButton
         android:id="@+id/helpButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -241,7 +257,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.13" />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVerticalEndOfDisplay"
         android:layout_width="wrap_content"
@@ -253,6 +269,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.9" />
+        app:layout_constraintGuide_percent="0.87" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

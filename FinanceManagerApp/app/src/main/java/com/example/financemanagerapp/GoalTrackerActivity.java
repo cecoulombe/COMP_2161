@@ -55,13 +55,15 @@ public class GoalTrackerActivity extends AppCompatActivity {
             startActivity(intent);
         });
         Button netWorthButton = findViewById(R.id.netWorthButton);
-        netWorthButton.setEnabled(false);
-        Button goalTrackerButton = findViewById(R.id.goalTrackerButton);
-        goalTrackerButton.setOnClickListener(v -> {
+        netWorthButton.setOnClickListener(v -> {
             savePage();
-            Intent intent = new Intent(GoalTrackerActivity.this, GoalTrackerActivity.class);
+            Intent intent = new Intent(GoalTrackerActivity.this, NetWorthCalculator.class);
             startActivity(intent);
         });
+
+        Button goalTrackerButton = findViewById(R.id.goalTrackerButton);
+        goalTrackerButton.setEnabled(false);
+
         ImageButton settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(v -> {
             savePage();

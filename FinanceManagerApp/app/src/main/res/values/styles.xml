@@ -90,8 +90,12 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
     </style>
-
     <style name="scrollViewStyle">
         <item name="android:background">@color/scrollBackgroundColor</item>
+    </style>
+    <style name="graphStyle">
+        <item name="android:background">@color/scrollBackgroundColor</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/textColor</item>
     </style>
 </resources>

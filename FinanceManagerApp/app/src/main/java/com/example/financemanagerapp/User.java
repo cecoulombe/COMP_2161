@@ -3,6 +3,7 @@ package com.example.financemanagerapp;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class User {
@@ -12,6 +13,7 @@ public class User {
     private List<Accounts> accountsList;
     private List<Accounts> assetsList;
     private List<Accounts> liabilitiesList;
+    private List<NetWorth> netWorthHistory;
 
     // public constructor for firebase
     public User() {}
@@ -23,6 +25,8 @@ public class User {
         accountsList = new ArrayList<>();
         assetsList = new ArrayList<>();
         liabilitiesList = new ArrayList<>();
+        netWorthHistory = new ArrayList<>();
+        addFirstNetWorth();
     }
 
     // returns the user's name
@@ -47,6 +51,12 @@ public class User {
     public List<Accounts> getLiabilitiesList()
     {
         return liabilitiesList;
+    }
+
+    // returns the list of liabilities
+    public List<NetWorth> getNetWorthHistory()
+    {
+        return netWorthHistory;
     }
 
 
@@ -212,6 +222,23 @@ public class User {
         return 0;
     }
 
+    // adds a net worth to the list
+    public void addNetWorth(int netWorth, String date)
+    {
+        for(NetWorth entry : netWorthHistory)
+        {
+            if (entry.getDate().equals(date))
+            {
+                entry.setNetWorth(netWorth);
+                return;
+            }
+        }
+
+        netWorthHistory.add(new NetWorth(netWorth, date));
+
+    }
+
+
     // sets the flag to indicate whether or not the account is to be used in the goal tracking
     public void setGoalFlag(String name, boolean flag)
     {
@@ -353,5 +380,15 @@ public class User {
         }
         Log.d("deleteAccount", "No such account exists");
 
+    }
+
+    // creates a day 0 net worth so that the user can always use the graph
+    private void addFirstNetWorth()
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1);
+        String date = String.format("%tF", calendar);
+        
+        addNetWorth(0, date);
     }
 }

@@ -43,7 +43,7 @@
     <string name="helpPopupInfo_AccountManager">This is the Account Manager.\n\nHere you can add new accounts and modify existing accounts.\n\nTo add a new account, press the "Add Account" button in the bottom left corner. \n***Note that accounts must all have unique names.***\n\nThere are two ways to modify an existing account:\n\t- To modify an account name, tap on the current name and enter the new unique name into the popup.\n\t- To modify the balance of an account, click on the current balance of the desired account and enter a new value. This value can then be added to or subtracted from the existing balance (in case of a deposit or withdrawal) or it can replace the existing data.\n\nThe account data is automatically saved whenever it is updated and when leaving the page, so no need to worry about losing data!</string>
 
 <!--  Net Worth Calculator  -->
-    <string name="helpPopupInfo_NetWorth">This is the Net Worth Calculator.\n\nHere you can use existing accounts or create new assets and liabilities which will be used to estimate your current net worth.</string>
+    <string name="helpPopupInfo_NetWorth">This is the Net Worth Calculator.\n\nHere you can use your assets and liabilities to estimate your current net worth.\n\nThere are two ways to add an asset or liability:\n\t- A list of accounts from the account manager is visible under both assets and liabilities where existing accounts can be set as either.\n\t- By pressing the "add asset" or "add liability" buttons, you can manually add a new asset/liability. NOTE: these are strictly for net worth calculations and are not saved as accounts. These can be edited in the same way as accounts on the account manager. \n\nTo view a chart with previous net worth calculations, showing your net worth over time, click the chart button in the top right corner. \n\nAll values are saved upon leaving the page.</string>
     <string name="addAssetButton">Add new asset</string>
     <string name="addLiabilityButton">Add new liability</string>
     <string name="displayDefault">Net Worth:</string>
@@ -54,6 +54,10 @@
     <string name="otherLiabilitiesLabel">Additional liabilities:</string>
     <string name="nameHeader">Name</string>
     <string name="balanceHeader">Balance</string>
+    <string name="netWorthGraphTitle">Net Worth Over Time</string>
+    <string name="xAxisLabel">Date</string>
+    <string name="yAxisLabel">Net Worth</string>
+    <string name="closeButtonDescription">Close</string>
 
 
 </resources>
