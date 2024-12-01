@@ -8,6 +8,8 @@
     <color name="mainMenuButtonStartDefault">#4C4D5B</color>
     <color name="mainMenuButtonEndDefault">#2F303A</color>
     <color name="scrollBackgroundColor">#BBBBCE</color>
+    <color name="netPositive">#167310</color>
+    <color name="netNegative">#751717</color>
 
 
 </resources>

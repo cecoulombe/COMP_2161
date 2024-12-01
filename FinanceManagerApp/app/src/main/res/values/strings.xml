@@ -47,6 +47,7 @@
     <string name="addAssetButton">Add new asset</string>
     <string name="addLiabilityButton">Add new liability</string>
     <string name="displayDefault">Net Worth:</string>
+    <string name="netWorthDisplay">Net Worth: %1$s</string>
     <string name="accountAssetLabel">Select which accounts are assets:</string>
     <string name="otherAssetsLabel">Additional assets:</string>
     <string name="accountLiabilitiesLabel">Select which accounts are liabilities:</string>

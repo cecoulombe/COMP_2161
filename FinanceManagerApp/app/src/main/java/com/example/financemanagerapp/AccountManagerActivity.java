@@ -181,25 +181,24 @@ public class AccountManagerActivity extends AppCompatActivity {
                     Log.d("CreateNewAccountPOPUP", "Creating a new account with input name: " + name + " and input balance: " + balance);
                     int balanceInCents;
 
-                    if(!name.isEmpty())
+                    if(name.isEmpty())
                     {
-                        if(balance.isEmpty())
-                        {
-                            balanceInCents = 0;
-                        } else {
-                            double balanceInDollars = Double.parseDouble(balance);
-                            balanceInCents = (int) (balanceInDollars * 100);
-                        }
-                        if(!GlobalUser.getUser().accountExists(name))
-                        {
-                            createNewAccount(name, balanceInCents);
-                            Toast.makeText(this, "Account created!", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        } else {
-                            Toast.makeText(this, "Account with that name already exists.", Toast.LENGTH_SHORT).show();
-                        }
+                        name = "Account" + (GlobalUser.getUser().getAccountCount() + 1);
+                    }
+                    if(balance.isEmpty())
+                    {
+                        balanceInCents = 0;
                     } else {
-                        Toast.makeText(this, name.isEmpty() ? "Account name must not be empty." : "Account must have an initial balance.", Toast.LENGTH_SHORT).show();
+                        double balanceInDollars = Double.parseDouble(balance);
+                        balanceInCents = (int) (balanceInDollars * 100);
+                    }
+                    if(!GlobalUser.getUser().accountExists(name))
+                    {
+                        createNewAccount(name, balanceInCents);
+                        Toast.makeText(this, "Account created!", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(this, "Account with that name already exists.", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())

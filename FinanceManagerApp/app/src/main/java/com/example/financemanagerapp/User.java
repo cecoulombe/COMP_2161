@@ -282,6 +282,25 @@ public class User {
         return false;
     }
 
+    // returns the total number of accounts
+    public int getAccountCount()
+    {
+        return accountsList.size();
+    }
+
+    // returns the total number of accounts
+    public int getAssetCount()
+    {
+        return assetsList.size();
+    }
+
+    // returns the total number of accounts
+    public int getLiabilityCount()
+    {
+        return liabilitiesList.size();
+    }
+
+
     // returns true if there exists an account with that name
     public boolean accountExists(String name)
     {

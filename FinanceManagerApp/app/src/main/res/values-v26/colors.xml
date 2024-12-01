@@ -9,4 +9,6 @@
     <color name="mainMenuButtonEndDefault">#2F303A</color>
     <color name="tableLayoutBackground">#BBBBCE</color>
     <color name="scrollBackgroundColor">#BBBBCE</color>
+    <color name="netPositive">#167310</color>
+    <color name="netNegative">#751717</color>
 </resources>

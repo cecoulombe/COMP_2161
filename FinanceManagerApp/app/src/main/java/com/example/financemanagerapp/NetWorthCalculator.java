@@ -287,7 +287,7 @@ public class NetWorthCalculator extends AppCompatActivity {
         {
             for(Accounts acc : accountsList)
             {
-                createNewAccount_Row(table, acc.getAccountName());
+                createNewAccount_Row(table, type, acc.getAccountName());
             }
             Log.d("populateTable", "Added all accounts to the table");
         } else {
@@ -296,7 +296,7 @@ public class NetWorthCalculator extends AppCompatActivity {
     }
 
     // creates a new account within the user object
-    private void createNewAccount_Row(TableLayout table, String name)
+    private void createNewAccount_Row(TableLayout table, String type, String name)
     {
         TableRow tableRow = new TableRow(this);
 
@@ -308,14 +308,14 @@ public class NetWorthCalculator extends AppCompatActivity {
 
         // balance button
         Button balanceButton = new Button(this);
-        int balanceInCents = GlobalUser.getUser().getAccountBalance(name);
+        int balanceInCents = type.equals("asset") ? GlobalUser.getUser().getAssetBalance(name) : GlobalUser.getUser().getLiabilityBalance(name);
         double balanceInDollars = balanceInCents / 100.0;
 
         NumberFormat currentFormatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
         String formattedBalance = currentFormatter.format(balanceInDollars);
 
         balanceButton.setText(formattedBalance);
-        balanceButton.setOnClickListener(v -> editBalance(v, name));      // handles the popup when the name button is clicked
+        balanceButton.setOnClickListener(v -> editBalance(v, type, name));      // handles the popup when the name button is clicked
         tableRow.addView(balanceButton);
 
         table.addView(tableRow);
@@ -366,7 +366,7 @@ public class NetWorthCalculator extends AppCompatActivity {
     }
 
     // creates a popup which allows the user to edit the account balance
-    private void editBalance(View view, String name)
+    private void editBalance(View view, String type,  String name)
     {
         // Inflate the custom layout for the dialog
         LinearLayout dialogLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_edit_balance, null);
@@ -382,7 +382,7 @@ public class NetWorthCalculator extends AppCompatActivity {
         Button accountButton = (Button) view;
 
         // get the current balance of the button from the user
-        int balanceInCents = GlobalUser.getUser().getAccountBalance(name);
+        int balanceInCents = type.equals("asset") ? GlobalUser.getUser().getAssetBalance(name) : GlobalUser.getUser().getLiabilityBalance(name);
         double balanceInDollars = balanceInCents / 100.0;
         DecimalFormat currentFormatter = new DecimalFormat("$#,###,##0.00");
         String formattedBalance = currentFormatter.format(balanceInDollars);
@@ -411,10 +411,15 @@ public class NetWorthCalculator extends AppCompatActivity {
                 double inputInDollars = Double.parseDouble(input);
                 int inputInCents = (int) (inputInDollars * 100);
                 int newBalance = balanceInCents + inputInCents;
-                GlobalUser.getUser().modifyAccountBalance(name, newBalance);
+                if(type.equals("asset"))
+                {
+                    GlobalUser.getUser().modifyAssetBalance(name, newBalance);
+                } else {
+                    GlobalUser.getUser().modifyLiabilityBalance(name, newBalance);
+                }
 
                 // display the updated value
-                updateBalanceOnButton(view, name);
+                updateBalanceOnButton(view, type, name);
                 Toast.makeText(this, "Account balance updated.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
@@ -429,10 +434,14 @@ public class NetWorthCalculator extends AppCompatActivity {
                 double inputInDollars = Double.parseDouble(input);
                 int inputInCents = (int) (inputInDollars * 100);
                 int newBalance = balanceInCents - inputInCents;
-                GlobalUser.getUser().modifyAccountBalance(name, newBalance);
-
+                if(type.equals("asset"))
+                {
+                    GlobalUser.getUser().modifyAssetBalance(name, newBalance);
+                } else {
+                    GlobalUser.getUser().modifyLiabilityBalance(name, newBalance);
+                }
                 // display the updated value
-                updateBalanceOnButton(view, name);
+                updateBalanceOnButton(view, type, name);
                 Toast.makeText(this, "Account balance updated.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
@@ -446,10 +455,14 @@ public class NetWorthCalculator extends AppCompatActivity {
                 // save the updated value
                 double inputInDollars = Double.parseDouble(input);
                 int inputInCents = (int) (inputInDollars * 100);
-                GlobalUser.getUser().modifyAccountBalance(name, inputInCents);
-
+                if(type.equals("asset"))
+                {
+                    GlobalUser.getUser().modifyAssetBalance(name, inputInCents);
+                } else {
+                    GlobalUser.getUser().modifyLiabilityBalance(name, inputInCents);
+                }
                 // display the updated value
-                updateBalanceOnButton(view, name);
+                updateBalanceOnButton(view, type, name);
                 Toast.makeText(this, "Account balance updated.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
@@ -459,16 +472,17 @@ public class NetWorthCalculator extends AppCompatActivity {
     }
 
     // updates the button's displayed balance based on the account
-    private void updateBalanceOnButton(View v, String name)
+    private void updateBalanceOnButton(View v, String type, String name)
     {
         // Cast the view to a button to get which button was pressed
         Button accountButton = (Button) v;
 
         // get the current balance of the button from the user
-        int balanceInCents = GlobalUser.getUser().getAccountBalance(name);
+        int balanceInCents = type.equals("asset") ? GlobalUser.getUser().getAssetBalance(name) : GlobalUser.getUser().getLiabilityBalance(name);
         double balanceInDollars = balanceInCents / 100.0;
         DecimalFormat currentFormatter = new DecimalFormat("$#,###,##0.00");
         String formattedBalance = currentFormatter.format(balanceInDollars);
+
         accountButton.setText(formattedBalance);
 
         // save data in event of a crash
@@ -495,37 +509,36 @@ public class NetWorthCalculator extends AppCompatActivity {
                     Log.d("CreateNewAccountPOPUP", "Creating a new account with input name: " + name + " and input balance: " + balance);
                     int balanceInCents;
 
-                    if(!name.isEmpty())
+                    if(name.isEmpty())
                     {
-                        if(balance.isEmpty())
+                        name = type.equals("asset") ? "Asset" + (GlobalUser.getUser().getAssetCount() + 1) : "Liability" + (GlobalUser.getUser().getLiabilityCount() + 1);
+                    }
+                    if(balance.isEmpty())
+                    {
+                        balanceInCents = 0;
+                    } else {
+                        double balanceInDollars = Double.parseDouble(balance);
+                        balanceInCents = (int) (balanceInDollars * 100);
+                    }
+                    if(type.equals("asset"))
+                    {
+                        if(!GlobalUser.getUser().assetExists(name))
                         {
-                            balanceInCents = 0;
+                            createNewAccount(table, type, name, balanceInCents);
+                            Toast.makeText(this, "Asset created!", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
                         } else {
-                            double balanceInDollars = Double.parseDouble(balance);
-                            balanceInCents = (int) (balanceInDollars * 100);
-                        }
-                        if(type.equals("asset"))
-                        {
-                            if(!GlobalUser.getUser().assetExists(name))
-                            {
-                                createNewAccount(table, type, name, balanceInCents);
-                                Toast.makeText(this, "Asset created!", Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                            } else {
-                                Toast.makeText(this, "Asset with that name already exists.", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            if(!GlobalUser.getUser().liabilityExists(name))
-                            {
-                                createNewAccount(table, type, name, balanceInCents);
-                                Toast.makeText(this, "Liability created!", Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                            } else {
-                                Toast.makeText(this, "Liability with that name already exists.", Toast.LENGTH_SHORT).show();
-                            }
+                            Toast.makeText(this, "Asset with that name already exists.", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(this,(type.equals("asset") ? "Asset" : "Liability") + " name must not be empty.", Toast.LENGTH_SHORT).show();
+                        if(!GlobalUser.getUser().liabilityExists(name))
+                        {
+                            createNewAccount(table, type, name, balanceInCents);
+                            Toast.makeText(this, "Liability created!", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        } else {
+                            Toast.makeText(this, "Liability with that name already exists.", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
@@ -544,7 +557,7 @@ public class NetWorthCalculator extends AppCompatActivity {
             GlobalUser.getUser().addLiability(name, balance);
         }
 
-        createNewAccount_Row(table, name);
+        createNewAccount_Row(table, type, name);
 
         // save data in event of a crash
         savePage();
@@ -565,9 +578,113 @@ public class NetWorthCalculator extends AppCompatActivity {
         dialog.show();
     }
 
+    // calculates the net worth and updates the display
+    private void updateNetWorth()
+    {
+        int sum = getAssetAccounts() + getAssetSum() - getLiabilityAccounts() - getLiabilitySum();
+        double netWorth = sum / 100.0;
+
+        NumberFormat currentFormatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
+        String formattedBalance = currentFormatter.format(netWorth);
+
+        TextView netWorthTextView = findViewById(R.id.netWorthDisplayTextView);
+        netWorthTextView.setText(getResources().getString(R.string.netWorthDisplay, formattedBalance));
+        if (sum > 0) {
+            netWorthTextView.setTextColor(getResources().getColor(R.color.netPositive));
+        } else if (sum < 0) {
+            netWorthTextView.setTextColor(getResources().getColor(R.color.netNegative));
+        } else {
+            netWorthTextView.setTextColor(getResources().getColor(R.color.textColor));
+        }
+    }
+
+    // returns the sum of all asset accounts
+    private int getAssetAccounts()
+    {
+        int sum = 0;
+        List<Accounts> accounts = GlobalUser.getUser().getAccountsList();
+
+        if(accounts == null)
+        {
+            return 0;
+        }
+
+        for(Accounts acc : accounts)
+        {
+            if(acc.getIsAsset())
+            {
+                sum += acc.getAccountBalance();
+            }
+        }
+
+        return sum;
+    }
+
+    // returns the sum of all assets
+    private int getAssetSum()
+    {
+        int sum = 0;
+        List<Accounts> assets = GlobalUser.getUser().getAssetsList();
+
+        if(assets == null)
+        {
+            return 0;
+        }
+
+        for(Accounts ass : assets)
+        {
+            sum += ass.getAccountBalance();
+        }
+
+        return sum;
+    }
+
+    // returns the sum of all liability accounts
+    private int getLiabilityAccounts()
+    {
+        int sum = 0;
+        List<Accounts> accounts = GlobalUser.getUser().getAccountsList();
+
+        if(accounts == null)
+        {
+            return 0;
+        }
+
+        for(Accounts acc : accounts)
+        {
+            if(acc.getIsLiability())
+            {
+                sum += acc.getAccountBalance();
+            }
+        }
+
+        return sum;
+    }
+
+    // returns the sum of all liabilities
+    private int getLiabilitySum()
+    {
+        int sum = 0;
+        List<Accounts> liabilities = GlobalUser.getUser().getLiabilitiesList();
+
+        if(liabilities == null)
+        {
+            return 0;
+        }
+
+        for(Accounts liab : liabilities)
+        {
+            sum += liab.getAccountBalance();
+        }
+
+        return sum;
+    }
+
+
     // saves the user data to firebase asynchronously (.set method is async by nature)
     private void savePage()
     {
+        updateNetWorth();
         // save all user data to the firebase
         FirebaseUser auth = mAuth.getCurrentUser();
         if(auth != null) {
@@ -606,5 +723,8 @@ public class NetWorthCalculator extends AppCompatActivity {
                 }
             });
         }
+
+        updateNetWorth();
+
     }
 }
