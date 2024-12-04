@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    style="@style/layoutStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".GoalTrackerActivity">
@@ -102,8 +103,77 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <Button
+        android:id="@+id/goalNameButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/labelButtonStyle"
+        app:backgroundTint="@null"
+        android:layout_margin="15dp"
+        app:layout_constraintStart_toEndOf="@id/guidelineVerticalLeft"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVerticalRight"
+        app:layout_constraintTop_toBottomOf="@id/guidelineHorizontalTop" />
 
-    <!--  Guidelines for contraints  -->
+<!-- Pie chart to show goal progress-->
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChart"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_margin="15dp"
+        app:layout_constraintStart_toEndOf="@id/guidelineVerticalLeft"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVerticalRight"
+        app:layout_constraintTop_toBottomOf="@id/goalNameButton" />
+
+    <TextView
+        android:id="@+id/goalAmountLabel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        style="@style/labelsStyleGoal"
+        android:text="@string/goalAmountLabel"
+        android:layout_marginVertical="15dp"
+        app:layout_constraintStart_toEndOf="@id/guidelineVerticalLeft"
+        app:layout_constraintEnd_toStartOf="@id/goalAmountButton"
+        app:layout_constraintTop_toBottomOf="@id/pieChart"
+        app:layout_constraintBottom_toTopOf="@id/currentAmountLabel"/>
+
+    <Button
+        android:id="@+id/goalAmountButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        style="@style/labelButtonStyle"
+        app:backgroundTint="@null"
+        android:layout_marginVertical="15dp"
+        app:layout_constraintStart_toEndOf="@id/goalAmountLabel"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVerticalRight"
+        app:layout_constraintTop_toBottomOf="@id/pieChart"
+        app:layout_constraintBottom_toTopOf="@id/currentAmountButton"/>
+
+    <TextView
+        android:id="@+id/currentAmountLabel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        style="@style/labelsStyleGoal"
+        android:text="@string/currentAmountGoalLabel"
+        app:layout_constraintStart_toEndOf="@id/guidelineVerticalLeft"
+        app:layout_constraintEnd_toStartOf="@id/currentAmountButton"
+        app:layout_constraintTop_toBottomOf="@id/goalAmountLabel"
+        app:layout_constraintBottom_toTopOf="@id/guidelineHorizontalBottom"/>
+
+    <Button
+        android:id="@+id/currentAmountButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        style="@style/labelButtonStyle"
+        app:backgroundTint="@null"
+        app:layout_constraintStart_toEndOf="@id/currentAmountLabel"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVerticalRight"
+        app:layout_constraintTop_toBottomOf="@id/goalAmountButton"
+        app:layout_constraintBottom_toTopOf="@id/guidelineHorizontalBottom"/>
+
+
+
+
+    <!--  Guidelines for constraints  -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorizontalTop"
         android:layout_width="wrap_content"

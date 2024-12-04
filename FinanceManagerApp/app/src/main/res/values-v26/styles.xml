@@ -170,4 +170,28 @@
         <item name="android:textColor">@color/textColor</item>
     </style>
 
+<!--  Goal tracker Activity  -->
+    <style name="labelButtonStyle">
+        <item name="android:background">@color/scrollBackgroundColor</item>
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:autoSizeMinTextSize">15sp</item>
+        <item name="android:autoSizeMaxTextSize">30sp</item>
+        <item name="android:autoSizeStepGranularity">2sp</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+    <style name="labelsStyleGoal">
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:autoSizeMinTextSize">15sp</item>
+        <item name="android:autoSizeMaxTextSize">25sp</item>
+        <item name="android:autoSizeStepGranularity">2sp</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
+
 </resources>

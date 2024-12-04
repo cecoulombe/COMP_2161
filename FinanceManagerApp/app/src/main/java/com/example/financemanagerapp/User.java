@@ -14,6 +14,9 @@ public class User {
     private List<Accounts> assetsList;
     private List<Accounts> liabilitiesList;
     private List<NetWorth> netWorthHistory;
+    private int goalAmount;
+    private int currentAmount;
+    private String goalName;
 
     // public constructor for firebase
     public User() {}
@@ -27,6 +30,9 @@ public class User {
         liabilitiesList = new ArrayList<>();
         netWorthHistory = new ArrayList<>();
         addFirstNetWorth();
+        goalAmount = 0;
+        goalName = "";
+        currentAmount = 0;
     }
 
     // returns the user's name
@@ -57,6 +63,24 @@ public class User {
     public List<NetWorth> getNetWorthHistory()
     {
         return netWorthHistory;
+    }
+
+    // returns the goal name
+    public String getGoalName()
+    {
+        return goalName;
+    }
+
+    // returns the goal amount
+    public int getGoalAmount()
+    {
+        return goalAmount;
+    }
+
+    // returns the current amount saved towards the goal
+    public int getCurrentAmount()
+    {
+        return currentAmount;
     }
 
 
@@ -238,6 +262,38 @@ public class User {
 
     }
 
+    // sets the goal name
+    public void setGoalName(String newName)
+    {
+        goalName = newName;
+    }
+
+    // sets the goal amount
+    public void setGoalAmount(int goalAmount)
+    {
+        this.goalAmount = goalAmount;
+    }
+
+    // sets the current amount saved
+    public void setCurrentAmount(int currentAmount)
+    {
+        this.currentAmount = currentAmount;
+    }
+
+    // sets the flag to indicate whether or not the account is to be used in the goal tracking
+    public boolean getGoalFlag(String name)
+    {
+        for(Accounts acc : accountsList)
+        {
+            if(acc.getAccountName().equals(name))
+            {
+                return acc.getUseInGoal();
+            }
+        }
+        Log.d("setGoalFlag", "No such account exists");
+
+        return false;
+    }
 
     // sets the flag to indicate whether or not the account is to be used in the goal tracking
     public void setGoalFlag(String name, boolean flag)
@@ -252,6 +308,7 @@ public class User {
         }
         Log.d("setGoalFlag", "No such account exists");
     }
+
 
     // sets the flag to indicate if the account is an asset
     public void setIsAsset(String name, boolean flag)

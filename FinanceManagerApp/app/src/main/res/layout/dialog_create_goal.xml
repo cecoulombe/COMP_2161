@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/enterNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/createNewAccountInstructions"
+        android:text="@string/createNewGoalName"/>
+
+    <EditText
+        android:id="@+id/enterNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/goalNameHint"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/enterGoalAmountTextview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/createNewGoalAmount"
+        style="@style/createNewAccountInstructions"/>
+
+    <EditText
+        android:id="@+id/enterAmountEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:hint="@string/goalAmountHint" />
+
+    <TextView
+        android:id="@+id/selectAccountTextview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/selectAccountsGoal"
+        style="@style/createNewAccountInstructions"/>
+
+    <ScrollView
+        android:id="@+id/assetAccountsScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        style="@style/scrollViewStyle"
+        android:layout_marginTop="10dp">
+        <LinearLayout
+            android:id="@+id/accountsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

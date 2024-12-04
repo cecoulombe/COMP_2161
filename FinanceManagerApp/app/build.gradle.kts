@@ -55,6 +55,9 @@ dependencies {
         exclude(group = "com.android.support", module = "support-compat")
     }
 
+    // for the donut graph in goal tracker.
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
     // Testing dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

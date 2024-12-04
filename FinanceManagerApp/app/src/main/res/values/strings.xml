@@ -59,5 +59,16 @@
     <string name="yAxisLabel">Net Worth</string>
     <string name="closeButtonDescription">Close</string>
 
+<!--  Goal Tracker Activity  -->
+    <string name="goalAmountLabel">Goal amount:</string>
+    <string name="currentAmountGoalLabel">Current amount:</string>
+    <string name="helpPopupInfo_GoalTracker">ADD INFO MESSAGE:</string>
+    <string name="pieChartCenterText">%1$s%</string>
+    <string name="createNewGoalName">Enter a name for the goal below.</string>
+    <string name="createNewGoalAmount">Enter a target amount for the goal below.</string>
+    <string name="selectAccountsGoal">Optional: Select any accounts which constribute to the goal.</string>
+    <string name="goalNameHint">Goal name</string>
+    <string name="goalAmountHint">Target amount</string>
+
 
 </resources>
