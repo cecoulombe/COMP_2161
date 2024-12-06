@@ -62,7 +62,7 @@
 <!--  Goal Tracker Activity  -->
     <string name="goalAmountLabel">Goal amount:</string>
     <string name="currentAmountGoalLabel">Current amount:</string>
-    <string name="helpPopupInfo_GoalTracker">ADD INFO MESSAGE:</string>
+    <string name="helpPopupInfo_GoalTracker">This is the Goal Tracker.\n\nYou can view your progress towards your goal and you can edit the goal\'s name, target amount, and how much you have currently saved.\n\nTo edit the name or the target amount, click on the corresponding value and enter the new value in the popup.\n\nTo edit the balance, click on the value. \nHere you can either include or exclude accounts from contributing towards the goal by clicking the box next to the account, or you can add money that is not in an account (i.e. cash).\n\nYou can add, subtract, or replace the current amount that is not in an account.\n\t- Note: this amount will be saved but will NOT affect any accounts that contribute to the goal.\n\nOnce you have completed the goal, you can change all of the values to start a new goal or you can keep the old ones to see what you achieved!</string>
     <string name="pieChartCenterText">%1$s%</string>
     <string name="createNewGoalName">Enter a name for the goal below.</string>
     <string name="createNewGoalAmount">Enter a target amount for the goal below.</string>
@@ -70,6 +70,17 @@
     <string name="goalNameHint">Goal name</string>
     <string name="goalAmountHint">Target Amount</string>
     <string name="goalPopupTitle">Create New Goal</string>
+    <string name="currentGoalNameLabel">Current account name: %1$s\</string>
+    <string name="newGoalNameHint">Enter a new name for the goal</string>
+    <string name="editGoalName_title">Edit Goal Name</string>
+    <string name="currentGoalAmountLabel">Current target for the goal: %1$s\</string>
+    <string name="editGoalAmountHint">Enter a new target amount for the goal</string>
+    <string name="editGoalAmount_title">Edit Goal Amount</string>
+    <string name="currentAmountSavedLabel">Current amount saved for the goal: %1$s\ plus amount from accounts: %2$s\ for a total of: %3$s\</string>
+    <string name="editCurrentAmountHint">Enter amount</string>
+    <string name="editCurrentAmount_title">Edit Current Amount</string>
+
+
 
 
 </resources>

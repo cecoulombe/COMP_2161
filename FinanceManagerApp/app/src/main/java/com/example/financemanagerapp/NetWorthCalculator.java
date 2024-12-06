@@ -33,7 +33,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -41,7 +40,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -56,6 +54,7 @@ public class NetWorthCalculator extends AppCompatActivity {
     LinearLayout liabilityAccountList;
     TableLayout assetTable;
     TableLayout liabilityTable;
+    NumberFormat currencyFormatter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +70,7 @@ public class NetWorthCalculator extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        currencyFormatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
         loadUser(); // should happen in the welcome activity, failsafe
 
         // set up the buttons across the top to save whatever is currently on the screen and to redirect to the appropriate activity
@@ -170,33 +170,27 @@ public class NetWorthCalculator extends AppCompatActivity {
         List<Accounts> accounts = GlobalUser.getUser().getAccountsList();
         // get the list of x from the user, add a checkbox for each
 
-        for(Accounts acc : accounts)
+        for(int i = 0; i < accounts.size(); i++)
         {
             CheckBox checkBox = new CheckBox(this);
-            checkBox.setText(acc.getAccountName());
-            checkBox.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            ));
-            // if it is an asset, set it to be true
-            if(GlobalUser.getUser().getIsAsset(acc.getAccountName()))
+            String displayText = formatCheckBoxName(accounts.get(i));
+            checkBox.setText(displayText);
+            checkBox.setTag(i);
+            if(GlobalUser.getUser().getIsAsset(accounts.get(i).getAccountName()))
             {
                 checkBox.setChecked(true);
-            } else if(GlobalUser.getUser().getIsLiability(acc.getAccountName()))    // if liability, disable it
+            } else if(GlobalUser.getUser().getIsLiability(accounts.get(i).getAccountName()))    // if asset, disable it
             {
                 checkBox.setEnabled(false);
             }
-
-            // set a listener for when the box is toggled
-            checkBox.setOnCheckedChangeListener((buttonView, isChecked) ->
+            checkBox.setOnCheckedChangeListener((v, isChecked) ->
             {
-                String checkBoxText = checkBox.getText().toString();
-
-                GlobalUser.getUser().setIsAsset(checkBoxText, isChecked);
+                int position = (int) v.getTag();
+                GlobalUser.getUser().setIsAsset(accounts.get(position).getAccountName(), isChecked);
                 savePage();
 
-                // update the assets container to either enable or disable the same checkbox
-                updateCheckBoxState(liabilityAccountList, checkBoxText, !isChecked, false);
+                updateCheckBoxState(assetAccountList, accounts.get(position).getAccountName(), !isChecked, false);
+
             });
 
             container.addView(checkBox);
@@ -209,38 +203,49 @@ public class NetWorthCalculator extends AppCompatActivity {
         List<Accounts> accounts = GlobalUser.getUser().getAccountsList();
         // get the list of x from the user, add a checkbox for each
 
-        for(Accounts acc : accounts)
+        for(int i = 0; i < accounts.size(); i++)
         {
             CheckBox checkBox = new CheckBox(this);
-            checkBox.setText(acc.getAccountName());
-            checkBox.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            ));
-            // if it is a liability, set it to be true
-            if(GlobalUser.getUser().getIsLiability(acc.getAccountName()))
+            String displayText = formatCheckBoxName(accounts.get(i));
+            checkBox.setText(displayText);
+            checkBox.setTag(i);
+            if(GlobalUser.getUser().getIsLiability(accounts.get(i).getAccountName()))
             {
                 checkBox.setChecked(true);
-            } else if(GlobalUser.getUser().getIsAsset(acc.getAccountName()))    // if asset, disable it
+            } else if(GlobalUser.getUser().getIsAsset(accounts.get(i).getAccountName()))    // if asset, disable it
             {
                 checkBox.setEnabled(false);
             }
-
-            // set a listener for when the box is toggled
-            checkBox.setOnCheckedChangeListener((buttonView, isChecked) ->
+            checkBox.setOnCheckedChangeListener((v, isChecked) ->
             {
-                String checkBoxText = checkBox.getText().toString();
-
-                GlobalUser.getUser().setIsLiability(checkBoxText, isChecked);
+                int position = (int) v.getTag();
+                GlobalUser.getUser().setIsLiability(accounts.get(position).getAccountName(), isChecked);
                 savePage();
 
-                // update the assets container to either enable or disable the same checkbox
-                updateCheckBoxState(assetAccountList, checkBoxText, !isChecked, false);
+                updateCheckBoxState(assetAccountList, accounts.get(position).getAccountName(), !isChecked, false);
+
             });
 
             container.addView(checkBox);
         }
     }
+
+    // formats the name and balance of the account for the checkbox list
+    private String formatCheckBoxName(Accounts acc)
+    {
+        String msg = "";
+        msg+= acc.getAccountName();
+        msg+= ": ";
+
+        int balance = acc.getAccountBalance();
+        double balanceInDollars = balance / 100.0;
+        String totalFormatted = currencyFormatter.format(balanceInDollars);
+
+        msg+= totalFormatted;
+
+        return msg;
+    }
+
 
     // disables or enables a button in the opposite view depending on what action was taken
     private void updateCheckBoxState(LinearLayout container, String name, boolean isEnabled, boolean isChecked)
@@ -331,8 +336,7 @@ public class NetWorthCalculator extends AppCompatActivity {
         int balanceInCents = type.equals("asset") ? GlobalUser.getUser().getAssetBalance(name) : GlobalUser.getUser().getLiabilityBalance(name);
         double balanceInDollars = balanceInCents / 100.0;
 
-        NumberFormat currentFormatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
-        String formattedBalance = currentFormatter.format(balanceInDollars);
+        String formattedBalance = currencyFormatter.format(balanceInDollars);
 
         balanceButton.setText(formattedBalance);
         balanceButton.setOnClickListener(v -> editBalance(v, type, name));      // handles the popup when the name button is clicked
@@ -604,8 +608,7 @@ public class NetWorthCalculator extends AppCompatActivity {
         int sum = getAssetAccounts() + getAssetSum() - getLiabilityAccounts() - getLiabilitySum();
         double netWorth = sum / 100.0;
 
-        NumberFormat currentFormatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
-        String formattedBalance = currentFormatter.format(netWorth);
+        String formattedBalance = currencyFormatter.format(netWorth);
 
         TextView netWorthTextView = findViewById(R.id.netWorthDisplayTextView);
         netWorthTextView.setText(getResources().getString(R.string.netWorthDisplay, formattedBalance));
