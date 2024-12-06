@@ -194,4 +194,18 @@
         <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
     </style>
 
+    <style name="goalPopupInstructions">
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:autoSizeMinTextSize">18sp</item>
+        <item name="android:autoSizeMaxTextSize">25sp</item>
+        <item name="android:autoSizeStepGranularity">2sp</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:lineSpacingExtra">2dp</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
+
 </resources>

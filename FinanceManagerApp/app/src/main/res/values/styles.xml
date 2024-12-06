@@ -105,4 +105,9 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/textColor</item>
     </style>
+
+    <style name="goalPopupInstructions">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
 </resources>

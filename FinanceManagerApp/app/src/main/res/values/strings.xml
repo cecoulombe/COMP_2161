@@ -66,9 +66,10 @@
     <string name="pieChartCenterText">%1$s%</string>
     <string name="createNewGoalName">Enter a name for the goal below.</string>
     <string name="createNewGoalAmount">Enter a target amount for the goal below.</string>
-    <string name="selectAccountsGoal">Optional: Select any accounts which constribute to the goal.</string>
+    <string name="selectAccountsGoal">Optional: Select any accounts which contribute to the goal.</string>
     <string name="goalNameHint">Goal name</string>
-    <string name="goalAmountHint">Target amount</string>
+    <string name="goalAmountHint">Target Amount</string>
+    <string name="goalPopupTitle">Create New Goal</string>
 
 
 </resources>

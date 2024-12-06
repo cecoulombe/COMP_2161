@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -29,12 +30,17 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class GoalTrackerActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    Button goalNameButton;
+    Button goalAmountButton;
+    Button currentAmountButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +62,37 @@ public class GoalTrackerActivity extends AppCompatActivity {
             createGoal_Popup();
         }
         setUpChart();
+        Button goalNameButton = findViewById(R.id.goalNameButton);
+        goalNameButton.setText(GlobalUser.getUser().getGoalName());
+        goalNameButton.setOnClickListener(v -> {
+            // update the goal name
+            savePage();
+        });
+
+        Button goalAmountButton = findViewById(R.id.goalAmountButton);
+
+        int goalAmountInCents = GlobalUser.getUser().getGoalAmount();
+        double goalAmountInDollars = goalAmountInCents / 100.0;
+        NumberFormat currentFormatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
+        String formattedGoal = currentFormatter.format(goalAmountInDollars);
+        goalAmountButton.setText(formattedGoal);
+
+        goalAmountButton.setOnClickListener(v -> {
+            // update the goal amount
+            savePage();
+        });
+
+        Button currentAmountButton = findViewById(R.id.currentAmountButton);
+
+        int currentInCents = GlobalUser.getUser().getCurrentAmount();
+        double currentInDollars = currentInCents / 100.0;
+        String formattedCurrent = currentFormatter.format(currentInDollars);
+        currentAmountButton.setText(formattedCurrent);
+
+        currentAmountButton.setOnClickListener(v -> {
+            // update the current amount
+            savePage();
+        });
 
         // set up the buttons across the top to save whatever is currently on the screen and to redirect to the appropriate activity
         // instantiate all buttons and disable the button for the current activity. For the rest, set up the change activity
@@ -146,7 +183,7 @@ public class GoalTrackerActivity extends AppCompatActivity {
     private void createGoal_Popup()
     {
         // Inflate the custom layout for the dialog
-        LinearLayout dialogLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_create_goal, null);
+        ConstraintLayout dialogLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.dialog_create_goal, null);
         EditText nameEditText = dialogLayout.findViewById(R.id.enterNameEditText);
         EditText balanceEditText = dialogLayout.findViewById(R.id.enterAmountEditText);
         LinearLayout accountsList = dialogLayout.findViewById(R.id.accountsList);
@@ -155,14 +192,14 @@ public class GoalTrackerActivity extends AppCompatActivity {
 
         // create and show the AlertDialog
         new AlertDialog.Builder(this)
-                .setTitle(getResources().getString(R.string.name_alertBuilderText))
+                .setTitle(getResources().getString(R.string.goalPopupTitle))
                 .setView(dialogLayout)
                 .setPositiveButton("Create Goal", (dialog, which) ->
                 {
                     // get user input and update the button text
                     String name = nameEditText.getText().toString().trim();
                     String balance = balanceEditText.getText().toString();
-                    Log.d("CreateNewAccountPOPUP", "Creating a new account with input name: " + name + " and input balance: " + balance);
+                    Log.d("CreateNewAccountPOPUP", "Creating a new goal with input name: " + name + " and input balance: " + balance);
                     int balanceInCents;
 
                     if(!name.isEmpty() && !balance.isEmpty())
@@ -171,6 +208,7 @@ public class GoalTrackerActivity extends AppCompatActivity {
                         balanceInCents = (int) (balanceInDollars * 100);
                         GlobalUser.getUser().setGoalName(name);
                         GlobalUser.getUser().setGoalAmount(balanceInCents);
+                        savePage();
                         dialog.dismiss();
                     } else {
                         Toast.makeText(this, "Goal must have a name and target amount!", Toast.LENGTH_SHORT).show();
@@ -180,6 +218,7 @@ public class GoalTrackerActivity extends AppCompatActivity {
 
 
     }
+
 
     // populates the list of accounts which can be used as a liability
     private void addCheckboxesToPopup(LinearLayout container)
