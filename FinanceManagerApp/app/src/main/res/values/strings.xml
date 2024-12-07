@@ -1,5 +1,5 @@
 <resources>
-<!--  Main Activity  -->
+    <!--  Main Activity  -->
     <string name="app_name">FinancialManagementApp</string>
     <string name="appTitleLabel">Finance Manager</string>
     <string name="instructionsLabel">Enter your email address and password below.</string>
@@ -8,7 +8,7 @@
     <string name="signInButtonText">Sign In</string>
     <string name="noAccountLabel">No account? \nClick below to create a new account</string>
 
-<!--  Activity SelectionButton Labels  -->
+    <!--  Activity SelectionButton Labels  -->
     <string name="signUpButtonText">Create Account</string>
     <string name="accountManagerButtonText">Account Manager</string>
     <string name="netWorthButtonText">Net Worth Calculator</string>
@@ -42,7 +42,7 @@
     <string name="helpPopupTitle">Information</string>
     <string name="helpPopupInfo_AccountManager">This is the Account Manager.\n\nHere you can add new accounts and modify existing accounts.\n\nTo add a new account, press the "Add Account" button in the bottom left corner. \n***Note that accounts must all have unique names.***\n\nThere are two ways to modify an existing account:\n\t- To modify an account name, tap on the current name and enter the new unique name into the popup.\n\t- To modify the balance of an account, click on the current balance of the desired account and enter a new value. This value can then be added to or subtracted from the existing balance (in case of a deposit or withdrawal) or it can replace the existing data.\n\nThe account data is automatically saved whenever it is updated and when leaving the page, so no need to worry about losing data!</string>
 
-<!--  Net Worth Calculator  -->
+    <!--  Net Worth Calculator  -->
     <string name="helpPopupInfo_NetWorth">This is the Net Worth Calculator.\n\nHere you can use your assets and liabilities to estimate your current net worth.\n\nThere are two ways to add an asset or liability:\n\t- A list of accounts from the account manager is visible under both assets and liabilities where existing accounts can be set as either.\n\t- By pressing the "add asset" or "add liability" buttons, you can manually add a new asset/liability. NOTE: these are strictly for net worth calculations and are not saved as accounts. These can be edited in the same way as accounts on the account manager. \n\nTo view a chart with previous net worth calculations, showing your net worth over time, click the chart button in the top right corner. \n\nAll values are saved upon leaving the page.</string>
     <string name="addAssetButton">Add new asset</string>
     <string name="addLiabilityButton">Add new liability</string>
@@ -59,7 +59,7 @@
     <string name="yAxisLabel">Net Worth</string>
     <string name="closeButtonDescription">Close</string>
 
-<!--  Goal Tracker Activity  -->
+    <!--  Goal Tracker Activity  -->
     <string name="goalAmountLabel">Goal amount:</string>
     <string name="currentAmountGoalLabel">Current amount:</string>
     <string name="helpPopupInfo_GoalTracker">This is the Goal Tracker.\n\nYou can view your progress towards your goal and you can edit the goal\'s name, target amount, and how much you have currently saved.\n\nTo edit the name or the target amount, click on the corresponding value and enter the new value in the popup.\n\nTo edit the balance, click on the value. \nHere you can either include or exclude accounts from contributing towards the goal by clicking the box next to the account, or you can add money that is not in an account (i.e. cash).\n\nYou can add, subtract, or replace the current amount that is not in an account.\n\t- Note: this amount will be saved but will NOT affect any accounts that contribute to the goal.\n\nOnce you have completed the goal, you can change all of the values to start a new goal or you can keep the old ones to see what you achieved!</string>
@@ -79,8 +79,20 @@
     <string name="currentAmountSavedLabel">Current amount saved for the goal: %1$s\ plus amount from accounts: %2$s\ for a total of: %3$s\</string>
     <string name="editCurrentAmountHint">Enter amount</string>
     <string name="editCurrentAmount_title">Edit Current Amount</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
 
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
 
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
 
 </resources>

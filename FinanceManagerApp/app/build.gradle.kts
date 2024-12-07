@@ -57,6 +57,7 @@ dependencies {
 
     // for the donut graph in goal tracker.
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation(libs.preference)
 
     // Testing dependencies
     testImplementation(libs.junit)
