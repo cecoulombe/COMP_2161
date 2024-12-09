@@ -2,7 +2,9 @@ package com.example.financemanagerapp;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -21,9 +24,12 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +46,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -58,6 +65,8 @@ public class NetWorthCalculator extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        manageDarkMode();
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_net_worth_calculator);
@@ -121,6 +130,17 @@ public class NetWorthCalculator extends AppCompatActivity {
             graphPopup();
         });
 
+        // set up the delete account button
+        Button deleteAssetButton = findViewById(R.id.deleteAssetButton);
+        deleteAssetButton.setOnClickListener(v -> {
+            deleteAccount_Popup("asset");
+        });
+
+        Button deleteLiabilityButton = findViewById(R.id.deleteLiabilityButton);
+        deleteLiabilityButton.setOnClickListener(v -> {
+            deleteAccount_Popup("liability");
+        });
+
 
         // allow nested scrolling
         ScrollView assetAccountsScrollView = findViewById(R.id.assetAccountsScrollView);
@@ -161,6 +181,17 @@ public class NetWorthCalculator extends AppCompatActivity {
         Button addLiabilityButton = findViewById(R.id.addLiabilityButton);
         addLiabilityButton.setOnClickListener(v -> {
             createNewAccount_Popup(liabilityTable, "liability");
+        });
+
+        // set up the currency exchange button
+        ImageButton currencyExchangeButton = findViewById(R.id.currencyExchangeButton);
+        currencyExchangeButton.setOnClickListener(v -> {
+            // Create an instance of the fragment
+            CurrencyExchangeFragment calculatorFragment = new CurrencyExchangeFragment();
+
+            // Show the fragment as a popup
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            calculatorFragment.show(fragmentManager, "CurrencyExchangeFragment");
         });
     }
 
@@ -297,9 +328,10 @@ public class NetWorthCalculator extends AppCompatActivity {
     }
 
     // populates the table with the existing data
-// looks through each of the accounts and adds a corresponding row
+    // looks through each of the accounts and adds a corresponding row
     private void populateTableFromSavedData(TableLayout table, String type)
     {
+        table.removeAllViews();
         List<Accounts> accountsList;
         if(type.equals("asset"))
         {
@@ -535,7 +567,14 @@ public class NetWorthCalculator extends AppCompatActivity {
 
                     if(name.isEmpty())
                     {
-                        name = type.equals("asset") ? "Asset" + (GlobalUser.getUser().getAssetCount() + 1) : "Liability" + (GlobalUser.getUser().getLiabilityCount() + 1);
+                        String possibleName = type.equals("asset") ? "Asset" + (GlobalUser.getUser().getAssetCount() + 1) : "Liability" + (GlobalUser.getUser().getLiabilityCount() + 1);
+                        int n = 2;
+                        while(GlobalUser.getUser().accountExists(possibleName))
+                        {
+                            possibleName = type.equals("asset") ? "Asset" + (GlobalUser.getUser().getAssetCount() + 1) : "Liability" + (GlobalUser.getUser().getLiabilityCount() + n);
+                            n++;
+                        }
+                        name = possibleName;
                     }
                     if(balance.isEmpty())
                     {
@@ -587,6 +626,100 @@ public class NetWorthCalculator extends AppCompatActivity {
         savePage();
     }
 
+    // creates a popup so that the user can select and delete an account
+    private void deleteAccount_Popup(String type)
+    {
+        // Inflate the custom layout for the dialog
+        LinearLayout dialogLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_delete_account, null);
+        CheckBox checkBox = dialogLayout.findViewById(R.id.confirmDeleteCheckBox);
+        LinearLayout accountsList = dialogLayout.findViewById(R.id.accountsList);
+        List<Accounts> accountsToDelete = new ArrayList<>();
+        addCheckboxesToPopup(type, accountsList, accountsToDelete);
+
+        // create and show the AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogLayout)
+                .setTitle(getResources().getString(R.string.confirmDeletePopup_Title))
+                .setPositiveButton("Delete", null) // Set later to enable/disable
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        // Create and show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        // Disable the positive button initially
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setEnabled(false);
+
+        // Enable positive button only if checkbox is checked
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                positiveButton.setEnabled(isChecked);
+            }
+        });
+
+        // Set the positive button action
+        positiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteCheckedAccounts(type, accountsToDelete);
+                dialog.dismiss();
+            }
+        });
+    }
+
+    // populates the list of accounts which can be used as a liability
+    private void addCheckboxesToPopup(String type, LinearLayout container, List<Accounts> accountsToDelete)
+    {
+        List<Accounts> accounts = type.equals("asset") ? GlobalUser.getUser().getAssetsList() : GlobalUser.getUser().getLiabilitiesList();
+        // get the list of x from the user, add a checkbox for each
+
+        for(int i = 0; i < accounts.size(); i++)
+        {
+            CheckBox checkBox = new CheckBox(this);
+            String displayText = formatCheckBoxName(accounts.get(i));
+            checkBox.setText(displayText);
+            checkBox.setTag(i);
+            checkBox.setOnCheckedChangeListener((v, isChecked) ->
+            {
+                int position = (int) v.getTag();
+                accountsToDelete.add(accounts.get(position));
+            });
+
+            container.addView(checkBox);
+        }
+    }
+
+    // removes the checked accounts from the account list stored in user
+    private void deleteCheckedAccounts(String type, List<Accounts> accountsToDelete)
+    {
+        for(Accounts acc : accountsToDelete)
+        {
+            if (type.equals("asset"))
+            {
+                GlobalUser.getUser().deleteAsset(acc.getAccountName());
+            } else {
+                GlobalUser.getUser().deleteLiability(acc.getAccountName());
+            }
+        }
+        savePage();
+
+        TableLayout table;
+        if(type.equals("asset"))
+        {
+            table = assetTable;
+        } else {
+            table = liabilityTable;
+        }
+
+        populateTableFromSavedData(table, type);
+    }
     // creates a popup with info on how to navigate the current activity
     private void helpPopup()
     {
@@ -873,5 +1006,21 @@ public class NetWorthCalculator extends AppCompatActivity {
 
         updateNetWorth();
 
+    }
+
+    // checks the user prefs and determines whether or not the app should be in dark mode. Applies any changes
+    private void manageDarkMode()
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isDarkMode = prefs.getBoolean("dark_mode", false); // Default is false if not set
+
+        // Apply the theme based on the preference
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+        setContentView(R.layout.activity_main);
     }
 }

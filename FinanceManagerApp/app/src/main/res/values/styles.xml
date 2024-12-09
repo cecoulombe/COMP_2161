@@ -34,6 +34,7 @@
         <item name="android:background">@drawable/activity_selection_buttons</item> <!-- Ensure this drawable exists -->
         <item name="android:backgroundTint">@null</item>
         <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:padding">1dp</item>
     </style>
     <style name="signOutButton">
@@ -73,6 +74,10 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
     </style>
+    <style name="deleteAccountPopupInstructions">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
 
 <!--  Net worth calculator  -->
     <style name="addAssetButton">
@@ -105,8 +110,30 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/textColor</item>
     </style>
-
     <style name="goalPopupInstructions">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
+
+<!--  Settings Activity  -->
+    <style name="resetButton">
+        <item name="android:background">@drawable/reset_button</item> <!-- Ensure this drawable exists -->
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:padding">1dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="deleteWarningStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
+
+<!--  Currency Exchange Fragment  -->
+    <style name="currencyHeader">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+    </style>
+    <style name="currencyInfo">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
     </style>

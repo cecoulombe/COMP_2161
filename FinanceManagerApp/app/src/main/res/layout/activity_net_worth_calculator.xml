@@ -170,14 +170,28 @@
                     style="@style/tableLayoutStyle"
                     android:stretchColumns="1" />
             </ScrollView>
-            <Button
-                android:id="@+id/addAssetButton"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                style="@style/addAssetButton"
-                app:backgroundTint="@null"
-                android:text="@string/addAssetButton" />
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/addAssetButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/addAssetButton"
+                    app:backgroundTint="@null"
+                    android:text="@string/addAssetButton" />
+                <Button
+                    android:id="@+id/deleteAssetButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/addAssetButton"
+                    app:backgroundTint="@null"
+                    android:text="@string/deleteAssetButton"
+                    android:maxLines="2"
+                    android:layout_marginHorizontal="15dp" />
+            </LinearLayout>
             <!--  Accounts which ARE liabilities  -->
             <TextView
                 style="@style/labelsStyle"
@@ -216,14 +230,28 @@
                     style="@style/tableLayoutStyle"
                     android:stretchColumns="1" />
             </ScrollView>
-            <Button
-                android:id="@+id/addLiabilityButton"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                style="@style/addAssetButton"
-                app:backgroundTint="@null"
-                android:text="@string/addLiabilityButton" />
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/addLiabilityButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/addAssetButton"
+                    app:backgroundTint="@null"
+                    android:text="@string/addLiabilityButton" />
+                <Button
+                    android:id="@+id/deleteLiabilityButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/addAssetButton"
+                    app:backgroundTint="@null"
+                    android:text="@string/deleteLiabilityButton"
+                    android:maxLines="2"
+                    android:layout_marginHorizontal="15dp" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -238,6 +266,21 @@
         app:layout_constraintBottom_toBottomOf="@id/signOutButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guidelineVerticalEndOfDisplay"/>
+
+    <ImageButton
+        android:id="@+id/currencyExchangeButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        style="@style/helpButton"
+        app:backgroundTint="@null"
+        android:src="@drawable/ic_currency_exchange"
+        android:scaleType="fitCenter"
+        android:padding="5dp"
+        android:maxLines="2"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/currencyExchangeDescription"
+        app:layout_constraintTop_toBottomOf="@id/activitySelectionLinearLayout"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <!--  Guidelines for constraints  -->
     <androidx.constraintlayout.widget.Guideline

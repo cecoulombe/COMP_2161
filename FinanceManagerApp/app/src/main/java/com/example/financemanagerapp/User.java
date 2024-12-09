@@ -423,7 +423,6 @@ public class User {
         }
         return false;
     }
-
     // deletes an account from the list
     public void deleteAccount(String name)
     {
@@ -436,6 +435,35 @@ public class User {
             }
         }
         Log.d("deleteAccount", "No such account exists");
+
+    }
+    // deletes an asset from the list
+    public void deleteAsset(String name)
+    {
+        for(Accounts acc : assetsList)
+        {
+            if(acc.getAccountName().equals(name))
+            {
+                assetsList.remove(acc);
+                return;
+            }
+        }
+        Log.d("deleteAsset", "No such account exists");
+
+    }
+
+    // deletes a liability from the list
+    public void deleteLiability(String name)
+    {
+        for(Accounts acc : liabilitiesList)
+        {
+            if(acc.getAccountName().equals(name))
+            {
+                liabilitiesList.remove(acc);
+                return;
+            }
+        }
+        Log.d("deleteLiability", "No such account exists");
 
     }
 

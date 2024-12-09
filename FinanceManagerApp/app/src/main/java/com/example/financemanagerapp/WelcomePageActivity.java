@@ -2,6 +2,7 @@ package com.example.financemanagerapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -14,9 +15,12 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,6 +41,8 @@ public class WelcomePageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        manageDarkMode();
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_welcome_page);
@@ -87,6 +93,17 @@ public class WelcomePageActivity extends AppCompatActivity {
 
         // check if a user's document exists
         checkUserDocs();
+
+        // set up the currency exchange button
+        ImageButton currencyExchangeButton = findViewById(R.id.currencyExchangeButton);
+        currencyExchangeButton.setOnClickListener(v -> {
+            // Create an instance of the fragment
+            CurrencyExchangeFragment calculatorFragment = new CurrencyExchangeFragment();
+
+            // Show the fragment as a popup
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            calculatorFragment.show(fragmentManager, "CurrencyExchangeFragment");
+        });
     }
 
     // verifies if the user exists within the database
@@ -229,6 +246,22 @@ public class WelcomePageActivity extends AppCompatActivity {
         Log.d("updateWelcomeMsg", "Updating the welcome msg to include the name: " + displayName);
         String msg = getResources().getString(R.string.welcomeNicknameLabel, displayName);
         welcomeMsg.setText(msg);
+    }
+
+    // checks the user prefs and determines whether or not the app should be in dark mode. Applies any changes
+    private void manageDarkMode()
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isDarkMode = prefs.getBoolean("dark_mode", false); // Default is false if not set
+
+        // Apply the theme based on the preference
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+        setContentView(R.layout.activity_main);
     }
 
 }

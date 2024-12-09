@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="textColor">#DEDEEB</color>
+    <color name="backgroundColor">#282C35</color>
+    <color name="headerBackground">#585864</color>
+    <color name="mainMenuButtonStartPressed">#1A1A1A</color>
+    <color name="mainMenuButtonEndPressed">#000012</color>
+    <color name="mainMenuButtonStartDefault">#4C4D5B</color>
+    <color name="mainMenuButtonEndDefault">#2F303A</color>
+    <color name="tableLayoutBackground">#52526A</color>
+    <color name="scrollBackgroundColor">#52526A</color>
+    <color name="netPositive">#167310</color>
+    <color name="netNegative">#751717</color>
+
+
+</resources>

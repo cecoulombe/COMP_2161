@@ -2,6 +2,7 @@ package com.example.financemanagerapp;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,10 +16,13 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -51,6 +55,8 @@ public class GoalTrackerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        manageDarkMode();
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_goal_tracker);
@@ -60,29 +66,33 @@ public class GoalTrackerActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Initialize Firebase Auth
+        // Initialize Firebase Auth and everything else
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        currencyFormatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
+        goalNameButton = findViewById(R.id.goalNameButton);
+        goalAmountButton = findViewById(R.id.goalAmountButton);
+        currentAmountButton = findViewById(R.id.currentAmountButton);
+
+
         loadUser(); // should happen in the welcome activity, failsafe
         if(GlobalUser.getUser().getGoalName().equals(""))
         {
             createGoal_Popup();
+        } else {
+            setUpChart();
         }
-        setUpChart();
+
 
         // initialize and implement the buttons that allow the user to edit the goal name, balance, and target amount
-        goalNameButton = findViewById(R.id.goalNameButton);
         goalNameButton.setText(GlobalUser.getUser().getGoalName());
         goalNameButton.setOnClickListener(v -> {
             editGoalName_Popup(v, goalNameButton.getText().toString());
             savePage();
         });
 
-        goalAmountButton = findViewById(R.id.goalAmountButton);
-
         int goalAmountInCents = GlobalUser.getUser().getGoalAmount();
         double goalAmountInDollars = goalAmountInCents / 100.0;
-        currencyFormatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
         String formattedGoal = currencyFormatter.format(goalAmountInDollars);
         goalAmountButton.setText(formattedGoal);
 
@@ -91,7 +101,6 @@ public class GoalTrackerActivity extends AppCompatActivity {
             savePage();
         });
 
-        currentAmountButton = findViewById(R.id.currentAmountButton);
         int currentInCents = GlobalUser.getUser().getCurrentAmount();
         updateCurrentAmountButton();
         currentAmountButton.setOnClickListener(v -> {
@@ -140,6 +149,17 @@ public class GoalTrackerActivity extends AppCompatActivity {
         ImageButton helpButton = findViewById(R.id.helpButton);
         helpButton.setOnClickListener(v -> {
             helpPopup();
+        });
+
+        // set up the currency exchange button
+        ImageButton currencyExchangeButton = findViewById(R.id.currencyExchangeButton);
+        currencyExchangeButton.setOnClickListener(v -> {
+            // Create an instance of the fragment
+            CurrencyExchangeFragment calculatorFragment = new CurrencyExchangeFragment();
+
+            // Show the fragment as a popup
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            calculatorFragment.show(fragmentManager, "CurrencyExchangeFragment");
         });
     }
 
@@ -202,7 +222,7 @@ public class GoalTrackerActivity extends AppCompatActivity {
         legend.setTextSize(16f); // Increase legend text size
         legend.setTextColor(getResources().getColor(R.color.textColor)); // Optionally set legend text color
         legend.setXEntrySpace(10f); // Add spacing between legend items
-        legend.setYEntrySpace(5f); // Add vertical spacing
+        legend.setYEntrySpace(10f); // Add vertical spacing
 
         // Refresh the chart
         pieChart.invalidate();
@@ -266,7 +286,7 @@ public class GoalTrackerActivity extends AppCompatActivity {
         legend.setTextSize(16f); // Increase legend text size
         legend.setTextColor(getResources().getColor(R.color.textColor)); // Optionally set legend text color
         legend.setXEntrySpace(10f); // Add spacing between legend items
-        legend.setYEntrySpace(5f); // Add vertical spacing
+        legend.setYEntrySpace(10f); // Add vertical spacing
 
         // Refresh the chart
         pieChart.invalidate();
@@ -302,6 +322,13 @@ public class GoalTrackerActivity extends AppCompatActivity {
                         GlobalUser.getUser().setGoalName(name);
                         GlobalUser.getUser().setGoalAmount(balanceInCents);
                         savePage();
+                        setUpChart();
+                        goalNameButton.setText(GlobalUser.getUser().getGoalName());
+                        updateCurrentAmountButton();
+                        int goalAmountInCents = GlobalUser.getUser().getGoalAmount();
+                        double goalAmountInDollars = goalAmountInCents / 100.0;
+                        String formattedGoal = currencyFormatter.format(goalAmountInDollars);
+                        goalAmountButton.setText(formattedGoal);
                         dialog.dismiss();
                     } else {
                         Toast.makeText(this, "Goal must have a name and target amount!", Toast.LENGTH_SHORT).show();
@@ -653,5 +680,21 @@ public class GoalTrackerActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    // checks the user prefs and determines whether or not the app should be in dark mode. Applies any changes
+    private void manageDarkMode()
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isDarkMode = prefs.getBoolean("dark_mode", false); // Default is false if not set
+
+        // Apply the theme based on the preference
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+        setContentView(R.layout.activity_main);
     }
 }

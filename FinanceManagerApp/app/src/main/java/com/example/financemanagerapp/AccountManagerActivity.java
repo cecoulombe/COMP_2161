@@ -1,11 +1,14 @@
 package com.example.financemanagerapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -19,9 +22,13 @@ import android.content.DialogInterface;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +50,8 @@ public class AccountManagerActivity extends AppCompatActivity {
             
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        manageDarkMode();
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_account_manager);
@@ -129,6 +138,23 @@ public class AccountManagerActivity extends AppCompatActivity {
         createNewAccountButton.setOnClickListener(v -> {
             createNewAccount_Popup();
         });
+
+        // set up the delete account button
+        Button deleteAccountButton = findViewById(R.id.deleteAccountButton);
+        deleteAccountButton.setOnClickListener(v -> {
+            deleteAccount_Popup();
+        });
+
+        // set up the currency exchange button
+        ImageButton currencyExchangeButton = findViewById(R.id.currencyExchangeButton);
+        currencyExchangeButton.setOnClickListener(v -> {
+            // Create an instance of the fragment
+            CurrencyExchangeFragment calculatorFragment = new CurrencyExchangeFragment();
+
+            // Show the fragment as a popup
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            calculatorFragment.show(fragmentManager, "CurrencyExchangeFragment");
+        });
     }
 
     // creates a new account within the user object
@@ -183,7 +209,14 @@ public class AccountManagerActivity extends AppCompatActivity {
 
                     if(name.isEmpty())
                     {
-                        name = "Account" + (GlobalUser.getUser().getAccountCount() + 1);
+                        String possibleName = "Account" + (GlobalUser.getUser().getAccountCount() + 1);
+                        int n = 2;
+                        while(GlobalUser.getUser().accountExists(possibleName))
+                        {
+                            possibleName = "Account" + (GlobalUser.getUser().getAccountCount() + n);
+                            n++;
+                        }
+                        name = possibleName;
                     }
                     if(balance.isEmpty())
                     {
@@ -205,6 +238,105 @@ public class AccountManagerActivity extends AppCompatActivity {
                 .show();
 
 
+    }
+
+    // creates a popup so that the user can select and delete an account
+    private void deleteAccount_Popup()
+    {
+        // Inflate the custom layout for the dialog
+        LinearLayout dialogLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_delete_account, null);
+        CheckBox checkBox = dialogLayout.findViewById(R.id.confirmDeleteCheckBox);
+        LinearLayout accountsList = dialogLayout.findViewById(R.id.accountsList);
+        List<Accounts> accountsToDelete = new ArrayList<>();
+        addCheckboxesToPopup(accountsList, accountsToDelete);
+
+        // create and show the AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogLayout)
+                .setTitle(getResources().getString(R.string.confirmDeletePopup_Title))
+                .setPositiveButton("Delete", null) // Set later to enable/disable
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        // Create and show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        // Disable the positive button initially
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setEnabled(false);
+
+        // Enable positive button only if checkbox is checked
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                positiveButton.setEnabled(isChecked);
+            }
+        });
+
+        // Set the positive button action
+        positiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteCheckedAccounts(accountsToDelete);
+                dialog.dismiss();
+            }
+        });
+    }
+
+    // populates the list of accounts which can be used as a liability
+    private void addCheckboxesToPopup(LinearLayout container, List<Accounts> accountsToDelete)
+    {
+        List<Accounts> accounts = GlobalUser.getUser().getAccountsList();
+        // get the list of x from the user, add a checkbox for each
+
+        for(int i = 0; i < accounts.size(); i++)
+        {
+            CheckBox checkBox = new CheckBox(this);
+            String displayText = formatCheckBoxName(accounts.get(i));
+            checkBox.setText(displayText);
+            checkBox.setTag(i);
+            checkBox.setOnCheckedChangeListener((v, isChecked) ->
+            {
+                int position = (int) v.getTag();
+                accountsToDelete.add(accounts.get(position));
+            });
+
+            container.addView(checkBox);
+        }
+    }
+
+    // removes the checked accounts from the account list stored in user
+    private void deleteCheckedAccounts(List<Accounts> accountsToDelete)
+    {
+        for(Accounts acc : accountsToDelete)
+        {
+            GlobalUser.getUser().deleteAccount(acc.getAccountName());
+        }
+        savePage();
+        populateTableFromSavedData();
+    }
+
+    // formats the name and balance of the account for the checkbox list
+    private String formatCheckBoxName(Accounts acc)
+    {
+        String msg = "";
+        msg+= acc.getAccountName();
+        msg+= ": ";
+
+        int balance = acc.getAccountBalance();
+        double balanceInDollars = balance / 100.0;
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
+
+        String totalFormatted = currencyFormatter.format(balanceInDollars);
+
+        msg+= totalFormatted;
+
+        return msg;
     }
 
     // creates a popup which allows the user to enter the name and starting balance for a new account
@@ -376,6 +508,7 @@ public class AccountManagerActivity extends AppCompatActivity {
     // looks through each of the accounts and adds a corresponding row
     private void populateTableFromSavedData()
     {
+        table.removeAllViews();
         List<Accounts> accountsList = GlobalUser.getUser().getAccountsList();
         if(accountsList != null && !accountsList.isEmpty())
         {
@@ -445,5 +578,21 @@ public class AccountManagerActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    // checks the user prefs and determines whether or not the app should be in dark mode. Applies any changes
+    private void manageDarkMode()
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isDarkMode = prefs.getBoolean("dark_mode", false); // Default is false if not set
+
+        // Apply the theme based on the preference
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+        setContentView(R.layout.activity_main);
     }
 }

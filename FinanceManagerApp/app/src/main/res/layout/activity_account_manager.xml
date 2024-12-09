@@ -112,7 +112,19 @@
         android:text="@string/createNewAccountButtonLabel"
         android:maxLines="2"
         app:layout_constraintStart_toEndOf="@id/guidelineVerticalLeft"
-        app:layout_constraintTop_toBottomOf="@id/guidelineHorizontalBottom"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineHorizontalBottom" />
+
+    <Button
+        android:id="@+id/deleteAccountButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/createNewAccountButton"
+        app:backgroundTint="@null"
+        android:text="@string/deleteAccountButton"
+        android:maxLines="2"
+        android:layout_marginHorizontal="15dp"
+        app:layout_constraintStart_toEndOf="@id/createNewAccountButton"
         app:layout_constraintBottom_toBottomOf="@id/guidelineHorizontalBottom" />
 
     <ScrollView
@@ -130,6 +142,21 @@
             style="@style/tableLayoutStyle"
             android:stretchColumns="1" />
     </ScrollView>
+
+    <ImageButton
+        android:id="@+id/currencyExchangeButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        style="@style/helpButton"
+        app:backgroundTint="@null"
+        android:src="@drawable/ic_currency_exchange"
+        android:scaleType="fitCenter"
+        android:padding="5dp"
+        android:maxLines="2"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/currencyExchangeDescription"
+        app:layout_constraintTop_toBottomOf="@id/activitySelectionLinearLayout"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <!--  Guidelines for constraints  -->
     <androidx.constraintlayout.widget.Guideline

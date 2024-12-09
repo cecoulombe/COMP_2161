@@ -59,6 +59,10 @@ dependencies {
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation(libs.preference)
 
+    //for GSON
+    implementation("com.google.code.gson:gson:2.8.9")
+
+
     // Testing dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

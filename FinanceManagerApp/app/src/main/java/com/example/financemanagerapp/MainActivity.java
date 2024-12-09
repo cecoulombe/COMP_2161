@@ -1,6 +1,7 @@
 package com.example.financemanagerapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,9 +10,11 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.preference.PreferenceManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -24,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        manageDarkMode();
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -171,45 +176,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     // create an account for a new user
-//    private void createAccount(String email, String password)
-//    {
-//        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
-//            if(task.isSuccessful()) {
-//                // Successfully created an account
-//                FirebaseUser user = mAuth.getCurrentUser();
-//                launchWelcomePage();
-//            } else {
-//                // Account creation failed, get specific error
-//                String errorMessage = "Account Creation Failed";
-//
-//                if (task.getException() instanceof FirebaseAuthException) {
-//                    FirebaseAuthException e = (FirebaseAuthException) task.getException();
-//                    switch (e.getErrorCode()) {
-//                        case "ERROR_INVALID_EMAIL":
-//                            errorMessage = "The email address is invalid.";
-//                            break;
-//                        case "ERROR_EMAIL_ALREADY_IN_USE":
-//                            errorMessage = "This email address is already in use.";
-//                            break;
-//                        case "ERROR_WEAK_PASSWORD":
-//                            errorMessage = "The password is too weak. Please use a stronger password.";
-//                            break;
-//                        case "ERROR_OPERATION_NOT_ALLOWED":
-//                            errorMessage = "Account creation is disabled. Please contact support.";
-//                            break;
-//                        // Add more cases as needed
-//                        default:
-//                            errorMessage = e.getLocalizedMessage();
-//                            break;
-//                    }
-//                } else if (task.getException() != null) {
-//                    errorMessage = task.getException().getLocalizedMessage();
-//                }
-//
-//                Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG).show();
-//            }
-//        });
-//    }
     private void createAccount(String email, String password) {
         mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -242,6 +208,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // checks the user prefs and determines whether or not the app should be in dark mode. Applies any changes
+    private void manageDarkMode()
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isDarkMode = prefs.getBoolean("dark_mode", false); // Default is false if not set
+
+        // Apply the theme based on the preference
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+        setContentView(R.layout.activity_main);
+    }
 
     // sign out user (called from pressing the sign out button on the other pages?)
     private void signOut()
