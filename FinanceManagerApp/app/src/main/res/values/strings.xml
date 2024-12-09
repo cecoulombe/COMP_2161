@@ -7,6 +7,9 @@
     <string name="passwordInputHint">Password</string>
     <string name="signInButtonText">Sign In</string>
     <string name="noAccountLabel">No account? \nClick below to create a new account</string>
+    <string name="noAccountLabelLand">No account? \nClick to create a new account</string>
+    <string name="mainActivityHelp_Popup">This application is intended for personal use and information only.\n\nDo not store sensitive information including social security number, banking information, or other personal information.</string>
+    <string name="mainActivityHelp_Disclaimer">Disclaimer</string>
 
     <!--  Activity SelectionButton Labels  -->
     <string name="signUpButtonText">Create Account</string>
@@ -19,6 +22,7 @@
     <!--   Welcome Activity -->
     <string name="welcomeNicknameLabel">Welcome %1$s\</string>
     <string name="welcomeInstructions">To navigate through the app, press the corresponding button at the top of the page.</string>
+    <string name="welcomeInstructionsLand">To navigate through the app, press the corresponding button at the left of the page.</string>
 
     <!--  Account Manager Activity  -->
     <string name="createNewAccountButtonLabel">Add Account</string>
@@ -46,7 +50,7 @@
     <string name="deleteAccountPopup_Confirmation">By checking this you acknowledge that the account and its information will be permanently deleted.</string>
 
     <!--  Net Worth Calculator  -->
-    <string name="helpPopupInfo_NetWorth">This is the Net Worth Calculator.\n\nHere you can use your assets and liabilities to estimate your current net worth.\n\nThere are two ways to add an asset or liability:\n\t- A list of accounts from the account manager is visible under both assets and liabilities where existing accounts can be set as either.\n\t- By pressing the "add asset" or "add liability" buttons, you can manually add a new asset/liability. NOTE: these are strictly for net worth calculations and are not saved as accounts. These can be edited in the same way as accounts on the account manager. \n\nTo view a chart with previous net worth calculations, showing your net worth over time, click the chart button in the top right corner. \n\nAll values are saved upon leaving the page.</string>
+    <string name="helpPopupInfo_NetWorth">This is the Net Worth Calculator.\n\nHere you can use your assets and liabilities to estimate your current net worth.\n\nThere are two ways to add an asset or liability:\n\t- A list of accounts from the account manager is visible under both assets and liabilities where existing accounts can be set as either.\n\t- By pressing the "add asset" or "add liability" buttons, you can manually add a new asset/liability. NOTE: these are strictly for net worth calculations and are not saved as accounts. These can be edited in the same way as accounts on the account manager. \n\nTo view a chart with previous net worth calculations, showing your net worth over time, click the chart button. \n\nAll values are saved upon leaving the page.</string>
     <string name="addAssetButton">Add new asset</string>
     <string name="addLiabilityButton">Add new liability</string>
     <string name="deleteAssetButton">Delete asset</string>

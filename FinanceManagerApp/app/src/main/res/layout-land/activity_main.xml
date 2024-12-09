@@ -14,26 +14,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1"/>
+        app:layout_constraintGuide_percent="0.05"/>
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorizontalBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9" />
+        app:layout_constraintGuide_percent="0.95" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVerticalLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="41dp" />
+        app:layout_constraintGuide_percent="0.05" />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVerticalRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.9" />
+        app:layout_constraintGuide_percent="0.95" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerticalMiddle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
     <TextView
         android:id="@+id/appTitleTextView"
@@ -41,6 +47,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="@string/appTitleLabel"
+        android:gravity="center_horizontal"
         android:layout_marginVertical="10dp"
         app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
         app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
@@ -53,6 +60,9 @@
         android:layout_height="0dp"
         android:text="@string/instructionsLabel"
         style="@style/instructionsTextStyle"
+        android:maxHeight="45dp"
+        android:gravity="center_vertical"
+        android:padding="0dp"
         android:layout_marginVertical="10dp"
         app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
         app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
@@ -66,8 +76,9 @@
         android:layout_height="wrap_content"
         android:autofillHints=""
         android:hint="@string/emailInputHint"
-        android:layout_marginVertical="10dp"
+        android:minHeight="60dp"
         android:inputType="textEmailAddress"
+        android:layout_marginVertical="5dp"
         app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
         app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
         app:layout_constraintTop_toBottomOf="@id/instructionsTextView"
@@ -79,7 +90,7 @@
         android:layout_height="wrap_content"
         android:autofillHints=""
         android:hint="@string/passwordInputHint"
-        android:layout_marginVertical="10dp"
+        android:minHeight="60dp"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
         app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
@@ -96,19 +107,19 @@
         android:layout_marginVertical="10dp"
         app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
         app:layout_constraintTop_toBottomOf="@id/passwordInput"
-        app:layout_constraintBottom_toTopOf="@id/noAccountTextView"/>
+        app:layout_constraintBottom_toBottomOf="@id/guidelineHorizontalBottom"/>
 
     <TextView
         android:id="@+id/noAccountTextView"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="@string/noAccountLabel"
+        android:text="@string/noAccountLabelLand"
+        android:minWidth="250dp"
         style="@style/noAccountTextStyle"
         android:layout_marginVertical="10dp"
         app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
-        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
-        app:layout_constraintTop_toBottomOf="@id/signInButton"
-        app:layout_constraintBottom_toTopOf="@id/signUpButton"/>
+        app:layout_constraintTop_toBottomOf="@id/passwordInput"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineHorizontalBottom"/>
 
     <Button
         android:id="@+id/signUpButton"
@@ -117,9 +128,9 @@
         android:text="@string/signUpButtonText"
         style="@style/signUpButton"
         app:backgroundTint="@null"
-        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
-        app:layout_constraintTop_toBottomOf="@id/noAccountTextView"
-        app:layout_constraintBottom_toTopOf="@id/guidelineHorizontalBottom"/>
+        app:layout_constraintStart_toEndOf="@id/noAccountTextView"
+        app:layout_constraintTop_toBottomOf="@id/passwordInput"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineHorizontalBottom"/>
     <ImageButton
         android:id="@+id/helpButton"
         android:layout_width="40dp"

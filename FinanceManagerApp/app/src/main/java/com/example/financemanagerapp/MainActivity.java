@@ -1,11 +1,13 @@
 package com.example.financemanagerapp;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -75,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             }
+        });
+
+        ImageButton helpButton = findViewById(R.id.helpButton);
+        helpButton.setOnClickListener(v -> {
+            helpPopup();
         });
     }
 
@@ -235,5 +242,20 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(MainActivity.this, WelcomePageActivity.class);
         startActivity(intent);
+    }
+
+    // creates a popup with info on how to navigate the current activity
+    private void helpPopup()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.mainActivityHelp_Disclaimer));
+        builder.setMessage(getResources().getString(R.string.mainActivityHelp_Popup));
+
+        // set a neutral button to dismiss the message
+        builder.setNeutralButton("OK", (dialog, which) -> dialog.dismiss());
+
+        // show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

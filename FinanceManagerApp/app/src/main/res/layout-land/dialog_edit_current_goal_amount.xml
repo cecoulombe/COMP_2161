@@ -1,0 +1,189 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/selectAccountTextview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/selectAccountsGoal"
+        style="@style/goalPopupInstructions"
+        android:maxLines="4"
+        android:textSize="18sp"
+        android:minHeight="60dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalMiddle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/assetAccountsScrollView"/>
+
+    <ScrollView
+        android:id="@+id/assetAccountsScrollView"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        style="@style/scrollViewStyle"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalMiddle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/selectAccountTextview"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <LinearLayout
+            android:id="@+id/accountsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Current balance display -->
+    <TextView
+        android:id="@+id/currentBalance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalMiddle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/editBalance"/>
+
+    <!-- Input for the new amount -->
+    <EditText
+        android:id="@+id/editBalance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:minHeight="60dp"
+        android:layout_marginVertical="15dp"
+        android:hint="@string/editCurrentAmountHint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalMiddle"
+        app:layout_constraintTop_toBottomOf="@id/currentBalance"
+        app:layout_constraintBottom_toTopOf="@id/addButton"/>
+
+    <!-- Add button -->
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/editBalanceButtons"
+        app:backgroundTint="@null"
+        android:text="@string/addButtonLabel"
+        android:layout_marginVertical="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/subtractButton"
+        app:layout_constraintTop_toBottomOf="@id/editBalance"
+        app:layout_constraintBottom_toTopOf="@id/cancelButton"/>
+
+    <!-- Subtract button -->
+    <Button
+        android:id="@+id/subtractButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/editBalanceButtons"
+        app:backgroundTint="@null"
+        android:text="@string/subtractButtonLabel"
+
+        app:layout_constraintStart_toEndOf="@id/addButton"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalMiddle"
+        app:layout_constraintTop_toTopOf="@id/addButton"
+        app:layout_constraintBottom_toBottomOf="@id/addButton" />
+
+    <!--  Cancel Button  -->
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/editBalanceButtons"
+        app:backgroundTint="@null"
+        android:text="@string/cancelButtonLabel"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/replaceButton"
+        app:layout_constraintTop_toBottomOf="@id/addButton"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <!-- Replace button -->
+    <Button
+        android:id="@+id/replaceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/editBalanceButtons"
+        app:backgroundTint="@null"
+        android:text="@string/replaceButtonLabel"
+        app:layout_constraintStart_toEndOf="@id/cancelButton"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalMiddle"
+        app:layout_constraintTop_toTopOf="@id/cancelButton"
+        app:layout_constraintBottom_toBottomOf="@id/cancelButton"/>
+
+
+<!--    <Button-->
+<!--        android:id="@+id/cancelButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1"-->
+<!--        style="@style/editBalanceButtons"-->
+<!--        app:backgroundTint="@null"-->
+<!--        android:text="@string/cancelButtonLabel"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/addButton"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/editBalance"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/subtractButton"/>-->
+
+<!--    &lt;!&ndash; Add button &ndash;&gt;-->
+<!--    <Button-->
+<!--        android:id="@+id/addButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1"-->
+<!--        style="@style/editBalanceButtons"-->
+<!--        app:backgroundTint="@null"-->
+<!--        android:text="@string/addButtonLabel"-->
+<!--        app:layout_constraintStart_toEndOf="@id/cancelButton"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalMiddle"-->
+<!--        app:layout_constraintTop_toTopOf="@id/cancelButton"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/cancelButton"/>-->
+
+<!--    &lt;!&ndash; Subtract button &ndash;&gt;-->
+<!--    <Button-->
+<!--        android:id="@+id/subtractButton"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1"-->
+<!--        style="@style/editBalanceButtons"-->
+<!--        app:backgroundTint="@null"-->
+<!--        android:text="@string/subtractButtonLabel"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/replaceButton"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/cancelButton"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent" />-->
+
+<!--    &lt;!&ndash; Replace button &ndash;&gt;-->
+<!--    <Button-->
+<!--        android:id="@+id/replaceButton"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1"-->
+<!--        style="@style/editBalanceButtons"-->
+<!--        app:backgroundTint="@null"-->
+<!--        android:text="@string/replaceButtonLabel"-->
+<!--        app:layout_constraintStart_toEndOf="@id/subtractButton"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalMiddle"-->
+<!--        app:layout_constraintTop_toTopOf="@id/subtractButton"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/subtractButton"/>-->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerticalMiddle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+</androidx.constraintlayout.widget.ConstraintLayout>
