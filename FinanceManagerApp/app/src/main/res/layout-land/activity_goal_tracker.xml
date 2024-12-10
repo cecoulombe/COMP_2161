@@ -137,7 +137,7 @@
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChart"
         android:layout_width="0dp"
-        android:layout_height="300dp"
+        android:layout_height="275dp"
         android:layout_margin="15dp"
         app:layout_constraintStart_toEndOf="@id/guidelineVerticalLeft"
         app:layout_constraintEnd_toStartOf="@id/guidelineVerticalMiddle"

@@ -5,11 +5,29 @@
     android:padding="16dp"
     android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/currencyExchangeHeader"
-        style="@style/currencyHeader"/>
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/currencyExchangeHeader"
+            style="@style/currencyHeader"
+            android:minHeight="70dp"/>
+        <!-- Close button (X) in the top-right corner -->
+        <ImageButton
+            android:id="@+id/closeButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_close"
+            style="@style/signOutButton"
+            android:scaleType="fitCenter"
+            android:padding="1dp"
+            android:contentDescription="@string/closeButtonDescription"
+            android:layout_margin="16dp" />
+    </LinearLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,6 +42,7 @@
             android:id="@+id/inputAmount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:minHeight="50dp"
             android:layout_weight="1"
             android:hint="@string/inputHint"
             android:inputType="numberDecimal" />
@@ -32,6 +51,7 @@
             android:id="@+id/startCurrencySpinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:minHeight="50dp"
             android:layout_weight="1.2"
             android:layout_marginTop="8dp" />
     </LinearLayout>
@@ -47,6 +67,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:minHeight="50dp"
             android:hint="@string/outputHint"
             android:inputType="numberDecimal" />
         <!-- End currency dropdown -->
@@ -55,6 +76,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.2"
+            android:minHeight="50dp"
             android:layout_marginTop="8dp" />
     </LinearLayout>
 </LinearLayout>

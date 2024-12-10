@@ -143,7 +143,7 @@
         <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
     </style>
 
-<!--  Net wroth calculator  -->
+<!--  Net worth calculator  -->
     <style name="addAssetButton">
         <item name="android:background">@drawable/activity_selection_buttons
         </item> <!-- Ensure this drawable exists -->
@@ -157,11 +157,10 @@
     </style>
     <style name="netWorthDisplay">
         <item name="android:autoSizeTextType">uniform</item>
-        <item name="android:autoSizeMinTextSize">15sp</item>
+        <item name="android:autoSizeMinTextSize">20sp</item>
         <item name="android:autoSizeMaxTextSize">45sp</item>
         <item name="android:autoSizeStepGranularity">2sp</item>
         <item name="android:maxLines">2</item>
-        <item name="android:padding">10dp</item>
         <item name="android:gravity">start</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->

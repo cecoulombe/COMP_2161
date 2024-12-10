@@ -6,8 +6,8 @@
     <!-- Close button (X) in the top-right corner -->
     <ImageButton
         android:id="@+id/closeButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@drawable/ic_close"
         style="@style/signOutButton"
         android:scaleType="fitCenter"

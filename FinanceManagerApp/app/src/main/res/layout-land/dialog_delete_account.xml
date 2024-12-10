@@ -15,7 +15,7 @@
     <ScrollView
         android:id="@+id/assetAccountsScrollView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         style="@style/scrollViewStyle"
         android:layout_marginTop="10dp">
         <LinearLayout

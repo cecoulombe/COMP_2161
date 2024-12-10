@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import android.text.Editable;
@@ -99,6 +101,11 @@ public class CurrencyExchangeFragment extends DialogFragment {
         outputAmount = view.findViewById(R.id.outputAmount);
         startSpinner = view.findViewById(R.id.startCurrencySpinner);
         endSpinner = view.findViewById(R.id.endCurrencySpinner);
+
+
+        // Set up the exit button listener
+        ImageButton exitButton = view.findViewById(R.id.closeButton); // Reference to the close button
+        exitButton.setOnClickListener(v -> dismiss());
 
         // populate spinners
         try {

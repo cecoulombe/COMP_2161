@@ -35,11 +35,11 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.95" />
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineVerticalMiddle"
+        android:id="@+id/guidelineVerticalTitleSpace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.3" />
 
     <TextView
         android:id="@+id/appTitleTextView"
@@ -48,25 +48,25 @@
         android:layout_height="0dp"
         android:text="@string/appTitleLabel"
         android:gravity="center_horizontal"
-        android:layout_marginVertical="10dp"
+        android:layout_marginVertical="50dp"
         app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
-        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalTitleSpace"
         app:layout_constraintTop_toBottomOf="@id/guidelineHorizontalTop"
-        app:layout_constraintBottom_toTopOf="@id/instructionsTextView"/>
+        app:layout_constraintBottom_toTopOf="@id/noAccountTextView"/>
 
     <TextView
         android:id="@+id/instructionsTextView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="@string/instructionsLabel"
         style="@style/instructionsTextStyle"
-        android:maxHeight="45dp"
-        android:gravity="center_vertical"
+        android:gravity="bottom"
         android:padding="0dp"
-        android:layout_marginVertical="10dp"
-        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
+        android:minHeight="50dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalTitleSpace"
         app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
-        app:layout_constraintTop_toBottomOf="@id/appTitleTextView"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/emailInput"/>
 
 
@@ -79,7 +79,7 @@
         android:minHeight="60dp"
         android:inputType="textEmailAddress"
         android:layout_marginVertical="5dp"
-        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalTitleSpace"
         app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
         app:layout_constraintTop_toBottomOf="@id/instructionsTextView"
         app:layout_constraintBottom_toTopOf="@id/passwordInput"/>
@@ -92,7 +92,7 @@
         android:hint="@string/passwordInputHint"
         android:minHeight="60dp"
         android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalTitleSpace"
         app:layout_constraintEnd_toEndOf="@id/guidelineVerticalRight"
         app:layout_constraintTop_toBottomOf="@id/emailInput"
         app:layout_constraintBottom_toTopOf="@id/signInButton"/>

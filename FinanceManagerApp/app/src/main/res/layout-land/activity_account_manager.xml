@@ -94,18 +94,19 @@
 
     <ImageButton
         android:id="@+id/currencyExchangeButton"
+        style="@style/helpButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        style="@style/helpButton"
-        app:backgroundTint="@null"
-        android:src="@drawable/ic_currency_exchange"
-        android:scaleType="fitCenter"
-        android:padding="5dp"
-        android:maxLines="2"
-        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="10dp"
         android:contentDescription="@string/currencyExchangeDescription"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/signOutButton"/>
+        android:maxLines="2"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_currency_exchange"
+        app:backgroundTint="@null"
+        app:layout_constraintEnd_toStartOf="@id/helpButton"
+        app:layout_constraintTop_toTopOf="@id/signOutButton"
+        app:layout_constraintBottom_toBottomOf="@id/signOutButton" />
 
     <Button
         android:id="@+id/signOutButton"

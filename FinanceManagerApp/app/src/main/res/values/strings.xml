@@ -22,7 +22,7 @@
     <!--   Welcome Activity -->
     <string name="welcomeNicknameLabel">Welcome %1$s\</string>
     <string name="welcomeInstructions">To navigate through the app, press the corresponding button at the top of the page.</string>
-    <string name="welcomeInstructionsLand">To navigate through the app, press the corresponding button at the left of the page.</string>
+    <string name="welcomeInstructionsLand">To navigate through the app, press the corresponding button on the left of the page.</string>
 
     <!--  Account Manager Activity  -->
     <string name="createNewAccountButtonLabel">Add Account</string>
