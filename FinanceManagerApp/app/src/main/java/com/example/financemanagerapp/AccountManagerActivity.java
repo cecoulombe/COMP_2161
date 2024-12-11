@@ -76,6 +76,7 @@ public class AccountManagerActivity extends AppCompatActivity {
         });
         Button accountManagerButton = findViewById(R.id.accountManagerButton);
         accountManagerButton.setEnabled(false);
+
         Button netWorthButton = findViewById(R.id.netWorthButton);
         netWorthButton.setOnClickListener(v -> {
             savePage();

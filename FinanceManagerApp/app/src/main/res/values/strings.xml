@@ -1,7 +1,8 @@
 <resources>
     <!--  Main Activity  -->
-    <string name="app_name">FinancialManagementApp</string>
-    <string name="appTitleLabel">Finance Manager</string>
+    <string name="app_name">Sage</string>
+    <string name="appTitleLabel">Sage</string>
+    <string name="appTagLineLabel">Wisdom to manage your finances</string>
     <string name="instructionsLabel">Enter your email address and password below.</string>
     <string name="emailInputHint">Email</string>
     <string name="passwordInputHint">Password</string>

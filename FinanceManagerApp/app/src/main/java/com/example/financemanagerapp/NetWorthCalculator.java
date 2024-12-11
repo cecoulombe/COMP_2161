@@ -905,6 +905,7 @@ public class NetWorthCalculator extends AppCompatActivity {
             series.resetData(dataPoints);
 
             series.setThickness(8);
+            series.setColor(getResources().getColor(R.color.textColor));
 
             // add the series to the graph
             graphView.addSeries(series);

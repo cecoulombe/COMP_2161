@@ -192,7 +192,7 @@ public class GoalTrackerActivity extends AppCompatActivity {
                 getResources().getColor(R.color.tableLayoutBackground),
                 getResources().getColor(R.color.headerBackground)
         });
-        dataSet.setValueTextColor(getResources().getColor(R.color.textColor));
+        dataSet.setValueTextColor(getResources().getColor(R.color.textAccentColor));
         dataSet.setValueTextSize(20f);
 
         // Set a custom value formatter for two decimal places
@@ -256,7 +256,7 @@ public class GoalTrackerActivity extends AppCompatActivity {
                 getResources().getColor(R.color.tableLayoutBackground),
                 getResources().getColor(R.color.headerBackground)
         });
-        dataSet.setValueTextColor(getResources().getColor(R.color.textColor));
+        dataSet.setValueTextColor(getResources().getColor(R.color.textAccentColor));
         dataSet.setValueTextSize(20f);
 
         // Set a custom value formatter for two decimal places

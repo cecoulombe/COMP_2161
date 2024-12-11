@@ -8,6 +8,30 @@
     style="@style/layoutStyle"
     tools:context=".MainActivity">
 
+    <!-- Sticker ImageView -->
+    <ImageView
+        android:id="@+id/stickerImage"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:src="@drawable/sage_logo_no_background"
+        android:contentDescription="Sticker"
+        android:rotation="225"
+        android:translationY="-15dp"
+        android:translationX="15dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <ImageView
+        android:id="@+id/stickerImage2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/sage_logo_no_background"
+        android:contentDescription="Sticker"
+        android:rotation="75"
+        android:scaleX="-1"
+        android:translationY="15dp"
+        android:translationX="-15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
     <!--  Guidelines for constraints  -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorizontalTop"
@@ -47,11 +71,21 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="@string/appTitleLabel"
-        android:gravity="center_horizontal"
-        android:layout_marginVertical="50dp"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
         app:layout_constraintEnd_toEndOf="@id/guidelineVerticalTitleSpace"
         app:layout_constraintTop_toBottomOf="@id/guidelineHorizontalTop"
+        app:layout_constraintBottom_toTopOf="@id/appTaglineTextView"/>
+    <TextView
+        android:id="@+id/appTaglineTextView"
+        style="@style/appTagLineStyle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/appTagLineLabel"
+        android:gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="@id/guidelineVerticalLeft"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVerticalTitleSpace"
+        app:layout_constraintTop_toBottomOf="@id/appTitleTextView"
         app:layout_constraintBottom_toTopOf="@id/noAccountTextView"/>
 
     <TextView

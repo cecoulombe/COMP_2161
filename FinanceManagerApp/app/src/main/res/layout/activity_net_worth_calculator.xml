@@ -8,6 +8,18 @@
     android:layout_height="match_parent"
     tools:context=".NetWorthCalculator">
 
+    <ImageView
+        android:id="@+id/stickerImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/sage_logo_no_background"
+        android:contentDescription="Sticker"
+        android:rotation="315"
+        android:translationY="15dp"
+        android:translationX="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <LinearLayout
         android:id="@+id/activitySelectionLinearLayout"
         android:layout_width="match_parent"
@@ -44,7 +56,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            style="@style/activitySelectionButtonStyle"
+            style="@style/disabled_activitySelectionButtonStyle"
             app:backgroundTint="@null"
             android:text="@string/netWorthButtonText"
             android:maxLines="2"
@@ -111,7 +123,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        style="@style/activitySelectionButtonStyle"
+        style="@style/signOutButton"
         app:backgroundTint="@null"
         android:text="@string/signOutButton"
         android:maxLines="2"

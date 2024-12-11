@@ -4,9 +4,14 @@
         <item name="android:background">@color/backgroundColor</item>
     </style>
     <style name="appTitleStyle">
-        <item name="android:textSize">35sp</item>
+        <item name="android:textSize">40sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/textColor</item> <!-- Ensure this color exists -->
+        <item name="android:textColor">@color/titleColor</item> <!-- Ensure this color exists -->
+    </style>
+    <style name="appTagLineStyle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textAccentColor</item> <!-- Ensure this color exists -->
     </style>
     <style name="instructionsTextStyle">
         <item name="android:textSize">15sp</item>
@@ -37,14 +42,22 @@
         <item name="android:textSize">16sp</item>
         <item name="android:padding">1dp</item>
     </style>
+
+    <style name="disabled_activitySelectionButtonStyle">
+        <item name="android:background">@drawable/disabled_button</item> <!-- Ensure this drawable exists -->
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">1dp</item>
+    </style>
     <style name="signOutButton">
-        <item name="android:background">@drawable/activity_selection_buttons</item> <!-- Ensure this drawable exists -->
+        <item name="android:background">@drawable/sign_in_button</item> <!-- Ensure this drawable exists -->
         <item name="android:backgroundTint">@null</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:padding">1dp</item>
     </style>
     <style name="helpButton">
-        <item name="android:background">@drawable/activity_selection_buttons</item> <!-- Ensure this drawable exists -->
+        <item name="android:background">@drawable/sign_in_button</item> <!-- Ensure this drawable exists -->
         <item name="android:backgroundTint">@null</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:padding">1dp</item>

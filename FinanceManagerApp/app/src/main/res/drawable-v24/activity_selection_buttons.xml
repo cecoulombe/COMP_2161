@@ -13,8 +13,8 @@
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
             <!-- Gradient for pressed state -->
             <gradient
-                android:startColor="#1A1A1A"
-                android:endColor="#000000"
+                android:startColor="@color/mainMenuButtonStartPressed"
+                android:endColor="@color/mainMenuButtonEndPressed"
                 android:angle="270" />
             <corners android:radius="1dp" />
             <padding
@@ -47,8 +47,8 @@
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
             <!-- Gradient for default state -->
             <gradient
-                android:startColor="#5C5C5C"
-                android:endColor="#3A3A3A"
+                android:startColor="@color/mainMenuButtonStartDefault"
+                android:endColor="@color/mainMenuButtonEndDefault"
                 android:angle="270" />
             <corners android:radius="1dp" />
             <padding
