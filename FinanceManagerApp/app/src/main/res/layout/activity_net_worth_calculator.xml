@@ -10,14 +10,16 @@
 
     <ImageView
         android:id="@+id/stickerImage"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:src="@drawable/sage_logo_no_background"
         android:contentDescription="Sticker"
         android:rotation="315"
         android:translationY="15dp"
         android:translationX="15dp"
+        app:layout_constraintTop_toTopOf="@id/stickerTop"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/stickerStart"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
@@ -325,5 +327,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.87" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/stickerStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.62" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/stickerTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.78" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
