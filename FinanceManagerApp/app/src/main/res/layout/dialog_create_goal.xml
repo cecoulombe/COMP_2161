@@ -57,6 +57,7 @@
         android:layout_height="wrap_content"
         android:text="@string/selectAccountsGoal"
         style="@style/goalPopupInstructions"
+        android:minHeight="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/enterAmountEditText"
