@@ -220,7 +220,7 @@ public class NetWorthCalculator extends AppCompatActivity {
                 GlobalUser.getUser().setIsAsset(accounts.get(position).getAccountName(), isChecked);
                 savePage();
 
-                updateCheckBoxState(assetAccountList, accounts.get(position).getAccountName(), !isChecked, false);
+                updateCheckBoxState(liabilityAccountList, accounts.get(position).getAccountName(), !isChecked, false);
 
             });
 
@@ -281,6 +281,7 @@ public class NetWorthCalculator extends AppCompatActivity {
     // disables or enables a button in the opposite view depending on what action was taken
     private void updateCheckBoxState(LinearLayout container, String name, boolean isEnabled, boolean isChecked)
     {
+        List<Accounts> accounts = GlobalUser.getUser().getAccountsList();
         // iterate through the container to find the corresponding view
         for(int i = 0; i < container.getChildCount(); i++)
         {
@@ -290,7 +291,10 @@ public class NetWorthCalculator extends AppCompatActivity {
                 CheckBox checkBox = (CheckBox) child;
                 
                 // match the checkbox by its text
-                if(checkBox.getText().toString().equals(name))
+
+                int position = (int) checkBox.getTag();
+
+                if(accounts.get(position).getAccountName().equals(name))
                 {
                     checkBox.setEnabled(isEnabled);
                     checkBox.setChecked(isChecked);
