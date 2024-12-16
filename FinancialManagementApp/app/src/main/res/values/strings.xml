@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">FinancialManagementApp</string>
-    <string name="appTitleLabel">Finance\nManager</string>
-    <string name="emailInputHint">Email</string>
-    <string name="passwordInputHint">Password</string>
-    <string name="signInButtonText">Sign In</string>
-    <string name="noAccountLabel">No account? \nClick below to create a new account</string>
-    <string name="signUpButtonText">Create Account</string>
-</resources>

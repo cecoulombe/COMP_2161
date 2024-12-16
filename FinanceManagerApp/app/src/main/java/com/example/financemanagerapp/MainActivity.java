@@ -112,52 +112,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // sign in an existing user
-//    private void signIn(String email, String password)
-//    {
-//        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
-//            if(task.isSuccessful())
-//            {
-//                // sign in success
-//                FirebaseUser user = mAuth.getCurrentUser();
-//                launchWelcomePage();
-//            } else {
-//                // Sign in failed, get specific error
-//                String errorMessage = "Authentication failed.";
-//
-//                if (task.getException() instanceof FirebaseAuthException) {
-//                    FirebaseAuthException e = (FirebaseAuthException) task.getException();
-//                    switch (e.getErrorCode()) {
-//                        case "ERROR_INVALID_EMAIL":
-//                            errorMessage = "The email address is invalid.";
-//                            break;
-//                        case "ERROR_WRONG_PASSWORD":
-//                            errorMessage = "The password is incorrect.";
-//                            break;
-//                        case "ERROR_USER_NOT_FOUND":
-//                            errorMessage = "No account found with this email.";
-//                            break;
-//                        case "ERROR_USER_DISABLED":
-//                            errorMessage = "This account has been disabled.";
-//                            break;
-//                        case "ERROR_TOO_MANY_REQUESTS":
-//                            errorMessage = "Too many login attempts. Please try again later.";
-//                            break;
-//                        case "ERROR_OPERATION_NOT_ALLOWED":
-//                            errorMessage = "Login with email and password is disabled. Please contact support.";
-//                            break;
-//                        // Add more cases as needed
-//                        default:
-//                            errorMessage = e.getLocalizedMessage();
-//                            break;
-//                    }
-//                } else if (task.getException() != null) {
-//                    errorMessage = task.getException().getLocalizedMessage();
-//                }
-//
-//                Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG).show();
-//            }
-//        });
-//    }
     private void signIn(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
